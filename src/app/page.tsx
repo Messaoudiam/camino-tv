@@ -1,103 +1,279 @@
-import Image from "next/image";
+'use client';
+
+/**
+ * Landing Page Camino TV - Page d'accueil moderne
+ * Design moderne avec Hero + Sections + CTA
+ */
+
+import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
+import { Hero } from '@/components/sections/Hero';
+import { ArrowRight, Zap, Shield, Clock, Users, TrendingUp, Star, Play, ExternalLink, Mic, Youtube, Instagram, Twitter } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-background">
+      <Header />
+      
+      {/* Hero Section */}
+      <Hero />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Nos missions Section */}
+      <section className="py-20 bg-gradient-to-br from-background via-muted/20 to-background">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-brand-500/10 text-brand-600 dark:text-brand-400 border-brand-200 dark:border-brand-800">
+              <Users className="h-3 w-3 mr-1" />
+              Nos missions
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Notre vision, notre mission
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Les valeurs qui nous guident et définissent notre approche unique du contenu
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card variant="default" size="lg" padding="lg" className="group relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50/50 dark:from-gray-950/20 dark:via-card dark:to-gray-950/10 border border-gray-200/50 dark:border-gray-800/30 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-xl hover:shadow-gray-500/10 dark:hover:shadow-gray-500/5 transition-all duration-500 hover:-translate-y-1">
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <CardContent className="relative z-10 p-6 text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-gray-800 to-black shadow-lg shadow-gray-800/25 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <Star className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-4">Vivre de notre passion</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Parler de ce qu'on aime et vivre de notre passion avec la communauté
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card variant="default" size="lg" padding="lg" className="group relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50/50 dark:from-gray-950/20 dark:via-card dark:to-gray-950/10 border border-gray-200/50 dark:border-gray-800/30 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-xl hover:shadow-gray-500/10 dark:hover:shadow-gray-500/5 transition-all duration-500 hover:-translate-y-1">
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <CardContent className="relative z-10 p-6 text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-gray-800 to-black shadow-lg shadow-gray-800/25 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <Users className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-4">Partager l'aventure</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Partager l'aventure de notre collectif et créer des liens authentiques
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card variant="default" size="lg" padding="lg" className="group relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50/50 dark:from-gray-950/20 dark:via-card dark:to-gray-950/10 border border-gray-200/50 dark:border-gray-800/30 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-xl hover:shadow-gray-500/10 dark:hover:shadow-gray-500/5 transition-all duration-500 hover:-translate-y-1">
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <CardContent className="relative z-10 p-6 text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-gray-800 to-black shadow-lg shadow-gray-800/25 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <TrendingUp className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-4">Faire avancer le mouvement</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Contribuer activement à l'évolution et au développement du mouvement
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card variant="default" size="lg" padding="lg" className="group relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50/50 dark:from-gray-950/20 dark:via-card dark:to-gray-950/10 border border-gray-200/50 dark:border-gray-800/30 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-xl hover:shadow-gray-500/10 dark:hover:shadow-gray-500/5 transition-all duration-500 hover:-translate-y-1">
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <CardContent className="relative z-10 p-6 text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-gray-800 to-black shadow-lg shadow-gray-800/25 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <Zap className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-4">Mettre en lumière</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Mettre en lumière les acteurs de la culture francophone pour créer un espace où chacun peut se sentir libre de s'exprimer
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Nos émissions Section */}
+      <section className="py-20 bg-gradient-to-br from-background via-muted/30 to-background">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-brand-500/10 text-brand-600 dark:text-brand-400 border-brand-200 dark:border-brand-800">
+              <Play className="h-3 w-3 mr-1" />
+              Nos émissions
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Découvrez nos futurs projets
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Des émissions authentiques pour partager notre passion et créer des liens avec la communauté
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Card variant="default" size="lg" padding="lg" className="group relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50/50 dark:from-gray-950/20 dark:via-card dark:to-gray-950/10 border border-gray-200/50 dark:border-gray-800/30 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-xl hover:shadow-gray-500/10 dark:hover:shadow-gray-500/5 transition-all duration-500 hover:-translate-y-1">
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <CardContent className="relative z-10 p-8">
+                <div className="flex items-start space-x-6">
+                  <div className="w-20 h-20 bg-gradient-to-br from-gray-800 to-black shadow-lg shadow-gray-800/25 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                    <Play className="h-10 w-10 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold mb-3 text-foreground">*en amis proches</h3>
+                    <p className="text-muted-foreground mb-6 leading-relaxed">
+                    Moments intimistes avec tes artistes préférés qu'ils ne partagent pas, qu'en amis proches.
+                    </p>
+                    <a 
+                      href="https://www.youtube.com/@enamisproches" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center px-4 py-2.5 bg-black hover:bg-gray-800 text-white font-medium rounded-xl transition-all duration-300 group/btn hover:scale-105"
+                    >
+                      Découvrir sur YouTube
+                      <ExternalLink className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                    </a>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card variant="default" size="lg" padding="lg" className="group relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50/50 dark:from-gray-950/20 dark:via-card dark:to-gray-950/10 border border-gray-200/50 dark:border-gray-800/30 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-xl hover:shadow-gray-500/10 dark:hover:shadow-gray-500/5 transition-all duration-500 hover:-translate-y-1">
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <CardContent className="relative z-10 p-8">
+                <div className="flex items-start space-x-6">
+                  <div className="w-20 h-20 bg-gradient-to-br from-gray-800 to-black shadow-lg shadow-gray-800/25 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                    <Mic className="h-10 w-10 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold mb-3 text-foreground">✈️ Dans le cockpit</h3>
+                    <p className="text-muted-foreground mb-6 leading-relaxed">
+                    Voila notre podcast, des avis géniaux ou débiles, ça dépend mais au moins t'es en premiere classe avec nous.
+
+En live sur Twitch tous les lundi, mercredis et vendredis matins.
+                    </p>
+                    <a 
+                      href="https://www.youtube.com/@caminotv_replay" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center px-4 py-2.5 bg-black hover:bg-gray-800 text-white font-medium rounded-xl transition-all duration-300 group/btn hover:scale-105"
+                    >
+                      Voir les replays
+                      <ExternalLink className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                    </a>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Réseaux sociaux Section */}
+      <section className="py-20 bg-gradient-to-br from-background via-muted/20 to-background">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-brand-500/10 text-brand-600 dark:text-brand-400 border-brand-200 dark:border-brand-800">
+              <Users className="h-3 w-3 mr-1" />
+              Réseaux sociaux
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Suivez-nous partout
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Rejoignez notre communauté sur toutes les plateformes pour ne rien rater de l'aventure Camino TV
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card variant="default" size="lg" padding="lg" className="group relative overflow-hidden bg-gradient-to-br from-red-50 via-white to-red-50/50 dark:from-red-950/20 dark:via-card dark:to-red-950/10 border border-red-200/50 dark:border-red-800/30 hover:border-red-300 dark:hover:border-red-700 hover:shadow-xl hover:shadow-red-500/10 dark:hover:shadow-red-500/5 transition-all duration-500 hover:-translate-y-1">
+              <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <CardContent className="relative z-10 p-6 text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 shadow-lg shadow-red-500/25 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <Youtube className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-2">YouTube</h3>
+                <p className="text-3xl font-bold text-red-600 dark:text-red-400 mb-1">300k</p>
+                <p className="text-sm text-muted-foreground mb-6">abonnés</p>
+                <a 
+                  href="https://www.youtube.com/@CaminoTV" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-red-500 hover:bg-red-600 text-white font-medium rounded-xl transition-all duration-300 group/btn hover:scale-105"
+                >
+                  Suivre
+                  <ExternalLink className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                </a>
+              </CardContent>
+            </Card>
+
+            <Card variant="default" size="lg" padding="lg" className="group relative overflow-hidden bg-gradient-to-br from-pink-50 via-white to-pink-50/50 dark:from-pink-950/20 dark:via-card dark:to-pink-950/10 border border-pink-200/50 dark:border-pink-800/30 hover:border-pink-300 dark:hover:border-pink-700 hover:shadow-xl hover:shadow-pink-500/10 dark:hover:shadow-pink-500/5 transition-all duration-500 hover:-translate-y-1">
+              <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <CardContent className="relative z-10 p-6 text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-pink-600 shadow-lg shadow-pink-500/25 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <Instagram className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-2">Instagram</h3>
+                <p className="text-3xl font-bold text-pink-600 dark:text-pink-400 mb-1">560k</p>
+                <p className="text-sm text-muted-foreground mb-6">abonnés</p>
+                <a 
+                  href="https://www.instagram.com/caminotv/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-medium rounded-xl transition-all duration-300 group/btn hover:scale-105"
+                >
+                  Suivre
+                  <ExternalLink className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                </a>
+              </CardContent>
+            </Card>
+
+            <Card variant="default" size="lg" padding="lg" className="group relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50/50 dark:from-gray-950/20 dark:via-card dark:to-gray-950/10 border border-gray-200/50 dark:border-gray-700/30 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-xl hover:shadow-gray-500/10 dark:hover:shadow-gray-500/5 transition-all duration-500 hover:-translate-y-1">
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <CardContent className="relative z-10 p-6 text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-gray-800 to-black shadow-lg shadow-gray-800/25 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <Twitter className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-2">X (Twitter)</h3>
+                <p className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-1">548k</p>
+                <p className="text-sm text-muted-foreground mb-6">abonnés</p>
+                <a 
+                  href="https://x.com/CaminoTV" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-black hover:bg-gray-800 text-white font-medium rounded-xl transition-all duration-300 group/btn hover:scale-105"
+                >
+                  Suivre
+                  <ExternalLink className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                </a>
+              </CardContent>
+            </Card>
+
+            <Card variant="default" size="lg" padding="lg" className="group relative overflow-hidden bg-gradient-to-br from-purple-50 via-white to-purple-50/50 dark:from-purple-950/20 dark:via-card dark:to-purple-950/10 border border-purple-200/50 dark:border-purple-800/30 hover:border-purple-300 dark:hover:border-purple-700 hover:shadow-xl hover:shadow-purple-500/10 dark:hover:shadow-purple-500/5 transition-all duration-500 hover:-translate-y-1">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <CardContent className="relative z-10 p-6 text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 shadow-lg shadow-purple-500/25 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <Play className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-2">Twitch</h3>
+                <p className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-1">50k</p>
+                <p className="text-sm text-muted-foreground mb-6">abonnés</p>
+                <a 
+                  href="https://www.twitch.tv/caminotv" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-purple-500 hover:bg-purple-600 text-white font-medium rounded-xl transition-all duration-300 group/btn hover:scale-105"
+                >
+                  Suivre
+                  <ExternalLink className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                </a>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
     </div>
   );
 }
