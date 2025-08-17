@@ -3,8 +3,6 @@
  * Style Camino TV : Impact visuel, CTA rouge, message clair
  */
 
-import { ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { HeroProps } from '@/types';
 import { cn } from '@/lib/utils';
 

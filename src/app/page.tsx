@@ -8,12 +8,9 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/sections/Hero';
-import { ArrowRight, Zap, Shield, Clock, Users, TrendingUp, Star, Play, ExternalLink, Mic, Youtube, Instagram, Twitter } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Zap, Users, TrendingUp, Star, Play, ExternalLink, Mic, Youtube, Instagram, Twitter } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import Link from 'next/link';
-import Image from 'next/image';
+import { Card, CardContent } from '@/components/ui/card';
 
 export default function Home() {
   return (

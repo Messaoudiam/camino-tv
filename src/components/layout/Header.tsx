@@ -9,7 +9,7 @@
 import { 
   Search, Sparkles, Clock, TrendingUp, User, Bell, Settings, Moon, Sun, 
   Filter, Users, Home, Zap, Command, ArrowRight, X, Loader2, 
-  CheckCircle, AlertCircle, Star, Bookmark, History, BookOpen 
+  AlertCircle, Star, Bookmark, History, BookOpen 
 } from 'lucide-react';
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { useTheme } from 'next-themes';
@@ -70,7 +70,6 @@ export function Header({ className }: HeaderProps) {
   }, [searchQuery]);
 
   // Données premium pour suggestions avancées
-  const popularSearches = ['Nike Air Max', 'Jordan 1', 'Yeezy Boost', 'Adidas Forum', 'New Balance 550'];
   const trendingSearches = ['Jordan 4 Black Cat', 'Nike Dunk Low', 'Stussy Hoodie'];
   const quickActions = [
     { label: 'Nouveautés', icon: Sparkles, href: '/deals?filter=new' },

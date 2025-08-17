@@ -16,14 +16,16 @@ import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { DealCardProps } from '@/types';
 import { cn } from '@/lib/utils';
+import { useFavorites } from '@/hooks/useFavorites';
 
 export const DealCard = memo(function DealCard({ 
   deal, 
   onClick, 
   className 
 }: DealCardProps) {
-  const [isFavorited, setIsFavorited] = useState(false);
+  const { isFavorite, toggleFavorite } = useFavorites();
   const [isSharing, setIsSharing] = useState(false);
+  const isFavorited = isFavorite(deal.id);
   
   const handleClick = () => {
     onClick?.();
@@ -32,7 +34,7 @@ export const DealCard = memo(function DealCard({
 
   const handleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsFavorited(!isFavorited);
+    toggleFavorite(deal.id);
     // Persistence localStorage en production
     console.log('Favorite toggled:', deal.id);
   };

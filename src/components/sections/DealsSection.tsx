@@ -4,7 +4,8 @@
  */
 
 import { useState } from 'react';
-import { Filter, Grid3X3, Star, Zap } from 'lucide-react';
+import { Filter, Grid3X3, Star, Zap, Heart } from 'lucide-react';
+import { useFavorites } from '@/hooks/useFavorites';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -29,8 +30,9 @@ export function DealsSection({ className }: DealsSectionProps) {
   const [priceRange, setPriceRange] = useState<number[]>([500]);
   const [sortBy, setSortBy] = useState<string>('newest');
   const [onlyNew, setOnlyNew] = useState(false);
-  const [_onlyFavorites, _setOnlyFavorites] = useState(false);
+  const [onlyFavorites, setOnlyFavorites] = useState(false);
   const [minDiscount, setMinDiscount] = useState<number[]>([0]);
+  const { favorites, favoritesCount } = useFavorites();
 
   // Filtrage intelligent et tri des deals
   const filteredDeals = deals
@@ -39,6 +41,7 @@ export function DealsSection({ className }: DealsSectionProps) {
       if (deal.currentPrice > priceRange[0]) return false;
       if (deal.discountPercentage < minDiscount[0]) return false;
       if (onlyNew && !deal.isNew) return false;
+      if (onlyFavorites && !favorites.includes(deal.id)) return false;
       return true;
     })
     .sort((a, b) => {
@@ -63,13 +66,13 @@ export function DealsSection({ className }: DealsSectionProps) {
           <div className="text-center mb-8">
             <div className="flex items-center justify-center gap-3 mb-4">
               <h1 className="text-3xl font-bold text-foreground">
-                Deals Premium
+                Les bons plans du moment
               </h1>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Badge className="bg-red-500 text-white animate-pulse">
-                    <Zap className="h-3 w-3 mr-1" />
-                    LIVE
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Badge className="bg-red-500 text-white animate-pulse">
+                      <Zap className="h-3 w-3 mr-1" />
+                      LIVE
                   </Badge>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -139,7 +142,7 @@ export function DealsSection({ className }: DealsSectionProps) {
                 </Select>
 
                 {/* Filtres rapides avec switches */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-4">
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div className="flex items-center space-x-2">
@@ -157,7 +160,31 @@ export function DealsSection({ className }: DealsSectionProps) {
                       <p>Afficher uniquement les nouveautés</p>
                     </TooltipContent>
                   </Tooltip>
-                  </div>
+                  
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="flex items-center space-x-2">
+                        <Switch
+                          id="only-favorites"
+                          checked={onlyFavorites}
+                          onCheckedChange={setOnlyFavorites}
+                        />
+                        <label htmlFor="only-favorites" className="text-sm cursor-pointer flex items-center gap-1">
+                          <Heart className="h-3 w-3" />
+                          Favoris
+                          {favoritesCount > 0 && (
+                            <Badge variant="secondary" className="h-4 text-xs">
+                              {favoritesCount}
+                            </Badge>
+                          )}
+                        </label>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Afficher uniquement vos favoris</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
                 </div>
               </div>
 
@@ -223,6 +250,7 @@ export function DealsSection({ className }: DealsSectionProps) {
                     setPriceRange([500]);
                     setMinDiscount([0]);
                     setOnlyNew(false);
+                    setOnlyFavorites(false);
                     setSortBy('newest');
                   }}
                   className="text-muted-foreground hover:text-foreground">
@@ -260,6 +288,7 @@ export function DealsSection({ className }: DealsSectionProps) {
                   onClick={() => {
                     setActiveTab('all');
                     setOnlyNew(false);
+                    setOnlyFavorites(false);
                     setPriceRange([500]);
                     setMinDiscount([0]);
                   }}

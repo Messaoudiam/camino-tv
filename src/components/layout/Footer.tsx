@@ -5,7 +5,6 @@
  * Design system unifié avec variants pour différents contexts
  */
 
-import { Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { cva, type VariantProps } from 'class-variance-authority';
