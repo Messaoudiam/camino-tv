@@ -795,10 +795,12 @@ export function Header({ className }: HeaderProps) {
                   <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
                 </DropdownMenuItem>
                 
-                <DropdownMenuItem className="group">
-                  <Bookmark className="mr-2 h-4 w-4 group-hover:text-brand-500" />
-                  <span>Mes favoris</span>
-                  <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                <DropdownMenuItem asChild className="group">
+                  <Link href="/favorites" className="flex items-center">
+                    <Bookmark className="mr-2 h-4 w-4 group-hover:text-brand-500" />
+                    <span>Mes favoris</span>
+                    <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                  </Link>
                 </DropdownMenuItem>
                 
                 <DropdownMenuItem className="group">
