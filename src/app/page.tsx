@@ -93,7 +93,7 @@ export default function Home() {
       </section>
 
       {/* Nos émissions Section */}
-      <section className="py-20 bg-gradient-to-br from-background via-muted/30 to-background">
+      <section id="nos-emissions" className="py-20 bg-gradient-to-br from-background via-muted/30 to-background">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
             <Badge className="mb-4 bg-brand-500/10 text-brand-600 dark:text-brand-400 border-brand-200 dark:border-brand-800">
@@ -168,7 +168,7 @@ En live sur Twitch tous les lundi, mercredis et vendredis matins.
 
 
       {/* Réseaux sociaux Section */}
-      <section className="py-20 bg-gradient-to-br from-background via-muted/20 to-background">
+      <section id="reseaux-sociaux" className="py-20 bg-gradient-to-br from-background via-muted/20 to-background">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
             <Badge className="mb-4 bg-brand-500/10 text-brand-600 dark:text-brand-400 border-brand-200 dark:border-brand-800">
@@ -191,7 +191,7 @@ En live sur Twitch tous les lundi, mercredis et vendredis matins.
                   <Youtube className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-2">YouTube</h3>
-                <p className="text-3xl font-bold text-red-600 dark:text-red-400 mb-1">300k</p>
+                <p className="text-3xl font-bold text-red-600 dark:text-red-400 mb-1">300k+</p>
                 <p className="text-sm text-muted-foreground mb-6">abonnés</p>
                 <a 
                   href="https://www.youtube.com/@CaminoTV" 
@@ -212,7 +212,7 @@ En live sur Twitch tous les lundi, mercredis et vendredis matins.
                   <Instagram className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-2">Instagram</h3>
-                <p className="text-3xl font-bold text-pink-600 dark:text-pink-400 mb-1">560k</p>
+                <p className="text-3xl font-bold text-pink-600 dark:text-pink-400 mb-1">560k+</p>
                 <p className="text-sm text-muted-foreground mb-6">abonnés</p>
                 <a 
                   href="https://www.instagram.com/caminotv/" 
@@ -233,7 +233,7 @@ En live sur Twitch tous les lundi, mercredis et vendredis matins.
                   <Twitter className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-2">X (Twitter)</h3>
-                <p className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-1">548k</p>
+                <p className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-1">548k+</p>
                 <p className="text-sm text-muted-foreground mb-6">abonnés</p>
                 <a 
                   href="https://x.com/CaminoTV" 
@@ -254,7 +254,7 @@ En live sur Twitch tous les lundi, mercredis et vendredis matins.
                   <Play className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-2">Twitch</h3>
-                <p className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-1">50k</p>
+                <p className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-1">50k+&</p>
                 <p className="text-sm text-muted-foreground mb-6">abonnés</p>
                 <a 
                   href="https://www.twitch.tv/caminotv" 

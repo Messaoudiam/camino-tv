@@ -187,13 +187,13 @@ export const mockAuthors: BlogAuthor[] = [
   {
     id: 'mike',
     name: 'Mike',
-    avatar: '/mike.jpeg',
+    avatar: '/mike.png',
     role: 'Content Creator',
   },
   {
     id: 'keusmo',
     name: 'Keusmo',
-    avatar: '/keusmo.jpeg',
+    avatar: '/keusmo.png',
     role: 'Influenceur Streetwear',
   },
   {
@@ -310,7 +310,7 @@ Keusmo puise son inspiration dans la culture urbaine de Tokyo pour créer des pi
 ## Le style parisien réinventé
 
 Chaque pièce raconte une histoire, celle d'un Paris multiculturel et créatif.`,
-    imageUrl: '/blog/shooting-keusmo.jpg',
+    imageUrl: '/blog/shooting-keusmo.png',
     category: 'culture',
     author: mockAuthors[5], // Piway
     publishedAt: '2024-01-08',
