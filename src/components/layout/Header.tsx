@@ -221,7 +221,7 @@ export function Header({ className }: HeaderProps) {
                     <Link href="/deals" legacyBehavior passHref>
                       <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "flex items-center gap-2")}>
                         <Zap className="h-4 w-4" />
-                        Deals
+                        Bons plans
                       </NavigationMenuLink>
                     </Link>
                   </NavigationMenuItem>
@@ -577,7 +577,7 @@ export function Header({ className }: HeaderProps) {
                       >
                         <Zap className="h-5 w-5 text-muted-foreground group-hover:text-brand-500" />
                         <div className="flex-1">
-                          <span className="font-medium">Deals</span>
+                          <span className="font-medium">Bons plans</span>
                           <p className="text-xs text-muted-foreground">500+ offres actives</p>
                         </div>
                         {favorites.includes('deals') && <Star className="h-3 w-3 text-yellow-500" />}
@@ -814,7 +814,7 @@ export function Header({ className }: HeaderProps) {
                 <DropdownMenuItem asChild className="group">
                   <Link href="/deals" className="flex items-center">
                     <Zap className="mr-2 h-4 w-4 group-hover:text-brand-500" />
-                    <span>Deals</span>
+                    <span>Bons plans</span>
                     <Badge variant="secondary" className="ml-auto text-xs">500+</Badge>
                   </Link>
                 </DropdownMenuItem>

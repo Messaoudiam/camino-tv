@@ -64,7 +64,7 @@ export function Footer({
                   className="h-10 w-auto mb-4 transition-transform hover:scale-105"
                 />
                 <p className="text-muted-foreground mb-4 max-w-md font-sans">
-                  La plateforme de référence pour dénicher les meilleurs deals sneakers en France. 
+                  La plateforme de référence pour dénicher les meilleurs bons plans sneakers en France. 
                   Découvrez des offres exclusives sur vos marques préférées.
                 </p>
               </div>
@@ -82,7 +82,7 @@ export function Footer({
                     href="/deals" 
                     className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
                   >
-                    Deals
+                    Bons plans
                   </Link>
                   <Link 
                     href="/team" 

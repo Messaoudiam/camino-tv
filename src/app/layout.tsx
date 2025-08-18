@@ -27,13 +27,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: "fr_FR",
     url: "https://caminotv.com",
-    title: "Camino TV - Deals Premium Sneakers",
+    title: "Camino TV - Bons Plans Premium Sneakers",
     description: "La plateforme de référence pour dénicher les meilleurs deals sneakers en France.",
     siteName: "Camino TV",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Camino TV - Deals Premium Sneakers",
+    title: "Camino TV - Bons Plans Premium Sneakers",
     description: "La plateforme de référence pour dénicher les meilleurs deals sneakers en France.",
   },
   viewport: {

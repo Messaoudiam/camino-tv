@@ -29,6 +29,8 @@ export const DealCard = memo(function DealCard({
   
   const handleClick = () => {
     onClick?.();
+    // Ouvrir le lien affilié dans un nouvel onglet
+    window.open(deal.affiliateUrl, '_blank', 'noopener,noreferrer');
     console.log('Deal clicked:', deal.id);
   };
 
@@ -96,12 +98,18 @@ export const DealCard = memo(function DealCard({
             )}
           </div>
 
-          {/* Badge réduction redesigné */}
-          {deal.discountPercentage > 0 && (
+          {/* Badge réduction redesigné - affiché même pour 0% */}
+          {deal.discountPercentage > 0 ? (
             <Badge 
               className="absolute top-3 right-3 bg-foreground text-background font-bold text-sm px-3 py-1 shadow-lg"
             >
               -{deal.discountPercentage}%
+            </Badge>
+          ) : (
+            <Badge 
+              className="absolute top-3 right-3 bg-blue-500 text-white font-bold text-sm px-3 py-1 shadow-lg"
+            >
+              BON PLAN
             </Badge>
           )}
 
@@ -172,12 +180,18 @@ export const DealCard = memo(function DealCard({
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2">
                     <span>{deal.title}</span>
-                    <Badge className="bg-brand-500">
-                      -{deal.discountPercentage}%
-                    </Badge>
+                    {deal.discountPercentage > 0 ? (
+                      <Badge className="bg-brand-500">
+                        -{deal.discountPercentage}%
+                      </Badge>
+                    ) : (
+                      <Badge className="bg-blue-500">
+                        BON PLAN
+                      </Badge>
+                    )}
                   </DialogTitle>
                   <DialogDescription>
-                    Deal {deal.brand} • Économisez {(deal.originalPrice - deal.currentPrice).toFixed(0)}€
+                    Deal {deal.brand} {deal.discountPercentage > 0 && `• Économisez ${(deal.originalPrice - deal.currentPrice).toFixed(0)}€`}
                   </DialogDescription>
                 </DialogHeader>
                 
@@ -203,20 +217,24 @@ export const DealCard = memo(function DealCard({
                     
                     {/* Prix détaillé */}
                     <div className="space-y-2">
+                      {deal.discountPercentage > 0 && (
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-muted-foreground">Prix original</span>
+                          <span className="line-through text-muted-foreground/70">{deal.originalPrice}€</span>
+                        </div>
+                      )}
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Prix original</span>
-                        <span className="line-through text-muted-foreground/70">{deal.originalPrice}€</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Prix final</span>
+                        <span className="text-sm text-muted-foreground">Prix</span>
                         <span className="text-xl font-bold text-green-600">{deal.currentPrice}€</span>
                       </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Vous économisez</span>
-                        <span className="font-semibold text-red-500">
-                          {(deal.originalPrice - deal.currentPrice).toFixed(0)}€ ({deal.discountPercentage}%)
-                        </span>
-                      </div>
+                      {deal.discountPercentage > 0 && (
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-muted-foreground">Vous économisez</span>
+                          <span className="font-semibold text-red-500">
+                            {(deal.originalPrice - deal.currentPrice).toFixed(0)}€ ({deal.discountPercentage}%)
+                          </span>
+                        </div>
+                      )}
                     </div>
                     
                     <Separator />
@@ -235,10 +253,10 @@ export const DealCard = memo(function DealCard({
                       )}
                     </div>
                     
-                    {/* CTA */}
+                    {/* CTA amélioré */}
                     <Button 
                       onClick={handleClick}
-                      className="w-full bg-foreground hover:bg-foreground/90 text-background"
+                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:scale-[1.02]"
                       size="lg"
                     >
                       <ExternalLink className="h-4 w-4 mr-2" />
@@ -286,11 +304,13 @@ export const DealCard = memo(function DealCard({
               {deal.brand}
             </p>
             
-            {/* Indicateur de tendance */}
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <ExternalLink className="h-3 w-3" />
-              <span>Voir l'offre</span>
-            </div>
+            {/* CTA "Voir l'offre" amélioré */}
+            <button 
+              onClick={handleClick}
+              className="text-xs bg-muted/50 hover:bg-muted px-2.5 py-1.5 rounded-full text-muted-foreground hover:text-foreground transition-all duration-200 cursor-pointer hover:scale-105 font-medium"
+            >
+              Voir l'offre
+            </button>
           </div>
         </div>
       </CardContent>

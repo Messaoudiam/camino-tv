@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Page Mes Favoris - Interface premium pour les deals favoris
+ * Page Mes Favoris - Interface premium pour les bons plans favoris
  * Design système cohérent avec l'UI/UX existante de Camino TV
  */
 
@@ -30,7 +30,7 @@ export default function FavoritesPage() {
   const [favoriteDeals, setFavoriteDeals] = useState<Deal[]>([]);
   const [showClearDialog, setShowClearDialog] = useState(false);
 
-  // Filtrer les deals favoris depuis les données mock
+  // Filtrer les bons plans favoris depuis les données mock
   useEffect(() => {
     const filteredDeals = mockDeals.filter(deal => favorites.includes(deal.id));
     setFavoriteDeals(filteredDeals);
@@ -122,7 +122,7 @@ export default function FavoritesPage() {
                       if (navigator.share) {
                         navigator.share({
                           title: 'Mes favoris Camino TV',
-                          text: `Découvrez mes ${favoritesCount} deals favoris sur Camino TV`,
+                          text: `Découvrez mes ${favoritesCount} bons plans favoris sur Camino TV`,
                           url: window.location.href
                         });
                       }
@@ -151,7 +151,7 @@ export default function FavoritesPage() {
                           Vider tous les favoris
                         </DialogTitle>
                         <DialogDescription>
-                          Êtes-vous sûr de vouloir supprimer tous vos deals favoris ? 
+                          Êtes-vous sûr de vouloir supprimer tous vos bons plans favoris ? 
                         </DialogDescription>
                       </DialogHeader>
                       <DialogFooter className="gap-2">
@@ -193,13 +193,13 @@ export default function FavoritesPage() {
                   Aucun favori pour le moment
                 </h3>
                 <p className="text-muted-foreground max-w-md mx-auto">
-                  Commencez à sauvegarder vos deals préférés en cliquant sur le cœur 
+                  Commencez à sauvegarder vos bons plans préférés en cliquant sur le cœur 
                   sur les cartes de produits. Ils apparaîtront ici pour un accès rapide.
                 </p>
               </div>
               <Button asChild className="bg-foreground hover:bg-foreground/90 text-background">
                 <a href="/deals">
-                  Découvrir les deals
+                  Découvrir les bons plans
                 </a>
               </Button>
             </div>
@@ -392,7 +392,7 @@ export default function FavoritesPage() {
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                   <div className="text-center p-2">
                     <div className="text-xl md:text-2xl font-bold text-foreground">{favoritesCount}</div>
-                    <div className="text-xs text-muted-foreground">Total deals</div>
+                    <div className="text-xs text-muted-foreground">Total bons plans</div>
                   </div>
                   <div className="text-center p-2">
                     <div className="text-xl md:text-2xl font-bold text-green-600">

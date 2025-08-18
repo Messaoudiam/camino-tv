@@ -36,6 +36,12 @@ export const mockBrands: Brand[] = [
     logoUrl: '/brands/stussy.svg',
     isPartner: true,
   },
+  {
+    id: 'decathlon',
+    name: 'Decathlon',
+    logoUrl: '/brands/decathlon.svg',
+    isPartner: true,
+  },
 ];
 
 export const mockDeals: Deal[] = [
@@ -130,6 +136,30 @@ export const mockDeals: Deal[] = [
     category: 'sneakers',
     isLimited: true,
     affiliateUrl: '#',
+  },
+  {
+    id: '9',
+    title: 'Ensemble Survêtement Decathlon AFLF',
+    brand: 'Decathlon',
+    originalPrice: 65,
+    currentPrice: 65,
+    discountPercentage: 0,
+    imageUrl: '/decath-veste.jpg',
+    category: 'streetwear',
+    isNew: true,
+    affiliateUrl: 'https://www.decathlon.fr/p/veste-de-survetement-decathlon-aflf-marron/_/R-p-360225?mc=8959692&c=noir',
+  },
+  {
+    id: '10', 
+    title: 'Pantalon Survêtement Decathlon AFLF',
+    brand: 'Decathlon',
+    originalPrice: 65,
+    currentPrice: 65,
+    discountPercentage: 0,
+    imageUrl: '/decath-bas.jpg',
+    category: 'streetwear',
+    isNew: true,
+    affiliateUrl: 'https://www.decathlon.fr/p/pantalon-de-survetement-decathlon-aflf-marron/_/R-p-360375?mc=8959697&c=noir',
   }
 ];
 
@@ -138,7 +168,7 @@ export const mockDeals: Deal[] = [
  */
 export const categories = [
   { id: 'sneakers', name: 'Sneakers', count: 6 },
-  { id: 'streetwear', name: 'Streetwear', count: 1 },
+  { id: 'streetwear', name: 'Streetwear', count: 3 },
   { id: 'accessories', name: 'Accessoires', count: 0 },
   { id: 'electronics', name: 'Tech', count: 0 },
   { id: 'lifestyle', name: 'Lifestyle', count: 1 },
