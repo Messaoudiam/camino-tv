@@ -9,7 +9,7 @@
 import { 
   Search, Sparkles, Clock, TrendingUp, User, Bell, Settings, Moon, Sun, 
   Filter, Users, Home, Zap, Command, ArrowRight, X, Loader2, 
-  AlertCircle, Star, Bookmark, History, BookOpen 
+  AlertCircle, Star, Bookmark, History, BookOpen, Check, Eye 
 } from 'lucide-react';
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { useTheme } from 'next-themes';
@@ -27,6 +27,15 @@ import { HeaderProps } from '@/types';
 import { mockDeals } from '@/data/mock';
 import { cn } from '@/lib/utils';
 
+interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  time: string;
+  isRead: boolean;
+  type: 'deal' | 'trend' | 'article' | 'system';
+  priority: 'low' | 'medium' | 'high';
+}
 
 export function Header({ className }: HeaderProps) {
   const { theme, setTheme } = useTheme();
@@ -35,13 +44,40 @@ export function Header({ className }: HeaderProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const [notifications] = useState(3);
+  const [notifications, setNotifications] = useState<Notification[]>([
+    {
+      id: '1',
+      title: 'Nouveau deal Nike Air Max',
+      message: 'Réduction de 40% disponible maintenant',
+      time: 'Il y a 5 min',
+      isRead: false,
+      type: 'deal',
+      priority: 'high'
+    },
+    {
+      id: '2',
+      title: 'Tendance Jordan 1',
+      message: '+150% de recherches cette semaine',
+      time: 'Il y a 2h',
+      isRead: false,
+      type: 'trend',
+      priority: 'medium'
+    },
+    {
+      id: '3',
+      title: 'Nouvel article équipe',
+      message: 'Découvrez l\'interview de Sean',
+      time: 'Hier',
+      isRead: true,
+      type: 'article',
+      priority: 'low'
+    }
+  ]);
   
   // États avancés pour fonctionnalités premium
   const [isSearching, setIsSearching] = useState(false);
   const [searchHistory, setSearchHistory] = useState<string[]>(['Nike Air Max', 'Jordan 1 Retro']);
   const [favorites] = useState<string[]>(['deals', 'team']);
-  const [recentActivity] = useState(2);
   const [isOnline, setIsOnline] = useState(true);
   const [keyboardShortcuts, setKeyboardShortcuts] = useState(true);
   
@@ -107,6 +143,49 @@ export function Header({ className }: HeaderProps) {
       console.log('Searching for:', query);
     }
   }, [addToSearchHistory]);
+
+  // Fonctions de gestion des notifications
+  const unreadCount = useMemo(() => 
+    notifications.filter(n => !n.isRead).length, 
+    [notifications]
+  );
+
+  const markNotificationAsRead = useCallback((notificationId: string) => {
+    setNotifications(prev => 
+      prev.map(notification => 
+        notification.id === notificationId 
+          ? { ...notification, isRead: true }
+          : notification
+      )
+    );
+  }, []);
+
+  const markAllAsRead = useCallback(() => {
+    setNotifications(prev => 
+      prev.map(notification => ({ ...notification, isRead: true }))
+    );
+  }, []);
+
+  const getNotificationColor = useCallback((notification: Notification) => {
+    if (notification.isRead) return 'bg-muted';
+    
+    switch (notification.priority) {
+      case 'high': return 'bg-red-500';
+      case 'medium': return 'bg-yellow-500';
+      case 'low': return 'bg-blue-500';
+      default: return 'bg-brand-500';
+    }
+  }, []);
+
+  const getNotificationTypeColor = useCallback((type: string) => {
+    switch (type) {
+      case 'deal': return 'bg-brand-500';
+      case 'trend': return 'bg-green-500';
+      case 'article': return 'bg-blue-500';
+      case 'system': return 'bg-orange-500';
+      default: return 'bg-muted';
+    }
+  }, []);
 
   // Raccourcis clavier professionnels
   useEffect(() => {
@@ -186,7 +265,7 @@ export function Header({ className }: HeaderProps) {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex h-16 items-center justify-between gap-4">
             
-            {/* Logo et Navigation */}
+            {/* Logo et Search Bar */}
             <div className="flex items-center gap-8">
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -206,47 +285,8 @@ export function Header({ className }: HeaderProps) {
                 </TooltipContent>
               </Tooltip>
 
-              {/* Navigation Menu */}
-              <NavigationMenu className="hidden md:flex">
-                <NavigationMenuList>
-                  <NavigationMenuItem>
-                    <Link href="/" legacyBehavior passHref>
-                      <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "flex items-center gap-2")}>
-                        <Home className="h-4 w-4" />
-                        Accueil
-                      </NavigationMenuLink>
-                    </Link>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <Link href="/deals" legacyBehavior passHref>
-                      <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "flex items-center gap-2")}>
-                        <Zap className="h-4 w-4" />
-                        Bons plans
-                      </NavigationMenuLink>
-                    </Link>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <Link href="/blog" legacyBehavior passHref>
-                      <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "flex items-center gap-2")}>
-                        <BookOpen className="h-4 w-4" />
-                        Blog
-                      </NavigationMenuLink>
-                    </Link>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <Link href="/team" legacyBehavior passHref>
-                      <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "flex items-center gap-2")}>
-                        <Users className="h-4 w-4" />
-                        Équipe
-                      </NavigationMenuLink>
-                    </Link>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
-            </div>
-
-          {/* Search Bar PREMIUM avec fonctionnalités avancées */}
-          <div className="flex-1 max-w-lg mx-8 relative" ref={searchRef}>
+              {/* Search Bar PREMIUM avec fonctionnalités avancées */}
+              <div className="flex-1 max-w-lg relative" ref={searchRef}>
             <div className="relative group">
               {/* Icône de recherche avec animation */}
               <Search className={cn(
@@ -504,30 +544,49 @@ export function Header({ className }: HeaderProps) {
                 </div>
               </div>
             )}
-          </div>
+              </div>
+            </div>
+
+            {/* Navigation Menu */}
+            <NavigationMenu className="hidden md:flex">
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <Link href="/" legacyBehavior passHref>
+                    <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "flex items-center gap-2")}>
+                      <Home className="h-4 w-4" />
+                      Accueil
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link href="/deals" legacyBehavior passHref>
+                    <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "flex items-center gap-2")}>
+                      <Zap className="h-4 w-4" />
+                      Bons plans
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link href="/blog" legacyBehavior passHref>
+                    <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "flex items-center gap-2")}>
+                      <BookOpen className="h-4 w-4" />
+                      Blog
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link href="/team" legacyBehavior passHref>
+                    <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "flex items-center gap-2")}>
+                      <Users className="h-4 w-4" />
+                      Équipe
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
 
           {/* Actions utilisateur PREMIUM */}
           <div className="flex items-center gap-3">
-            
-            {/* Indicateur d'activité récente */}
-            {recentActivity > 0 && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="sm" className="relative hidden sm:flex">
-                    <TrendingUp className="h-4 w-4" />
-                    <Badge 
-                      variant="destructive" 
-                      className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-xs"
-                    >
-                      {recentActivity}
-                    </Badge>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{recentActivity} nouvelles tendances</p>
-                </TooltipContent>
-              </Tooltip>
-            )}
             
             {/* Navigation mobile optimisée */}
             <Sheet>
@@ -687,14 +746,14 @@ export function Header({ className }: HeaderProps) {
                 <Button variant="ghost" size="sm" className="relative group">
                   <Bell className={cn(
                     "h-4 w-4 transition-all",
-                    notifications > 0 && "animate-pulse"
+                    unreadCount > 0 && "animate-pulse"
                   )} />
-                  {notifications > 0 && (
+                  {unreadCount > 0 && (
                     <Badge 
                       variant="destructive" 
                       className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs animate-bounce"
                     >
-                      {notifications}
+                      {unreadCount}
                     </Badge>
                   )}
                 </Button>
@@ -702,46 +761,88 @@ export function Header({ className }: HeaderProps) {
               <DropdownMenuContent className="w-80" align="end">
                 <DropdownMenuLabel className="flex items-center justify-between">
                   <span>Notifications</span>
-                  <Badge variant="secondary" className="text-xs">
-                    {notifications} nouvelles
-                  </Badge>
+                  <div className="flex items-center gap-2">
+                    {unreadCount > 0 && (
+                      <Badge variant="secondary" className="text-xs">
+                        {unreadCount} nouvelles
+                      </Badge>
+                    )}
+                    {unreadCount > 0 && (
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="h-6 w-6 p-0"
+                        onClick={markAllAsRead}
+                      >
+                        <Check className="h-3 w-3" />
+                      </Button>
+                    )}
+                  </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 
-                {/* Notifications mock pour demo */}
+                {/* Liste des notifications avec système lu/non-lu */}
                 <div className="max-h-64 overflow-y-auto">
-                  <DropdownMenuItem className="flex items-start gap-3 p-3">
-                    <div className="w-2 h-2 bg-brand-500 rounded-full mt-2 flex-shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium">Nouveau deal Nike Air Max</p>
-                      <p className="text-xs text-muted-foreground">
-                        Réduction de 40% disponible maintenant
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-1">Il y a 5 min</p>
+                  {notifications.length === 0 ? (
+                    <div className="p-6 text-center text-muted-foreground">
+                      <Bell className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                      <p className="text-sm">Aucune notification</p>
                     </div>
-                  </DropdownMenuItem>
-                  
-                  <DropdownMenuItem className="flex items-start gap-3 p-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium">Tendance Jordan 1</p>
-                      <p className="text-xs text-muted-foreground">
-                        +150% de recherches cette semaine
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-1">Il y a 2h</p>
-                    </div>
-                  </DropdownMenuItem>
-                  
-                  <DropdownMenuItem className="flex items-start gap-3 p-3">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium">Nouvel article équipe</p>
-                      <p className="text-xs text-muted-foreground">
-                        Découvrez l'interview de Sean
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-1">Hier</p>
-                    </div>
-                  </DropdownMenuItem>
+                  ) : (
+                    notifications.map((notification) => (
+                      <DropdownMenuItem 
+                        key={notification.id}
+                        className={cn(
+                          "flex items-start gap-3 p-3 cursor-pointer transition-all duration-200",
+                          !notification.isRead && "bg-muted/30",
+                          "hover:bg-muted/50"
+                        )}
+                        onClick={() => markNotificationAsRead(notification.id)}
+                      >
+                        <div className={cn(
+                          "w-2 h-2 rounded-full mt-2 flex-shrink-0 transition-all duration-300",
+                          getNotificationColor(notification),
+                          !notification.isRead && "animate-pulse"
+                        )} />
+                        
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between gap-2">
+                            <p className={cn(
+                              "text-sm transition-all duration-200",
+                              notification.isRead 
+                                ? "font-normal text-muted-foreground" 
+                                : "font-medium text-foreground"
+                            )}>
+                              {notification.title}
+                            </p>
+                            {!notification.isRead && (
+                              <Eye className="h-3 w-3 text-muted-foreground flex-shrink-0 mt-0.5" />
+                            )}
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {notification.message}
+                          </p>
+                          <div className="flex items-center justify-between mt-2">
+                            <p className="text-xs text-muted-foreground">{notification.time}</p>
+                            <div className="flex items-center gap-1">
+                              <Badge 
+                                variant={notification.isRead ? "outline" : "secondary"} 
+                                className={cn(
+                                  "text-xs px-1.5 py-0.5",
+                                  !notification.isRead && getNotificationTypeColor(notification.type)
+                                )}
+                              >
+                                {notification.type}
+                              </Badge>
+                              {notification.priority === 'high' && !notification.isRead && (
+                                <div className="h-1 w-1 bg-red-500 rounded-full animate-pulse" />
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </DropdownMenuItem>
+                    ))
+                  )}
                 </div>
                 
                 <DropdownMenuSeparator />

@@ -4,17 +4,17 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const cardVariants = cva(
-  "bg-card text-card-foreground border border-border/20 transition-all duration-200",
+  "bg-card text-card-foreground border-2 transition-all duration-200",
   {
     variants: {
       variant: {
-        default: "shadow-elevation-1 hover:shadow-elevation-2 border-border/30",
-        elevated: "shadow-elevation-2 hover:shadow-elevation-3 border-border/40",
-        interactive: "shadow-elevation-1 hover:shadow-elevation-3 hover:scale-[1.02] cursor-pointer border-border/30 hover:border-border/50",
+        default: "shadow-lg hover:shadow-xl border-border hover:border-border/90 hover:scale-[1.01]",
+        elevated: "shadow-xl hover:shadow-2xl border-border hover:border-border/100 hover:scale-[1.02]",
+        interactive: "shadow-lg hover:shadow-2xl hover:scale-[1.03] cursor-pointer border-border hover:border-border/90",
         flat: "shadow-none border-border/50",
-        feature: "shadow-elevation-2 border-border/30 bg-gradient-to-br from-card to-card/50",
-        deal: "shadow-elevation-1 hover:shadow-elevation-3 hover:scale-[1.01] cursor-pointer overflow-hidden border-border/40",
-        team: "shadow-elevation-2 hover:shadow-elevation-3 overflow-hidden border-border/60 bg-gradient-to-br from-card to-card/80",
+        feature: "shadow-xl border-border bg-gradient-to-br from-card to-card/50 hover:shadow-2xl hover:scale-[1.01]",
+        deal: "shadow-lg hover:shadow-2xl hover:scale-[1.02] cursor-pointer overflow-hidden border-border",
+        team: "shadow-xl hover:shadow-2xl overflow-hidden border-border bg-gradient-to-br from-card to-card/80 hover:scale-[1.01]",
       },
       size: {
         default: "rounded-lg",
