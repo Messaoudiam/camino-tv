@@ -166,6 +166,7 @@ En live sur Twitch tous les lundi, mercredis et vendredis matins.
         </div>
       </section>
 
+
       {/* Réseaux sociaux Section */}
       <section className="py-20 bg-gradient-to-br from-background via-muted/20 to-background">
         <div className="max-w-6xl mx-auto px-4">

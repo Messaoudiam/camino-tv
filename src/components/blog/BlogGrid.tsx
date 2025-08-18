@@ -65,8 +65,7 @@ export function BlogGrid({ posts, loading = false, className }: BlogGridProps) {
             post={featuredPost}
             variant="featured"
             onClick={() => {
-              // Navigation vers l'article
-              console.log('Navigate to:', `/blog/${featuredPost.id}`);
+              window.location.href = `/blog/${featuredPost.slug}`;
             }}
           />
         </div>
@@ -89,8 +88,7 @@ export function BlogGrid({ posts, loading = false, className }: BlogGridProps) {
                 post={post}
                 variant="default"
                 onClick={() => {
-                  // Navigation vers l'article
-                  console.log('Navigate to:', `/blog/${post.id}`);
+                  window.location.href = `/blog/${post.slug}`;
                 }}
               />
             ))}

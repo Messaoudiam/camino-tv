@@ -79,6 +79,7 @@ export interface HeroProps {
 export interface BlogPost {
   id: string;
   title: string;
+  slug: string;
   excerpt: string;
   content: string;
   imageUrl: string;

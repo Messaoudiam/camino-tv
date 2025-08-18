@@ -223,6 +223,7 @@ export const mockBlogPosts: BlogPost[] = [
   {
     id: '1',
     title: 'La révolution streetwear française : Comment la nouvelle génération redéfinit les codes',
+    slug: 'revolution-streetwear-francaise-nouvelle-generation',
     excerpt: 'Plongée dans l\'écosystème streetwear français avec les créateurs qui façonnent l\'avenir de la mode urbaine. Entre tradition et innovation, découvrez les marques qui comptent.',
     content: `# La révolution streetwear française
 
@@ -245,11 +246,12 @@ Cette nouvelle génération repense complètement les codes du streetwear, créa
     publishedAt: '2024-01-15',
     readTime: 8,
     tags: ['streetwear', 'france', 'mode', 'créateurs'],
-    isFeature: true,
+    isFeature: false,
   },
   {
     id: '2',
     title: 'Interview exclusive : Sean nous raconte les coulisses de Camino TV',
+    slug: 'interview-exclusive-sean-coulisses-camino-tv',
     excerpt: 'Rencontre avec le fondateur de Camino TV qui nous dévoile sa vision de la culture streetwear et ses projets pour l\'avenir de la plateforme.',
     content: `# Sean, fondateur de Camino TV
 
@@ -272,6 +274,7 @@ L'objectif est simple : démocratiser l'accès aux meilleures pièces streetwear
   {
     id: '3',
     title: 'Les 10 sneakers incontournables de 2024',
+    slug: 'top-10-sneakers-incontournables-2024',
     excerpt: 'Notre sélection des sneakers qui vont marquer l\'année 2024. Entre rééditions mythiques et nouveautés surprenantes, voici notre top 10.',
     content: `# Top 10 Sneakers 2024
 
@@ -294,6 +297,7 @@ Une histoire authentique derrière cette réédition exceptionnelle.
   {
     id: '4',
     title: 'Shooting photo : La nouvelle collection urbaine de Keusmo',
+    slug: 'shooting-photo-nouvelle-collection-urbaine-keusmo',
     excerpt: 'Découvrez en exclusivité les coulisses du shooting photo de la dernière collection de Keusmo, entre influences japonaises et codes parisiens.',
     content: `# Collection Urbaine Keusmo x Paris
 
@@ -316,6 +320,7 @@ Chaque pièce raconte une histoire, celle d'un Paris multiculturel et créatif.`
   {
     id: '5',
     title: 'L\'art du layering selon Mike : Maîtriser les superpositions streetwear',
+    slug: 'art-du-layering-mike-superpositions-streetwear',
     excerpt: 'Mike partage ses secrets pour maîtriser l\'art du layering et créer des looks streetwear sophistiqués en toutes saisons.',
     content: `# L'art du layering streetwear
 
@@ -340,6 +345,7 @@ Mike nous explique les pièges classiques du layering et comment les éviter.`,
   {
     id: '6',
     title: 'Playlist du moment : Les sons qui inspirent notre équipe',
+    slug: 'playlist-du-moment-sons-inspirent-equipe',
     excerpt: 'Musique et streetwear vont de pair. Découvrez la playlist officielle de l\'équipe Camino TV avec nos coups de cœur du moment.',
     content: `# Playlist Camino TV
 
@@ -365,13 +371,27 @@ Cette playlist accompagne nos sessions de recherche de deals et nos shootings ph
     readTime: 4,
     tags: ['musique', 'playlist', 'hip-hop', 'culture'],
   },
+  {
+    id: '7',
+    title: 'Thread : 20 créateurs français et belges à suivre absolument',
+    slug: 'thread-20-createurs-francais-belges-suivre',
+    excerpt: 'Notre sélection exclusive des pépites créatives francophones qui font vibrer la scène culturelle. De la musique au streetwear, découvrez les talents qui façonnent l\'avenir.',
+    content: `Thread Twitter avec embed intégré`,
+    imageUrl: '/blog/creators-frbe.jpeg',
+    category: 'culture',
+    author: mockAuthors[0], // Sean
+    publishedAt: '2024-01-16',
+    readTime: 10,
+    tags: ['créateurs', 'france', 'belgique', 'culture', 'thread'],
+    isFeature: true,
+  },
 ];
 
 /**
  * Catégories de blog pour la navigation
  */
 export const blogCategories = [
-  { id: 'culture', name: 'Culture', count: 2 },
+  { id: 'culture', name: 'Culture', count: 3 },
   { id: 'streetwear', name: 'Streetwear', count: 2 },
   { id: 'musique', name: 'Musique', count: 1 },
   { id: 'interview', name: 'Interviews', count: 1 },
