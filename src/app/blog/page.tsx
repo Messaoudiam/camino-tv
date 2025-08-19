@@ -7,6 +7,7 @@
 
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { Breadcrumb } from '@/components/ui/breadcrumb';
 import { BlogGrid } from '@/components/blog/BlogGrid';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -62,6 +63,7 @@ export default function BlogPage() {
       {/* Hero Section */}
       <section className="py-16 bg-gradient-to-br from-background via-muted/20 to-background border-b border-border">
         <div className="max-w-6xl mx-auto px-4">
+          <Breadcrumb />
           <div className="text-center mb-12">
             <Badge className="mb-4 bg-brand-500/10 text-brand-600 dark:text-brand-400 border-brand-200 dark:border-brand-800 text-lg px-4 py-2">
               <BookOpen className="h-4 w-4 mr-2" />

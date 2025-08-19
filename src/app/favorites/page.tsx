@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react';
 import { Heart, Search, Filter, Grid3X3, List, Trash2, Share2, AlertTriangle } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { Breadcrumb } from '@/components/ui/breadcrumb';
 import { DealCard } from '@/components/demo/DealCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -98,6 +99,8 @@ export default function FavoritesPage() {
       
       <main className="flex-1 px-4 py-8">
         <div className="max-w-7xl mx-auto space-y-8">
+          
+          <Breadcrumb />
           
           {/* Header Section */}
           <div className="space-y-4">

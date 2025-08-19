@@ -7,6 +7,7 @@
 
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { CustomBreadcrumb } from '@/components/ui/breadcrumb';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -100,6 +101,13 @@ export default function BlogPostPage() {
 
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
 
+  // Configuration du breadcrumb personnalisé
+  const breadcrumbItems = [
+    { href: '/', label: 'Accueil' },
+    { href: '/blog', label: 'Blog' },
+    { href: `/blog/${post.slug}`, label: post.title }
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -107,6 +115,7 @@ export default function BlogPostPage() {
       {/* Breadcrumb et navigation */}
       <section className="py-6 bg-muted/30 border-b border-border">
         <div className="max-w-4xl mx-auto px-4">
+          <CustomBreadcrumb items={breadcrumbItems} className="mb-4" />
           <div className="flex items-center justify-between">
             <Link href="/blog">
               <Button variant="ghost" size="sm" className="hover:bg-brand-50 dark:hover:bg-brand-950/50">
