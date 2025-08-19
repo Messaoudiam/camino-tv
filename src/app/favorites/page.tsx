@@ -104,11 +104,6 @@ export default function FavoritesPage() {
         }}
         title="Mes bons plans favoris"
         description="Retrouvez tous vos deals préférés dans votre espace personnel. Gérez, triez et ne ratez plus jamais les meilleures offres streetwear."
-        stats={[
-          { value: favoritesCount, label: favoritesCount <= 1 ? 'Favori' : 'Favoris' },
-          { value: availableCategories.length, label: 'Catégories' },
-          { value: processedDeals.length, label: 'Résultats' }
-        ]}
       />
       
       <main className="flex-1 px-4 py-8">
@@ -383,34 +378,6 @@ export default function FavoritesPage() {
                 </div>
               )}
 
-              {/* Statistiques des favoris */}
-              <div className="bg-muted/50 rounded-lg p-4 md:p-6 space-y-4">
-                <h3 className="font-semibold text-foreground text-sm md:text-base">Statistiques de vos favoris</h3>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                  <div className="text-center p-2">
-                    <div className="text-xl md:text-2xl font-bold text-foreground">{favoritesCount}</div>
-                    <div className="text-xs text-muted-foreground">Total bons plans</div>
-                  </div>
-                  <div className="text-center p-2">
-                    <div className="text-xl md:text-2xl font-bold text-green-600">
-                      {Math.round(favoriteDeals.reduce((acc, deal) => acc + deal.discountPercentage, 0) / favoriteDeals.length) || 0}%
-                    </div>
-                    <div className="text-xs text-muted-foreground">Réduction moyenne</div>
-                  </div>
-                  <div className="text-center p-2">
-                    <div className="text-xl md:text-2xl font-bold text-blue-600">
-                      {Math.round(favoriteDeals.reduce((acc, deal) => acc + (deal.originalPrice - deal.currentPrice), 0)) || 0}€
-                    </div>
-                    <div className="text-xs text-muted-foreground">Économies totales</div>
-                  </div>
-                  <div className="text-center p-2">
-                    <div className="text-xl md:text-2xl font-bold text-purple-600">
-                      {availableCategories.length}
-                    </div>
-                    <div className="text-xs text-muted-foreground">Catégories</div>
-                  </div>
-                </div>
-              </div>
             </>
           )}
         </div>

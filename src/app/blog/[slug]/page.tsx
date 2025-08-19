@@ -27,11 +27,33 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, notFound } from 'next/navigation';
 import { mockBlogPosts, mockAuthors } from '@/data/mock';
+import { markdownToHtml } from '@/lib/markdown';
 import { TwitterEmbed } from '@/components/blog/TwitterEmbed';
 import { TwitterEmbedSimple } from '@/components/blog/TwitterEmbedSimple';
 import { useState, useEffect } from 'react';
 
 export default function BlogPostPage() {
+  // Ajouter les styles d'animation modernes
+  useEffect(() => {
+    const animationStyles = `
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes slideInFromLeft {
+        from { opacity: 0; transform: translateX(-30px); }
+        to { opacity: 1; transform: translateX(0); }
+      }
+    `;
+    
+    const existingStyle = document.getElementById('blog-animations');
+    if (!existingStyle) {
+      const style = document.createElement('style');
+      style.id = 'blog-animations';
+      style.textContent = animationStyles;
+      document.head.appendChild(style);
+    }
+  }, []);
   const params = useParams();
   const slug = params.slug as string;
   
@@ -196,24 +218,8 @@ export default function BlogPostPage() {
               {post.excerpt}
             </p>
             
-            {/* Métadonnées de l'auteur */}
-            <div className="flex items-center gap-6 text-muted-foreground">
-              <div className="flex items-center gap-3">
-                <div className="relative w-12 h-12 rounded-full overflow-hidden">
-                  <Image
-                    src={post.author.avatar}
-                    alt={post.author.name}
-                    fill
-                    className="object-cover"
-                    sizes="48px"
-                  />
-                </div>
-                <div>
-                  <p className="font-medium text-foreground">{post.author.name}</p>
-                  <p className="text-sm">{post.author.role}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 text-sm">
+            {/* Métadonnées */}
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Calendar className="h-4 w-4" />
                   <span>{formatDate(post.publishedAt)}</span>
@@ -223,47 +229,47 @@ export default function BlogPostPage() {
                   <span>{post.readTime} min de lecture</span>
                 </div>
               </div>
-            </div>
           </header>
 
           {/* Image principale */}
-          <div className="relative h-64 md:h-96 rounded-2xl overflow-hidden mb-8">
+          <div className="relative h-48 sm:h-64 md:h-80 lg:h-96 rounded-2xl overflow-hidden mb-8">
             <Image
               src={post.imageUrl}
               alt={post.title}
               fill
-              className="object-cover"
+              className="object-contain sm:object-cover"
               sizes="(max-width: 768px) 100vw, 896px"
               priority
             />
           </div>
 
-          {/* Contenu de l'article */}
-          <div className="prose prose-lg dark:prose-invert max-w-none">
-            {post.slug === 'thread-20-createurs-francais-belges-suivre' ? (
-              <div className="leading-relaxed text-foreground">
-                <h1 className="text-3xl font-bold mt-8 mb-6 text-foreground">20 Créateurs FR/BE : Les pépites qui nous inspirent</h1>
-                <p>L'équipe Camino TV a partagé sur X notre sélection de créateurs français et belges qui méritent toute votre attention. Voici notre thread développé avec nos coups de cœur.</p>
-                
-                <h2 className="text-2xl font-bold mt-8 mb-4 text-foreground">Pourquoi ce thread ?</h2>
-                <p>Dans un paysage créatif en constante évolution, il est essentiel de mettre en lumière les talents qui façonnent la culture francophone. Ces créateurs apportent une vision unique, mêlant héritage culturel et innovation contemporaine.</p>
-                
-                <h2 className="text-2xl font-bold mt-8 mb-4 text-foreground">Le thread complet</h2>
-                
-                <TwitterEmbed tweetId="1948059197062398025" className="max-w-none" />
-                
-                <hr className="my-8 border-border" />
-                
-                <p className="italic text-muted-foreground">Suivez-nous sur @CaminoTV pour plus de découvertes culturelles et threads exclusifs !</p>
-              </div>
-            ) : (
+          {/* Contenu de l'article - UNIFIÉ POUR TOUS */}
+          <div className="leading-relaxed text-foreground space-y-6" style={{
+            fontSize: 'clamp(1rem, 0.8rem + 0.4vw, 1.125rem)',
+            lineHeight: 'clamp(1.6, 1.5 + 0.2vw, 1.8)'
+          }}>
+            {/* Contenu principal - même traitement pour tous */}
+            <div className="prose prose-lg dark:prose-invert max-w-none">
               <div 
-                className="leading-relaxed text-foreground"
                 dangerouslySetInnerHTML={{ 
-                  __html: post.content.replace(/\n/g, '<br/>').replace(/## /g, '<h2 class="text-2xl font-bold mt-8 mb-4 text-foreground">').replace(/# /g, '<h1 class="text-3xl font-bold mt-8 mb-6 text-foreground">')
+                  __html: markdownToHtml(post.content)
                 }} 
               />
+            </div>
+            
+            {/* Twitter Embed pour l'article Thread */}
+            {post.slug === 'thread-20-createurs-francais-belges-suivre' && (
+              <div className="my-8">
+                <TwitterEmbed tweetId="1948059197062398025" className="max-w-none" />
+              </div>
             )}
+            
+            {/* Call-to-action unifié pour TOUS les articles */}
+            <div className="bg-gradient-to-r from-brand-500/10 via-brand-600/5 to-brand-500/10 rounded-xl p-6 border border-brand-200/50 dark:border-brand-800/30 mt-8">
+              <p className="text-center text-sm text-muted-foreground">
+                <strong className="text-foreground">Vous avez aimé cet article ?</strong> Suivez-nous sur nos réseaux sociaux pour ne rien rater de l'actualité streetwear !
+              </p>
+            </div>
           </div>
 
           {/* Tags */}
@@ -284,6 +290,58 @@ export default function BlogPostPage() {
               ))}
             </div>
           )}
+
+          {/* Système de partage social moderne */}
+          <div className="border-t border-border pt-8 mt-8" role="region" aria-label="Partage social">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="text-sm text-muted-foreground">
+                Partager cet article
+              </div>
+              <div className="flex items-center gap-3" role="group" aria-label="Boutons de partage social">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  onClick={() => {
+                    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(window.location.href)}&via=CaminoTV`;
+                    window.open(url, '_blank');
+                  }}
+                  aria-label={`Partager "${post.title}" sur Twitter`}
+                >
+                  <Twitter className="h-4 w-4" aria-hidden="true" />
+                  <span className="hidden sm:inline">Twitter</span>
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  onClick={() => {
+                    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
+                    window.open(url, '_blank');
+                  }}
+                  aria-label={`Partager "${post.title}" sur Facebook`}
+                >
+                  <Facebook className="h-4 w-4" aria-hidden="true" />
+                  <span className="hidden sm:inline">Facebook</span>
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 hover:bg-green-50 hover:border-green-300 hover:text-green-600 transition-colors focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                  onClick={() => {
+                    navigator.clipboard.writeText(window.location.href);
+                    // TODO: Ajouter une notification toast
+                  }}
+                  aria-label="Copier le lien de l'article"
+                >
+                  <LinkIcon className="h-4 w-4" aria-hidden="true" />
+                  <span className="hidden sm:inline">Copier</span>
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </article>
 
@@ -300,9 +358,13 @@ export default function BlogPostPage() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {recommendedPosts.map((recommendedPost) => (
+              {recommendedPosts.map((recommendedPost, index) => (
                 <Link key={recommendedPost.id} href={`/blog/${recommendedPost.slug}`}>
-                  <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                  <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-brand-500/20 cursor-pointer"
+                    style={{
+                      animationDelay: `${index * 100}ms`,
+                      animation: 'fadeInUp 0.6s ease-out forwards'
+                    }}>
                     <div className="relative h-48 overflow-hidden rounded-t-lg">
                       <Image
                         src={recommendedPost.imageUrl}
@@ -325,11 +387,6 @@ export default function BlogPostPage() {
                         {recommendedPost.excerpt}
                       </p>
                       <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <User className="h-3 w-3" />
-                          {recommendedPost.author.name}
-                        </span>
-                        <span>•</span>
                         <span className="flex items-center gap-1">
                           <Clock className="h-3 w-3" />
                           {recommendedPost.readTime} min

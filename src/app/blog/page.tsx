@@ -172,9 +172,6 @@ export default function BlogPage() {
                           <p className="font-medium text-sm">{author.name}</p>
                           <p className="text-xs text-muted-foreground">{author.role}</p>
                         </div>
-                        <div className="text-xs text-muted-foreground">
-                          {mockBlogPosts.filter(post => post.author.id === author.id).length} articles
-                        </div>
                       </div>
                     ))}
                   </div>
@@ -220,8 +217,6 @@ export default function BlogPage() {
                                 <Clock className="h-3 w-3" />
                                 {post.readTime} min
                               </span>
-                              <span>•</span>
-                              <span>{post.author.name}</span>
                             </div>
                           </div>
                         </div>

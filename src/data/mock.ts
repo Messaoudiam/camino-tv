@@ -46,100 +46,8 @@ export const mockBrands: Brand[] = [
 
 export const mockDeals: Deal[] = [
   {
-    id: '1',
-    title: 'Air Jordan 1 Retro High OG "Bred Toe"',
-    brand: 'Air Jordan',
-    originalPrice: 169,
-    currentPrice: 129,
-    discountPercentage: 24,
-    imageUrl: '/products/jordan-bred-toe.jpg',
-    category: 'sneakers',
-    isNew: true,
-    affiliateUrl: '#',
-  },
-  {
-    id: '2', 
-    title: 'Nike Dunk Low "Panda"',
-    brand: 'Nike',
-    originalPrice: 109,
-    currentPrice: 89,
-    discountPercentage: 18,
-    imageUrl: '/products/nike-dunk-panda.jpg',
-    category: 'sneakers',
-    affiliateUrl: '#',
-  },
-  {
-    id: '3',
-    title: 'Adidas Yeezy Boost 350 V2 "Zebra"',
-    brand: 'Adidas',
-    originalPrice: 220,
-    currentPrice: 199,
-    discountPercentage: 10,
-    imageUrl: '/products/yeezy-zebra.jpg',
-    category: 'sneakers',
-    isLimited: true,
-    affiliateUrl: '#',
-  },
-  {
-    id: '4',
-    title: 'New Balance 990v5 "Grey"',
-    brand: 'New Balance',
-    originalPrice: 185,
-    currentPrice: 149,
-    discountPercentage: 19,
-    imageUrl: '/products/nb-990v5.jpg',
-    category: 'sneakers',
-    affiliateUrl: '#',
-  },
-  {
-    id: '5',
-    title: 'Stussy World Tour Hoodie',
-    brand: 'Stussy',
-    originalPrice: 120,
-    currentPrice: 89,
-    discountPercentage: 26,
-    imageUrl: '/products/stussy-hoodie.jpg',
-    category: 'streetwear',
-    isNew: true,
-    affiliateUrl: '#',
-  },
-  {
-    id: '6',
-    title: 'Nike Air Force 1 "Triple White"',
-    brand: 'Nike',
-    originalPrice: 109,
-    currentPrice: 79,
-    discountPercentage: 28,
-    imageUrl: '/products/af1-white.jpg',
-    category: 'sneakers',
-    affiliateUrl: '#',
-  },
-  {
-    id: '7',
-    title: 'Adidas Forum Low "White Black"',
-    brand: 'Adidas',
-    originalPrice: 100,
-    currentPrice: 69,
-    discountPercentage: 31,
-    imageUrl: '/products/forum-low.jpg',
-    category: 'sneakers',
-    affiliateUrl: '#',
-  },
-  {
-    id: '8',
-    title: 'Jordan 4 Retro "Black Cat"',
-    brand: 'Air Jordan',
-    originalPrice: 199,
-    currentPrice: 169,
-    discountPercentage: 15,
-    imageUrl: '/products/jordan4-blackcat.jpg',
-    category: 'sneakers',
-    isLimited: true,
-    affiliateUrl: '#',
-  },
-  {
     id: '9',
-    title: 'Ensemble Survêtement Decathlon AFLF',
+    title: 'Veste Survêtement Decathlon AFLF',
     brand: 'Decathlon',
     originalPrice: 35,
     currentPrice: 35,
@@ -153,8 +61,8 @@ export const mockDeals: Deal[] = [
     id: '10', 
     title: 'Pantalon Survêtement Decathlon AFLF',
     brand: 'Decathlon',
-    originalPrice: 35,
-    currentPrice: 35,
+    originalPrice: 30,
+    currentPrice: 30,
     discountPercentage: 0,
     imageUrl: '/decath-bas.jpg',
     category: 'streetwear',
@@ -227,162 +135,23 @@ export const mockAuthors: BlogAuthor[] = [
  */
 export const mockBlogPosts: BlogPost[] = [
   {
-    id: '1',
-    title: 'La révolution streetwear française : Comment la nouvelle génération redéfinit les codes',
-    slug: 'revolution-streetwear-francaise-nouvelle-generation',
-    excerpt: 'Plongée dans l\'écosystème streetwear français avec les créateurs qui façonnent l\'avenir de la mode urbaine. Entre tradition et innovation, découvrez les marques qui comptent.',
-    content: `# La révolution streetwear française
-
-Le streetwear français connaît une véritable révolution. Entre les marques historiques comme Carhartt WIP et les nouvelles créations comme Jacquemus x Nike, la France s'impose comme un acteur majeur de la mode urbaine mondiale.
-
-## L'émergence des nouveaux créateurs
-
-Les créateurs français apportent une vision unique, mêlant l'héritage de la haute couture française avec l'énergie brute du streetwear américain.
-
-## Les collaborations qui marquent
-
-- Nike x Jacquemus
-- Adidas x Kith Paris
-- Stone Island x Supreme Paris
-
-Cette nouvelle génération repense complètement les codes du streetwear, créant un style authentiquement français.`,
-    imageUrl: '/blog/streetwear-france.jpg',
-    category: 'streetwear',
-    author: mockAuthors[0], // Sean
-    publishedAt: '2024-01-15',
-    readTime: 8,
-    tags: ['streetwear', 'france', 'mode', 'créateurs'],
-    isFeature: false,
-  },
-  {
-    id: '2',
-    title: 'Interview exclusive : Sean nous raconte les coulisses de Camino TV',
-    slug: 'interview-exclusive-sean-coulisses-camino-tv',
-    excerpt: 'Rencontre avec le fondateur de Camino TV qui nous dévoile sa vision de la culture streetwear et ses projets pour l\'avenir de la plateforme.',
-    content: `# Sean, fondateur de Camino TV
-
-Dans cette interview exclusive, Sean nous raconte son parcours et sa vision de la culture streetwear française.
-
-## Les débuts de l'aventure
-
-"Tout a commencé par une passion pour les sneakers et le besoin de partager les bons plans avec la communauté"
-
-## La vision de Camino TV
-
-L'objectif est simple : démocratiser l'accès aux meilleures pièces streetwear à des prix accessibles.`,
-    imageUrl: '/blog/interview-sean.jpg',
-    category: 'interview',
-    author: mockAuthors[3], // Elssy
-    publishedAt: '2024-01-12',
-    readTime: 12,
-    tags: ['interview', 'fondateur', 'camino-tv', 'streetwear'],
-  },
-  {
-    id: '3',
-    title: 'Les 10 sneakers incontournables de 2024',
-    slug: 'top-10-sneakers-incontournables-2024',
-    excerpt: 'Notre sélection des sneakers qui vont marquer l\'année 2024. Entre rééditions mythiques et nouveautés surprenantes, voici notre top 10.',
-    content: `# Top 10 Sneakers 2024
-
-Voici notre sélection des sneakers qui vont définir l'année 2024.
-
-## 1. Nike Dunk Low "Panda" 2024
-Retour de la coloris iconique avec des améliorations techniques.
-
-## 2. Air Jordan 1 "Lost and Found"
-Une histoire authentique derrière cette réédition exceptionnelle.
-
-[Continue avec les 8 autres modèles...]`,
-    imageUrl: '/blog/top-sneakers-2024.jpg',
-    category: 'tendances',
-    author: mockAuthors[4], // Monroe
-    publishedAt: '2024-01-10',
-    readTime: 6,
-    tags: ['sneakers', '2024', 'top', 'tendances'],
-  },
-  {
-    id: '4',
-    title: 'Shooting photo : La nouvelle collection urbaine de Keusmo',
-    slug: 'shooting-photo-nouvelle-collection-urbaine-keusmo',
-    excerpt: 'Découvrez en exclusivité les coulisses du shooting photo de la dernière collection de Keusmo, entre influences japonaises et codes parisiens.',
-    content: `# Collection Urbaine Keusmo x Paris
-
-Un shooting photo exceptionnel dans les rues de Belleville pour capturer l'essence de cette nouvelle collection.
-
-## L'inspiration japonaise
-
-Keusmo puise son inspiration dans la culture urbaine de Tokyo pour créer des pièces uniques.
-
-## Le style parisien réinventé
-
-Chaque pièce raconte une histoire, celle d'un Paris multiculturel et créatif.`,
-    imageUrl: '/blog/shooting-keusmo.png',
-    category: 'culture',
-    author: mockAuthors[5], // Piway
-    publishedAt: '2024-01-08',
-    readTime: 5,
-    tags: ['photo', 'collection', 'urbain', 'paris'],
-  },
-  {
-    id: '5',
-    title: 'L\'art du layering selon Mike : Maîtriser les superpositions streetwear',
-    slug: 'art-du-layering-mike-superpositions-streetwear',
-    excerpt: 'Mike partage ses secrets pour maîtriser l\'art du layering et créer des looks streetwear sophistiqués en toutes saisons.',
-    content: `# L'art du layering streetwear
-
-Le layering est l'une des techniques les plus importantes dans le streetwear moderne.
-
-## Les bases du layering
-
-- Commencer par les matières fines
-- Jouer sur les longueurs
-- Maîtriser les couleurs
-
-## Les erreurs à éviter
-
-Mike nous explique les pièges classiques du layering et comment les éviter.`,
-    imageUrl: '/blog/layering-guide.jpg',
-    category: 'lifestyle',
-    author: mockAuthors[1], // Mike
-    publishedAt: '2024-01-05',
-    readTime: 7,
-    tags: ['layering', 'style', 'guide', 'streetwear'],
-  },
-  {
-    id: '6',
-    title: 'Playlist du moment : Les sons qui inspirent notre équipe',
-    slug: 'playlist-du-moment-sons-inspirent-equipe',
-    excerpt: 'Musique et streetwear vont de pair. Découvrez la playlist officielle de l\'équipe Camino TV avec nos coups de cœur du moment.',
-    content: `# Playlist Camino TV
-
-La musique fait partie intégrante de la culture streetwear. Voici notre sélection du moment.
-
-## Hip-Hop Français
-
-- SCH - Mode Avion
-- Freeze Corleone - Desiigner
-- Orelsan - L'odeur de l'essence
-
-## International Vibes
-
-- Travis Scott - UTOPIA
-- Playboi Carti - Whole Lotta Red
-- A$AP Rocky - TESTING
-
-Cette playlist accompagne nos sessions de recherche de deals et nos shootings photo.`,
-    imageUrl: '/blog/playlist-team.jpg',
-    category: 'musique',
-    author: mockAuthors[2], // Keusmo
-    publishedAt: '2024-01-03',
-    readTime: 4,
-    tags: ['musique', 'playlist', 'hip-hop', 'culture'],
-  },
-  {
     id: '7',
     title: 'Thread : 20 créateurs français et belges à suivre absolument',
     slug: 'thread-20-createurs-francais-belges-suivre',
     excerpt: 'Notre sélection exclusive des pépites créatives francophones qui font vibrer la scène culturelle. De la musique au streetwear, découvrez les talents qui façonnent l\'avenir.',
-    content: `Thread Twitter avec embed intégré`,
+    content: `# 20 Créateurs FR/BE : Les pépites qui nous inspirent
+
+L'équipe Camino TV a partagé sur X notre sélection de créateurs français et belges qui méritent toute votre attention. Voici notre thread développé avec nos coups de cœur.
+
+## Pourquoi ce thread ?
+
+Dans un paysage créatif en constante évolution, il est essentiel de mettre en lumière les talents qui façonnent la culture francophone. Ces créateurs apportent une vision unique, mêlant héritage culturel et innovation contemporaine.
+
+## Le thread complet
+
+Retrouvez ci-dessous notre thread Twitter complet avec tous les créateurs sélectionnés :
+
+**Note :** Le thread Twitter est intégré automatiquement ci-dessous pour une expérience optimale.`,
     imageUrl: '/blog/creators-frbe.jpeg',
     category: 'culture',
     author: mockAuthors[0], // Sean
@@ -390,6 +159,69 @@ Cette playlist accompagne nos sessions de recherche de deals et nos shootings ph
     readTime: 10,
     tags: ['créateurs', 'france', 'belgique', 'culture', 'thread'],
     isFeature: true,
+  },
+  {
+    id: '8',
+    title: 'Supraw x Uniqlo : L\'art toulousain s\'invite aux Zinzins de l\'Espace',
+    slug: 'supraw-uniqlo-collaboration-zinzins-espace-toulouse',
+    excerpt: 'L\'artiste toulousain Supraw collabore avec Uniqlo pour une collection exclusive inspirée des Zinzins de l\'Espace. Pop-up éphémère à Toulouse les 28-29 février 2025.',
+    content: `# Supraw x Uniqlo : Quand l'art toulousain rencontre les Zinzins de l'Espace
+
+L'univers créatif toulousain s'apprête à vivre un moment unique avec la collaboration entre **Supraw** (Lucas Chauvin) et **Uniqlo**. Cette collection exclusive, inspirée de la mythique série animée française "Les Zinzins de l'Espace", sera dévoilée lors d'un pop-up éphémère dans la ville rose.
+
+![Aperçu de la collaboration Supraw x Uniqlo](/blog/supraw2.webp)
+
+## L'événement incontournable du streetwear toulousain
+
+**📅 Dates :** 28-29 février 2025  
+**📍 Lieu :** Uniqlo Toulouse, 3 Rue du Poids de l'Huile  
+**⏰ Modalités :** Sur inscription, premier arrivé, premier servi
+
+Cette collaboration marque une étape importante dans le parcours de Supraw, qui après une année 2024 riche en projets (exposition parisienne "Let me expose my art", collaboration avec Mokovel), s'associe aujourd'hui à la géante japonaise Uniqlo.
+
+![Collection Supraw x Uniqlo Zinzins de l'Espace](/blog/supraw3.jpg)
+
+## Une collection qui réveille la nostalgie
+
+La collection **Supraw x Uniqlo** puise son inspiration dans l'univers déjanté des "Zinzins de l'Espace", série culte des années 90-2000 qui a marqué toute une génération. L'artiste toulousain revisite cet univers avec sa patte créative unique, proposant :
+
+### Gamme de produits
+- **Denim** revisité aux couleurs de l'espace
+- **Sweatwear** avec personnalisations exclusives
+- **Pièces limitées colorées** en quantité restreinte  
+- **Pièces monochromes** pour les amateurs de sobriété
+- **Service de customisation** sur place
+
+![Pièces de la collection Supraw Uniqlo](/blog/supraw4.jpg)
+
+### Tarification accessible
+La collection s'inscrit dans la philosophie Uniqlo avec des prix allant de **34,90€ à 59,90€**, rendant l'art streetwear accessible au plus grand nombre.
+
+## Un événement sous le signe de l'exclusivité
+
+L'événement promet d'être un moment fort pour la communauté streetwear toulousaine :
+
+- **Inscription obligatoire** pour garantir sa place
+- **Limite d'un article par personne** pour une distribution équitable
+- **Cadeaux surprise** avec distribution aléatoire de jouets
+- **QR code Camino** requis pour l'achat (collaboration exclusive)
+
+![Événement pop-up Supraw x Uniqlo Toulouse](/blog/supraw5.jpg)
+
+## Supraw : L'ascension d'un talent toulousain
+
+Lucas Chauvin, alias Supraw, incarne la nouvelle génération d'artistes français qui mélangent culture pop et art contemporain. Après avoir conquis Paris en 2024, il revient dans sa ville natale pour cette collaboration inédite qui promet de marquer les esprits.
+
+Cette collaboration Supraw x Uniqlo illustre parfaitement la montée en puissance de la scène créative toulousaine et l'intérêt croissant des marques internationales pour les talents locaux français.
+
+**Rendez-vous fin février pour découvrir cette collection qui promet de réveiller l'enfant qui sommeille en nous !**`,
+    imageUrl: '/blog/supraw.png',
+    category: 'streetwear',
+    author: mockAuthors[0], // Sean
+    publishedAt: '2025-01-19',
+    readTime: 6,
+    tags: ['supraw', 'uniqlo', 'toulouse', 'collaboration', 'zinzins', 'art'],
+    isFeature: false,
   },
 ];
 

@@ -4,13 +4,14 @@
  */
 
 import { useState } from 'react';
-import { Filter, Grid3X3, Star, Zap, Heart } from 'lucide-react';
+import { Filter, Grid3X3, Star, Zap, Heart, Search } from 'lucide-react';
 import { useFavorites } from '@/hooks/useFavorites';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Slider } from '@/components/ui/slider';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -29,8 +30,7 @@ export function DealsSection({ className }: DealsSectionProps) {
   const [activeTab, setActiveTab] = useState<string>('all');
   const [priceRange, setPriceRange] = useState<number[]>([500]);
   const [sortBy, setSortBy] = useState<string>('newest');
-  const [onlyNew, setOnlyNew] = useState(false);
-  const [onlyFavorites, setOnlyFavorites] = useState(false);
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [minDiscount, setMinDiscount] = useState<number[]>([0]);
   const { favorites, favoritesCount } = useFavorites();
 
@@ -41,8 +41,9 @@ export function DealsSection({ className }: DealsSectionProps) {
       if (deal.currentPrice > priceRange[0]) return false;
       // Permettre les bons plans sans réduction (discountPercentage = 0)
       if (minDiscount[0] > 0 && deal.discountPercentage < minDiscount[0]) return false;
-      if (onlyNew && !deal.isNew) return false;
-      if (onlyFavorites && !favorites.includes(deal.id)) return false;
+      // Filtrage par recherche
+      if (searchQuery && !deal.title.toLowerCase().includes(searchQuery.toLowerCase()) && 
+          !deal.brand.toLowerCase().includes(searchQuery.toLowerCase())) return false;
       return true;
     })
     .sort((a, b) => {
@@ -66,39 +67,6 @@ export function DealsSection({ className }: DealsSectionProps) {
           {/* Header avec responsive optimisé */}
           <div className="text-center mb-6 md:mb-8">
             <div className="flex items-center justify-center gap-2 md:gap-3 mb-3 md:mb-4">
-              <h1 className="text-xl md:text-3xl font-bold text-foreground">
-                Les bons plans du moment
-              </h1>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Badge className="bg-red-500 text-white animate-pulse text-xs">
-                      <Zap className="h-2 w-2 md:h-3 md:w-3 mr-1" />
-                      LIVE
-                  </Badge>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Mis à jour en temps réel</p>
-                </TooltipContent>
-              </Tooltip>
-            </div>
-            
-            {/* Stats - Cachées sur mobile, visibles sur desktop */}
-            <div className="hidden md:flex items-center justify-center gap-6 text-sm text-muted-foreground mb-6">
-              <div className="flex items-center gap-1">
-                <Star className="h-4 w-4 text-yellow-500" />
-                <span>{filteredDeals.length} bons plans</span>
-              </div>
-              <Separator orientation="vertical" className="h-4" />
-              <span>Réduction moyenne {Math.round(deals.reduce((acc, deal) => acc + deal.discountPercentage, 0) / deals.length)}%</span>
-              <Separator orientation="vertical" className="h-4" />
-              <span>{deals.filter(d => d.isNew).length} nouveautés</span>
-            </div>
-
-            {/* Stats mobile - Version épurée */}
-            <div className="md:hidden flex items-center justify-center gap-4 text-sm text-muted-foreground mb-4">
-              <span>{filteredDeals.length} bons plans</span>
-              <span>•</span>
-              <span>{deals.filter(d => d.isNew).length} nouveautés</span>
             </div>
 
             {/* Navigation par Tabs - Responsive optimisé */}
@@ -117,6 +85,18 @@ export function DealsSection({ className }: DealsSectionProps) {
                       Streetwear ({categories.find(c => c.id === 'streetwear')?.count || 0})
                     </TabsTrigger>
                   </TabsList>
+                  
+                  {/* Barre de recherche mobile */}
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                      type="search"
+                      placeholder="Rechercher..."
+                      className="pl-10 h-9"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
                   
                   {/* Tri simple sur mobile */}
                   <div className="flex justify-center">
@@ -163,62 +143,31 @@ export function DealsSection({ className }: DealsSectionProps) {
                       ))}
                     </TabsList>
 
-                    {/* Switches au milieu */}
-                    <div className="flex items-center gap-4 border-l border-border pl-6">
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div className="flex items-center space-x-2">
-                            <Switch
-                              id="only-new"
-                              checked={onlyNew}
-                              onCheckedChange={setOnlyNew}
-                            />
-                            <label htmlFor="only-new" className="text-xs cursor-pointer">
-                              🔥 Nouveau
-                            </label>
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Afficher uniquement les nouveautés</p>
-                        </TooltipContent>
-                      </Tooltip>
-                      
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div className="flex items-center space-x-2">
-                            <Switch
-                              id="only-favorites"
-                              checked={onlyFavorites}
-                              onCheckedChange={setOnlyFavorites}
-                            />
-                            <label htmlFor="only-favorites" className="text-xs cursor-pointer flex items-center gap-1">
-                              <Heart className="h-3 w-3" />
-                              Favoris
-                              {favoritesCount > 0 && (
-                                <Badge variant="secondary" className="h-4 text-xs">
-                                  {favoritesCount}
-                                </Badge>
-                              )}
-                            </label>
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Afficher uniquement vos favoris</p>
-                        </TooltipContent>
-                      </Tooltip>
+                    {/* Barre de recherche */}
+                    <div className="flex items-center gap-4 border-l border-border pl-6 flex-1">
+                      <div className="relative flex-1 max-w-md">
+                        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <Input
+                          type="search"
+                          placeholder="Rechercher un produit, une marque..."
+                          className="pl-10 w-full"
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                      </div>
                     </div>
 
                     {/* Tri à droite */}
                     <div className="ml-auto">
                       <Select value={sortBy} onValueChange={setSortBy}>
-                        <SelectTrigger className="w-[140px]">
+                        <SelectTrigger className="w-[160px]">
                           <SelectValue placeholder="Trier par" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="newest">🔥 Nouveautés</SelectItem>
-                          <SelectItem value="discount">💰 % Réduction</SelectItem>
-                          <SelectItem value="price-asc">💸 Prix croissant</SelectItem>
-                          <SelectItem value="price-desc">💎 Prix décroissant</SelectItem>
+                          <SelectItem value="newest">Nouveautés</SelectItem>
+                          <SelectItem value="discount">% Réduction</SelectItem>
+                          <SelectItem value="price-asc">Prix croissant</SelectItem>
+                          <SelectItem value="price-desc">Prix décroissant</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -265,8 +214,7 @@ export function DealsSection({ className }: DealsSectionProps) {
                         onClick={() => {
                           setPriceRange([500]);
                           setMinDiscount([0]);
-                          setOnlyNew(false);
-                          setOnlyFavorites(false);
+                          setSearchQuery('');
                           setSortBy('newest');
                         }}
                         className="text-muted-foreground hover:text-foreground whitespace-nowrap">
@@ -304,8 +252,7 @@ export function DealsSection({ className }: DealsSectionProps) {
                   variant="outline" 
                   onClick={() => {
                     setActiveTab('all');
-                    setOnlyNew(false);
-                    setOnlyFavorites(false);
+                    setSearchQuery('');
                     setPriceRange([500]);
                     setMinDiscount([0]);
                   }}

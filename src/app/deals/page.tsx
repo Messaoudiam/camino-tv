@@ -8,32 +8,55 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { PageHeader } from '@/components/ui/page-header';
 import { DealsSection } from '@/components/sections/DealsSection';
-import { Zap } from 'lucide-react';
+import { Zap, Package } from 'lucide-react';
 import { mockDeals } from '@/data/mock';
-import { useFavorites } from '@/hooks/useFavorites';
 
 export default function DealsPage() {
-  const { favoritesCount } = useFavorites();
-  
-  const stats = [
-    { value: mockDeals.length, label: 'Bons plans' },
-    { value: '17%', label: 'Réduction moyenne' },
-    { value: '4', label: 'Nouveautés' },
-    { value: favoritesCount, label: 'Favoris' }
-  ];
+  const dealsCount = mockDeals.length;
+  const hasDiscounts = mockDeals.some(deal => deal.discountPercentage > 0);
+  const hasNewItems = mockDeals.some(deal => deal.isNew);
+
+  // Configuration dynamique selon le contexte
+  const getBadgeConfig = () => {
+    if (dealsCount === 0) {
+      return { icon: Package, text: 'Bientôt des deals' };
+    }
+    if (hasDiscounts) {
+      return { icon: Zap, text: 'Promos LIVE' };
+    }
+    if (hasNewItems) {
+      return { icon: Zap, text: 'Nouveautés' };
+    }
+    return { icon: Package, text: 'Sélection' };
+  };
+
+  const getTitle = () => {
+    if (dealsCount === 0) {
+      return 'Aucun bon plan pour le moment';
+    }
+    return hasDiscounts 
+      ? 'Bons plans en promotion'
+      : 'Les bons plans du moment';
+  };
+
+  const getDescription = () => {
+    if (dealsCount === 0) {
+      return 'Notre équipe travaille à dénicher les meilleures offres streetwear. Revenez bientôt !';
+    }
+    if (hasDiscounts) {
+      return 'Découvrez notre sélection de produits streetwear en promotion, soigneusement choisis par notre équipe.';
+    }
+    return 'Découvrez notre sélection de produits streetwear de qualité, choisis avec soin par notre équipe.';
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
       
       <PageHeader
-        badge={{
-          icon: Zap,
-          text: 'Bons plans LIVE'
-        }}
-        title="Les bons plans du moment"
-        description="Découvrez les meilleures offres streetwear sélectionnées par notre équipe. Sneakers, vêtements et accessoires aux meilleurs prix du web."
-        stats={stats}
+        badge={getBadgeConfig()}
+        title={getTitle()}
+        description={getDescription()}
       />
       
       <DealsSection />

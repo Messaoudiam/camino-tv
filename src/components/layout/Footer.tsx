@@ -163,7 +163,7 @@ export function Footer({
             </div>
             <div className="text-center">
               <p className="font-sans">
-                © 2025 Camino TV 
+              © 2025 Camino TV - Fait avec ❤️ par <a href="https://codingmessaoud.com" className="text-brand-500 hover:text-brand-600 transition-colors font-sans cursor-pointer">Messaoudiam</a>
               </p>
             </div>
           </div>

@@ -69,18 +69,6 @@ export function BlogCard({ post, variant = 'default', onClick, className }: Blog
           
           {/* Métadonnées */}
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <div className="relative w-8 h-8 rounded-full overflow-hidden">
-                <Image
-                  src={post.author.avatar}
-                  alt={post.author.name}
-                  fill
-                  className="object-cover"
-                  sizes="32px"
-                />
-              </div>
-              <span className="font-medium text-foreground">{post.author.name}</span>
-            </div>
             <div className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
               <span>{formatDate(post.publishedAt)}</span>
@@ -122,10 +110,6 @@ export function BlogCard({ post, variant = 'default', onClick, className }: Blog
             </h4>
             
             <div className="flex items-center gap-3 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <User className="h-3 w-3" />
-                {post.author.name}
-              </span>
               <span className="flex items-center gap-1">
                 <Clock className="h-3 w-3" />
                 {post.readTime} min
@@ -188,19 +172,9 @@ export function BlogCard({ post, variant = 'default', onClick, className }: Blog
       {/* Footer */}
       <CardFooter className="px-6 pb-6 pt-0">
         <div className="flex items-center justify-between w-full">
-          {/* Auteur et métadonnées */}
+          {/* Métadonnées */}
           <div className="flex items-center gap-3">
-            <div className="relative w-8 h-8 rounded-full overflow-hidden">
-              <Image
-                src={post.author.avatar}
-                alt={post.author.name}
-                fill
-                className="object-cover"
-                sizes="32px"
-              />
-            </div>
             <div className="text-xs text-muted-foreground">
-              <p className="font-medium text-foreground">{post.author.name}</p>
               <div className="flex items-center gap-2">
                 <span className="flex items-center gap-1">
                   <Calendar className="h-3 w-3" />

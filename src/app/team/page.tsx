@@ -104,13 +104,7 @@ export default function TeamPage() {
           text: 'Notre équipe'
         }}
         title="L'équipe Camino TV"
-        description="Rencontrez l'équipe de créateurs streetwear français qui font de Camino TV la référence de la culture urbaine en France. Nos experts en sneakers, influenceurs mode et créateurs de contenu partagent leur passion authentique avec plus de 1,4 million d'abonnés."
-        stats={[
-          { value: mockAuthors.length, label: 'Membres' },
-          { value: '1.4M+', label: 'Abonnés' },
-          { value: '5+', label: 'Ans d\'expérience' },
-          { value: '100%', label: 'Passion' }
-        ]}
+        description="Ta bande de reufs préférée. Tout à commencé il y a 10 ans..."
       />
       
       <div className="max-w-6xl mx-auto px-4 py-16">
