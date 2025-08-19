@@ -76,7 +76,6 @@ export function BlogGrid({ posts, loading = false, className }: BlogGridProps) {
         <div>
           {featuredPost && (
             <div className="flex items-center gap-2 mb-6">
-              <div className="h-1 w-8 bg-muted-foreground rounded-full" />
               <h2 className="text-lg font-bold text-foreground">Derniers articles</h2>
             </div>
           )}

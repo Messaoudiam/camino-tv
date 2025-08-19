@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 import { Heart, Search, Filter, Grid3X3, List, Trash2, Share2, AlertTriangle } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
+import { PageHeader } from '@/components/ui/page-header';
 import { DealCard } from '@/components/demo/DealCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -97,27 +97,27 @@ export default function FavoritesPage() {
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
       
+      <PageHeader
+        badge={{
+          icon: Heart,
+          text: 'Mes Favoris'
+        }}
+        title="Mes bons plans favoris"
+        description="Retrouvez tous vos deals préférés dans votre espace personnel. Gérez, triez et ne ratez plus jamais les meilleures offres streetwear."
+        stats={[
+          { value: favoritesCount, label: favoritesCount <= 1 ? 'Favori' : 'Favoris' },
+          { value: availableCategories.length, label: 'Catégories' },
+          { value: processedDeals.length, label: 'Résultats' }
+        ]}
+      />
+      
       <main className="flex-1 px-4 py-8">
         <div className="max-w-7xl mx-auto space-y-8">
           
-          <Breadcrumb />
-          
-          {/* Header Section */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 md:gap-3">
-                <div className="flex items-center gap-2">
-                  <Heart className="h-6 w-6 md:h-8 md:w-8 text-red-500 fill-red-500" />
-                  <h1 className="text-xl md:text-3xl font-bold text-foreground">Mes Favoris</h1>
-                </div>
-                <Badge variant="secondary" className="text-xs md:text-sm">
-                  {favoritesCount} {favoritesCount <= 1 ? 'deal' : 'deals'}
-                </Badge>
-              </div>
-              
-              {/* Actions */}
-              {favoritesCount > 0 && (
-                <div className="flex items-center gap-1 md:gap-2">
+          {/* Actions */}
+          {favoritesCount > 0 && (
+            <div className="flex items-center justify-end mb-6">
+              <div className="flex items-center gap-1 md:gap-2">
                   <Button
                     variant="outline"
                     size="sm"
@@ -175,15 +175,9 @@ export default function FavoritesPage() {
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
-                </div>
-              )}
+              </div>
             </div>
-            
-            <p className="text-muted-foreground">
-              Retrouvez ici tous vos deals sneakers et streetwear favoris. 
-              Organisez et filtrez votre collection personnelle.
-            </p>
-          </div>
+          )}
 
           {/* État vide avec style cohérent */}
           {favoritesCount === 0 ? (
@@ -422,7 +416,7 @@ export default function FavoritesPage() {
         </div>
       </main>
       
-      <Footer />
+      <Footer showFullContent={false} variant="minimal" size="compact" />
     </div>
   );
 }

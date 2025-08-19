@@ -46,7 +46,7 @@ export default function BlogNotFound() {
         </div>
       </div>
       
-      <Footer />
+      <Footer showFullContent={false} variant="minimal" size="compact" />
     </div>
   );
 }

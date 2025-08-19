@@ -55,21 +55,6 @@ export function BlogCard({ post, variant = 'default', onClick, className }: Blog
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
           
-          {/* Badge catégorie sur l'image */}
-          <div className="absolute top-4 left-4">
-            <Badge className={cn('text-xs font-medium', categoryColors[post.category])}>
-              {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
-            </Badge>
-          </div>
-
-          {/* Badge featured sur l'image */}
-          {post.isFeature && (
-            <div className="absolute top-4 right-4">
-              <Badge variant="default" className="bg-brand-500 text-white text-xs">
-                À la une
-              </Badge>
-            </div>
-          )}
         </div>
 
         {/* Contenu en dessous de l'image */}
@@ -131,16 +116,6 @@ export function BlogCard({ post, variant = 'default', onClick, className }: Blog
           </div>
           
           <div className="flex-1 min-w-0">
-            <div className="flex items-start gap-2 mb-2">
-              <Badge variant="outline" className={cn('text-xs', categoryColors[post.category])}>
-                {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
-              </Badge>
-              {post.isFeature && (
-                <Badge variant="default" className="bg-brand-500 text-white text-xs">
-                  À la une
-                </Badge>
-              )}
-            </div>
             
             <h4 className="font-semibold text-sm line-clamp-2 group-hover:text-brand-600 transition-colors mb-1">
               {post.title}
@@ -181,17 +156,6 @@ export function BlogCard({ post, variant = 'default', onClick, className }: Blog
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         
-        {/* Badges */}
-        <div className="absolute top-4 left-4 flex gap-2">
-          <Badge className={cn('text-xs font-medium', categoryColors[post.category])}>
-            {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
-          </Badge>
-          {post.isFeature && (
-            <Badge variant="default" className="bg-brand-500 text-white text-xs">
-              À la une
-            </Badge>
-          )}
-        </div>
       </div>
 
       {/* Contenu */}

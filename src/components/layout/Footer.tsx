@@ -54,8 +54,8 @@ export function Footer({
         {showFullContent ? (
           <>
             {/* Footer complet */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-              <div className="col-span-1 md:col-span-2">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+              <div className="col-span-1 md:col-span-1">
                 <Image
                   src="/camino_logo.jpg"
                   alt="Camino TV"
@@ -69,52 +69,66 @@ export function Footer({
                 </p>
               </div>
               
-              <div className="space-y-4">
-                <h4 className="font-semibold text-foreground mb-4 font-sans">Navigation</h4>
-                <nav className="space-y-2 text-sm">
-                  <Link 
-                    href="/" 
-                    className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
-                  >
-                    Accueil
-                  </Link>
-                  <Link 
-                    href="/deals" 
-                    className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
-                  >
-                    Bons plans
-                  </Link>
-                  <Link 
-                    href="/team" 
-                    className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
-                  >
-                    Équipe
-                  </Link>
-                </nav>
-              </div>
-              
-              <div className="space-y-4">
-                <h4 className="font-semibold text-foreground mb-4 font-sans">Légal</h4>
-                <nav className="space-y-2 text-sm">
-                  <a 
-                    href="#" 
-                    className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
-                  >
-                    CGU
-                  </a>
-                  <a 
-                    href="#" 
-                    className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
-                  >
-                    Mentions légales
-                  </a>
-                  <a 
-                    href="#" 
-                    className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
-                  >
-                    Contact
-                  </a>
-                </nav>
+              <div className="grid grid-cols-2 md:grid-cols-2 gap-8 md:col-span-2">
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-foreground mb-4 font-sans">Navigation</h4>
+                  <nav className="space-y-2 text-sm">
+                    <Link 
+                      href="/" 
+                      className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
+                    >
+                      Accueil
+                    </Link>
+                    <Link 
+                      href="/deals" 
+                      className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
+                    >
+                      Bons plans
+                    </Link>
+                    <Link 
+                      href="/favorites" 
+                      className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
+                    >
+                      Favoris
+                    </Link>
+                    <Link 
+                      href="/blog" 
+                      className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
+                    >
+                      Blog
+                    </Link>
+                    <Link 
+                      href="/team" 
+                      className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
+                    >
+                      Équipe
+                    </Link>
+                  </nav>
+                </div>
+                
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-foreground mb-4 font-sans">Légal</h4>
+                  <nav className="space-y-2 text-sm">
+                    <a 
+                      href="#" 
+                      className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
+                    >
+                      CGU
+                    </a>
+                    <a 
+                      href="#" 
+                      className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
+                    >
+                      Mentions légales
+                    </a>
+                    <a 
+                      href="#" 
+                      className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
+                    >
+                      Contact
+                    </a>
+                  </nav>
+                </div>
               </div>
             </div>
             

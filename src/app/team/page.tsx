@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
+import { PageHeader } from '@/components/ui/page-header';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Instagram, Youtube, Twitter, Twitch } from 'lucide-react';
+import { ExternalLink, Instagram, Youtube, Twitter, Twitch, Users } from 'lucide-react';
 import { mockAuthors } from '@/data/mock';
+import { AnimatedNumber } from '@/components/ui/animated-number';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -95,27 +95,25 @@ export default function TeamPage() {
           __html: JSON.stringify(teamStructuredData),
         }}
       />
-      <div className="min-h-screen bg-gradient-to-br from-muted/20 to-background">
+      <div className="min-h-screen bg-background">
       <Header />
       
+      <PageHeader
+        badge={{
+          icon: Users,
+          text: 'Notre équipe'
+        }}
+        title="L'équipe Camino TV"
+        description="Rencontrez l'équipe de créateurs streetwear français qui font de Camino TV la référence de la culture urbaine en France. Nos experts en sneakers, influenceurs mode et créateurs de contenu partagent leur passion authentique avec plus de 1,4 million d'abonnés."
+        stats={[
+          { value: mockAuthors.length, label: 'Membres' },
+          { value: '1.4M+', label: 'Abonnés' },
+          { value: '5+', label: 'Ans d\'expérience' },
+          { value: '100%', label: 'Passion' }
+        ]}
+      />
+      
       <div className="max-w-6xl mx-auto px-4 py-16">
-        {/* Breadcrumb */}
-        <Breadcrumb />
-        {/* Header Section */}
-        <div className="text-center mb-16">
-          <Badge className="mb-4 bg-brand-500/10 text-brand-600 dark:text-brand-400 border-brand-200 dark:border-brand-800">
-            Notre équipe
-          </Badge>
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            L'équipe Camino TV
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Rencontrez l'équipe de créateurs streetwear français qui font de Camino TV la référence 
-            de la culture urbaine en France. Nos experts en sneakers, influenceurs mode et créateurs 
-            de contenu partagent leur passion authentique avec plus de 1,4 million d'abonnés.
-          </p>
-        </div>
-
 
         {/* Équipe Grid */}
         <section aria-labelledby="team-heading">
@@ -214,25 +212,33 @@ export default function TeamPage() {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
           <a href="https://youtube.com/@CaminoTV" target="_blank" rel="noopener noreferrer" className="text-center p-8 bg-card rounded-xl border border-red-200/50 dark:border-red-800/30 hover:border-red-400 dark:hover:border-red-600 hover:scale-[1.02] hover:shadow-lg hover:shadow-red-500/10 transition-all duration-300 group cursor-pointer block">
-            <div className="text-4xl font-bold text-red-600 dark:text-red-400 mb-4 group-hover:scale-105 group-hover:text-red-500 transition-all duration-300">300k+</div>
+            <div className="text-4xl font-bold text-red-600 dark:text-red-400 mb-4 group-hover:scale-105 group-hover:text-red-500 transition-all duration-300">
+              <AnimatedNumber value={300000} suffix="+" duration={2500} delay={200} />
+            </div>
             <div className="flex justify-center">
               <Youtube className="h-8 w-8 text-red-600 dark:text-red-400 group-hover:scale-105 group-hover:text-red-500 transition-all duration-300" />
             </div>
           </a>
           <a href="https://instagram.com/caminotv" target="_blank" rel="noopener noreferrer" className="text-center p-8 bg-card rounded-xl border border-pink-200/50 dark:border-pink-800/30 hover:border-pink-400 dark:hover:border-pink-600 hover:scale-[1.02] hover:shadow-lg hover:shadow-pink-500/10 transition-all duration-300 group cursor-pointer block">
-            <div className="text-4xl font-bold text-pink-600 dark:text-pink-400 mb-4 group-hover:scale-105 group-hover:text-pink-500 transition-all duration-300">560k+</div>
+            <div className="text-4xl font-bold text-pink-600 dark:text-pink-400 mb-4 group-hover:scale-105 group-hover:text-pink-500 transition-all duration-300">
+              <AnimatedNumber value={560000} suffix="+" duration={2500} delay={400} />
+            </div>
             <div className="flex justify-center">
               <Instagram className="h-8 w-8 text-pink-600 dark:text-pink-400 group-hover:scale-105 group-hover:text-pink-500 transition-all duration-300" />
             </div>
           </a>
           <a href="https://www.twitch.tv/caminotv" target="_blank" rel="noopener noreferrer" className="text-center p-8 bg-card rounded-xl border border-purple-200/50 dark:border-purple-800/30 hover:border-purple-400 dark:hover:border-purple-600 hover:scale-[1.02] hover:shadow-lg hover:shadow-purple-500/10 transition-all duration-300 group cursor-pointer block">
-            <div className="text-4xl font-bold text-purple-600 dark:text-purple-400 mb-4 group-hover:scale-105 group-hover:text-purple-500 transition-all duration-300">50k+</div>
+            <div className="text-4xl font-bold text-purple-600 dark:text-purple-400 mb-4 group-hover:scale-105 group-hover:text-purple-500 transition-all duration-300">
+              <AnimatedNumber value={50000} suffix="+" duration={2500} delay={600} />
+            </div>
             <div className="flex justify-center">
               <Twitch className="h-8 w-8 text-purple-600 dark:text-purple-400 group-hover:scale-105 group-hover:text-purple-500 transition-all duration-300" />
             </div>
           </a>
           <a href="https://x.com/CaminoTV" target="_blank" rel="noopener noreferrer" className="text-center p-8 bg-card rounded-xl border border-gray-200/50 dark:border-gray-800/30 hover:border-gray-400 dark:hover:border-gray-600 hover:scale-[1.02] hover:shadow-lg hover:shadow-gray-500/10 transition-all duration-300 group cursor-pointer block">
-            <div className="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4 group-hover:scale-105 group-hover:text-gray-600 transition-all duration-300">548k+</div>
+            <div className="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4 group-hover:scale-105 group-hover:text-gray-600 transition-all duration-300">
+              <AnimatedNumber value={548000} suffix="+" duration={2500} delay={800} />
+            </div>
             <div className="flex justify-center">
               <Twitter className="h-8 w-8 text-gray-800 dark:text-gray-200 group-hover:scale-105 group-hover:text-gray-600 transition-all duration-300" />
             </div>

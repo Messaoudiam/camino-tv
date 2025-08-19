@@ -1,14 +1,13 @@
 'use client';
 
-import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ChevronRight, Home } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface BreadcrumbItem {
-  href: string;
   label: string;
+  href: string;
 }
 
 interface BreadcrumbProps {
@@ -16,92 +15,79 @@ interface BreadcrumbProps {
   customItems?: BreadcrumbItem[];
 }
 
-// Configuration des routes pour les breadcrumbs
-const routeConfig: Record<string, string> = {
+const pathLabels: Record<string, string> = {
   '/': 'Accueil',
-  '/team': 'Équipe',
-  '/blog': 'Blog',
   '/deals': 'Bons plans',
+  '/blog': 'Blog',
+  '/team': 'Équipe',
   '/favorites': 'Favoris',
 };
 
-// Fonction pour générer les breadcrumbs automatiquement
-function generateBreadcrumbs(pathname: string): BreadcrumbItem[] {
-  const pathSegments = pathname.split('/').filter(segment => segment !== '');
-  
-  // Pour la page d'accueil, pas de breadcrumb
-  if (pathSegments.length === 0) {
-    return [];
-  }
-
-  const breadcrumbs: BreadcrumbItem[] = [
-    { href: '/', label: 'Accueil' }
-  ];
-
-  let currentPath = '';
-  
-  pathSegments.forEach((segment, index) => {
-    currentPath += `/${segment}`;
-    
-    // Pour les pages de blog avec slug dynamique
-    if (pathSegments[0] === 'blog' && index === 1) {
-      // Pour un article de blog, on n'affiche que "Blog" et le segment sera remplacé par le titre de l'article
-      breadcrumbs.push({
-        href: currentPath,
-        label: segment // sera remplacé par le titre de l'article via customItems
-      });
-    } else {
-      // Pour les autres routes
-      const label = routeConfig[currentPath] || segment.charAt(0).toUpperCase() + segment.slice(1);
-      breadcrumbs.push({
-        href: currentPath,
-        label
-      });
-    }
-  });
-
-  return breadcrumbs;
-}
-
 export function Breadcrumb({ className, customItems }: BreadcrumbProps) {
   const pathname = usePathname();
-  
-  // Générer les breadcrumbs automatiquement ou utiliser les items personnalisés
-  const breadcrumbItems = customItems || generateBreadcrumbs(pathname);
-  
-  // Ne pas afficher de breadcrumb pour la page d'accueil
-  if (breadcrumbItems.length <= 1) {
+
+  // Si on est sur la page d'accueil, ne pas afficher le breadcrumb
+  if (pathname === '/') {
     return null;
   }
 
+  let items: BreadcrumbItem[] = [];
+
+  if (customItems) {
+    items = customItems;
+  } else {
+    // Génération automatique basée sur le pathname
+    const segments = pathname.split('/').filter(Boolean);
+    
+    // Toujours commencer par Accueil
+    items = [{ label: 'Accueil', href: '/' }];
+    
+    // Construire les segments
+    let currentPath = '';
+    segments.forEach((segment, index) => {
+      currentPath += `/${segment}`;
+      
+      // Obtenir le label depuis le mapping ou utiliser le segment
+      let label = pathLabels[currentPath] || segment;
+      
+      // Cas spécial pour les articles de blog
+      if (currentPath.startsWith('/blog/') && segment !== 'blog') {
+        label = decodeURIComponent(segment).replace(/-/g, ' ');
+        // Capitaliser la première lettre de chaque mot
+        label = label.split(' ').map(word => 
+          word.charAt(0).toUpperCase() + word.slice(1)
+        ).join(' ');
+      }
+      
+      items.push({
+        label,
+        href: currentPath
+      });
+    });
+  }
+
   return (
-    <nav 
-      aria-label="Breadcrumb" 
-      className={cn("mb-8", className)}
-    >
+    <nav aria-label="Breadcrumb" className={cn("mb-8", className)}>
       <ol className="flex items-center space-x-2 text-sm text-muted-foreground">
-        {breadcrumbItems.map((item, index) => (
+        {items.map((item, index) => (
           <li key={item.href} className="flex items-center">
-            {index > 0 && (
-              <ChevronRight className="h-4 w-4 mx-2 flex-shrink-0" />
+            {index === 0 && (
+              <Home className="h-4 w-4 mr-1" />
             )}
-            
-            {index === breadcrumbItems.length - 1 ? (
-              // Dernier élément (page courante) - pas de lien
+            {index < items.length - 1 ? (
+              <Link 
+                href={item.href} 
+                className="hover:text-foreground transition-colors"
+              >
+                {item.label}
+              </Link>
+            ) : (
               <span className="text-foreground font-medium">
                 {item.label}
               </span>
-            ) : (
-              // Éléments précédents - avec liens
-              <Link 
-                href={item.href} 
-                className="hover:text-foreground transition-colors duration-200 flex items-center gap-1"
-              >
-                {index === 0 && (
-                  <Home className="h-3.5 w-3.5" />
-                )}
-                {item.label}
-              </Link>
+            )}
+            {index < items.length - 1 && (
+              <ChevronRight className="h-4 w-4 mx-2" />
             )}
           </li>
         ))}
@@ -109,15 +95,3 @@ export function Breadcrumb({ className, customItems }: BreadcrumbProps) {
     </nav>
   );
 }
-
-// Composant pour les pages avec breadcrumbs personnalisés (comme les articles de blog)
-interface CustomBreadcrumbProps {
-  items: BreadcrumbItem[];
-  className?: string;
-}
-
-export function CustomBreadcrumb({ items, className }: CustomBreadcrumbProps) {
-  return <Breadcrumb customItems={items} className={className} />;
-}
-
-export default Breadcrumb;

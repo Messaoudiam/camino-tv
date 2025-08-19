@@ -7,7 +7,7 @@
 
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { CustomBreadcrumb } from '@/components/ui/breadcrumb';
+import { Breadcrumb } from '@/components/ui/breadcrumb';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -115,7 +115,7 @@ export default function BlogPostPage() {
       {/* Breadcrumb et navigation */}
       <section className="py-6 bg-muted/30 border-b border-border">
         <div className="max-w-4xl mx-auto px-4">
-          <CustomBreadcrumb items={breadcrumbItems} className="mb-4" />
+          <Breadcrumb customItems={breadcrumbItems} className="mb-4" />
           <div className="flex items-center justify-between">
             <Link href="/blog">
               <Button variant="ghost" size="sm" className="hover:bg-brand-50 dark:hover:bg-brand-950/50">
@@ -344,7 +344,7 @@ export default function BlogPostPage() {
         </section>
       )}
 
-      <Footer />
+      <Footer showFullContent={false} variant="minimal" size="compact" />
     </div>
   );
 }

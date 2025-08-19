@@ -8,9 +8,10 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/sections/Hero';
-import { Zap, Users, TrendingUp, Star, Play, ExternalLink, Mic, Youtube, Instagram, Twitter } from 'lucide-react';
+import { Zap, Users, TrendingUp, Star, Play, ExternalLink, Mic, Youtube, Instagram, Twitter, Twitch } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { AnimatedNumber } from '@/components/ui/animated-number';
 
 export default function Home() {
   return (
@@ -29,7 +30,7 @@ export default function Home() {
               Nos missions
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Notre vision, notre mission
+              Notre vision. Notre mission.
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Les valeurs qui nous guident et définissent notre approche unique du contenu
@@ -111,55 +112,43 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <Card variant="default" size="lg" padding="lg" className="group relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50/50 dark:from-gray-950/20 dark:via-card dark:to-gray-950/10 border border-gray-200/50 dark:border-gray-800/30 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-xl hover:shadow-gray-500/10 dark:hover:shadow-gray-500/5 transition-all duration-500 hover:-translate-y-1">
               <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <CardContent className="relative z-10 p-8">
-                <div className="flex items-start space-x-6">
-                  <div className="w-20 h-20 bg-gradient-to-br from-gray-800 to-black shadow-lg shadow-gray-800/25 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
-                    <Play className="h-10 w-10 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-2xl font-bold mb-3 text-foreground">*en amis proches</h3>
-                    <p className="text-muted-foreground mb-6 leading-relaxed">
-                    Moments intimistes avec tes artistes préférés qu'ils ne partagent pas, qu'en amis proches.
-                    </p>
-                    <a 
-                      href="https://www.youtube.com/@enamisproches" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center px-4 py-2.5 bg-black hover:bg-gray-800 text-white font-medium rounded-xl transition-all duration-300 group/btn hover:scale-105"
-                    >
-                      Découvrir sur YouTube
-                      <ExternalLink className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                    </a>
-                  </div>
+              <CardContent className="relative z-10 p-8 text-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-gray-800 to-black shadow-lg shadow-gray-800/25 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <Play className="h-10 w-10 text-white" />
                 </div>
+                <h3 className="text-2xl font-bold mb-4 text-foreground">*en amis proches</h3>
+                <p className="text-muted-foreground mb-8 leading-relaxed">
+                  Moments intimistes avec tes artistes préférés qu'ils ne partagent pas, qu'en amis proches.
+                </p>
+                <a 
+                  href="https://www.youtube.com/@enamisproches" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center px-6 py-3 bg-black hover:bg-gray-800 text-white font-medium rounded-xl transition-all duration-300 group/btn hover:scale-105"
+                >
+                  Découvrir sur YouTube
+                </a>
               </CardContent>
             </Card>
 
             <Card variant="default" size="lg" padding="lg" className="group relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50/50 dark:from-gray-950/20 dark:via-card dark:to-gray-950/10 border border-gray-200/50 dark:border-gray-800/30 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-xl hover:shadow-gray-500/10 dark:hover:shadow-gray-500/5 transition-all duration-500 hover:-translate-y-1">
               <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <CardContent className="relative z-10 p-8">
-                <div className="flex items-start space-x-6">
-                  <div className="w-20 h-20 bg-gradient-to-br from-gray-800 to-black shadow-lg shadow-gray-800/25 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
-                    <Mic className="h-10 w-10 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-2xl font-bold mb-3 text-foreground">✈️ Dans le cockpit</h3>
-                    <p className="text-muted-foreground mb-6 leading-relaxed">
-                    Voila notre podcast, des avis géniaux ou débiles, ça dépend mais au moins t'es en premiere classe avec nous.
-
-En live sur Twitch tous les lundi, mercredis et vendredis matins.
-                    </p>
-                    <a 
-                      href="https://www.youtube.com/@caminotv_replay" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center px-4 py-2.5 bg-black hover:bg-gray-800 text-white font-medium rounded-xl transition-all duration-300 group/btn hover:scale-105"
-                    >
-                      Voir les replays
-                      <ExternalLink className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                    </a>
-                  </div>
+              <CardContent className="relative z-10 p-8 text-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-gray-800 to-black shadow-lg shadow-gray-800/25 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <Mic className="h-10 w-10 text-white" />
                 </div>
+                <h3 className="text-2xl font-bold mb-4 text-foreground">✈️ Dans le cockpit</h3>
+                <p className="text-muted-foreground mb-8 leading-relaxed">
+                  Voila notre podcast, des avis géniaux ou débiles, ça dépend mais au moins t'es en premiere classe avec nous. En live sur Twitch tous les lundi, mercredis et vendredis matins.
+                </p>
+                <a 
+                  href="https://www.youtube.com/@caminotv_replay" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center px-6 py-3 bg-black hover:bg-gray-800 text-white font-medium rounded-xl transition-all duration-300 group/btn hover:scale-105"
+                >
+                  Voir les replays
+                </a>
               </CardContent>
             </Card>
           </div>
@@ -191,7 +180,9 @@ En live sur Twitch tous les lundi, mercredis et vendredis matins.
                   <Youtube className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-2">YouTube</h3>
-                <p className="text-3xl font-bold text-red-600 dark:text-red-400 mb-1">300k+</p>
+                <p className="text-3xl font-bold text-red-600 dark:text-red-400 mb-1">
+                  <AnimatedNumber value={300000} suffix="+" duration={2500} delay={200} />
+                </p>
                 <p className="text-sm text-muted-foreground mb-6">abonnés</p>
                 <a 
                   href="https://www.youtube.com/@CaminoTV" 
@@ -200,7 +191,6 @@ En live sur Twitch tous les lundi, mercredis et vendredis matins.
                   className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-red-500 hover:bg-red-600 text-white font-medium rounded-xl transition-all duration-300 group/btn hover:scale-105"
                 >
                   Suivre
-                  <ExternalLink className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
                 </a>
               </CardContent>
             </Card>
@@ -212,7 +202,9 @@ En live sur Twitch tous les lundi, mercredis et vendredis matins.
                   <Instagram className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-2">Instagram</h3>
-                <p className="text-3xl font-bold text-pink-600 dark:text-pink-400 mb-1">560k+</p>
+                <p className="text-3xl font-bold text-pink-600 dark:text-pink-400 mb-1">
+                  <AnimatedNumber value={560000} suffix="+" duration={2500} delay={400} />
+                </p>
                 <p className="text-sm text-muted-foreground mb-6">abonnés</p>
                 <a 
                   href="https://www.instagram.com/caminotv/" 
@@ -221,7 +213,6 @@ En live sur Twitch tous les lundi, mercredis et vendredis matins.
                   className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-medium rounded-xl transition-all duration-300 group/btn hover:scale-105"
                 >
                   Suivre
-                  <ExternalLink className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
                 </a>
               </CardContent>
             </Card>
@@ -233,7 +224,9 @@ En live sur Twitch tous les lundi, mercredis et vendredis matins.
                   <Twitter className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-2">X (Twitter)</h3>
-                <p className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-1">548k+</p>
+                <p className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-1">
+                  <AnimatedNumber value={548000} suffix="+" duration={2500} delay={600} />
+                </p>
                 <p className="text-sm text-muted-foreground mb-6">abonnés</p>
                 <a 
                   href="https://x.com/CaminoTV" 
@@ -242,7 +235,6 @@ En live sur Twitch tous les lundi, mercredis et vendredis matins.
                   className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-black hover:bg-gray-800 text-white font-medium rounded-xl transition-all duration-300 group/btn hover:scale-105"
                 >
                   Suivre
-                  <ExternalLink className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
                 </a>
               </CardContent>
             </Card>
@@ -251,10 +243,12 @@ En live sur Twitch tous les lundi, mercredis et vendredis matins.
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <CardContent className="relative z-10 p-6 text-center">
                 <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 shadow-lg shadow-purple-500/25 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
-                  <Play className="h-8 w-8 text-white" />
+                  <Twitch className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-2">Twitch</h3>
-                <p className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-1">50k+&</p>
+                <p className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-1">
+                  <AnimatedNumber value={50000} suffix="+" duration={2500} delay={800} />
+                </p>
                 <p className="text-sm text-muted-foreground mb-6">abonnés</p>
                 <a 
                   href="https://www.twitch.tv/caminotv" 
@@ -263,7 +257,6 @@ En live sur Twitch tous les lundi, mercredis et vendredis matins.
                   className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-purple-500 hover:bg-purple-600 text-white font-medium rounded-xl transition-all duration-300 group/btn hover:scale-105"
                 >
                   Suivre
-                  <ExternalLink className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
                 </a>
               </CardContent>
             </Card>

@@ -7,7 +7,7 @@
 
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
+import { PageHeader } from '@/components/ui/page-header';
 import { BlogGrid } from '@/components/blog/BlogGrid';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -60,47 +60,14 @@ export default function BlogPage() {
     <div className="min-h-screen bg-background">
       <Header />
       
-      {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-background via-muted/20 to-background border-b border-border">
-        <div className="max-w-6xl mx-auto px-4">
-          <Breadcrumb />
-          <div className="text-center mb-12">
-            <Badge className="mb-4 bg-brand-500/10 text-brand-600 dark:text-brand-400 border-brand-200 dark:border-brand-800 text-lg px-4 py-2">
-              <BookOpen className="h-4 w-4 mr-2" />
-              Blog Camino TV
-            </Badge>
-            
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Culture & Streetwear
-            </h1>
-            
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-              Plongez dans l'univers streetwear avec nos articles, interviews exclusives et guides tendances. 
-              Découvrez les coulisses de la Culture avec l'équipe Camino TV.
-            </p>
-
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-brand-600 dark:text-brand-400">{stats.totalPosts}</div>
-                <div className="text-sm text-muted-foreground">Articles</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-brand-600 dark:text-brand-400">{stats.categories}</div>
-                <div className="text-sm text-muted-foreground">Catégories</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-brand-600 dark:text-brand-400">{stats.authors}</div>
-                <div className="text-sm text-muted-foreground">Auteurs</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-brand-600 dark:text-brand-400">{stats.avgReadTime}</div>
-                <div className="text-sm text-muted-foreground">Min lecture</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PageHeader
+        badge={{
+          icon: BookOpen,
+          text: 'Blog Camino TV'
+        }}
+        title="Culture & Streetwear"
+        description="Plongez dans l'univers streetwear avec nos articles, interviews exclusives et guides tendances. Découvrez les coulisses de la Culture avec l'équipe Camino TV."
+      />
 
       {/* Filtres et recherche */}
       <section className="py-8 bg-muted/30 border-b border-border">
@@ -147,9 +114,6 @@ export default function BlogPage() {
                     className="text-xs"
                   >
                     {category.name}
-                    <Badge variant="secondary" className="ml-2 text-xs px-1 py-0">
-                      {category.count}
-                    </Badge>
                   </Button>
                 ))}
               </div>
@@ -297,7 +261,7 @@ export default function BlogPage() {
         </div>
       </section>
 
-      <Footer />
+      <Footer showFullContent={false} variant="minimal" size="compact" />
     </div>
   );
 }
