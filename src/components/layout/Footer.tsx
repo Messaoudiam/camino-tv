@@ -109,23 +109,25 @@ export function Footer({
                 <div className="space-y-4">
                   <h4 className="font-semibold text-foreground mb-4 font-sans">Légal</h4>
                   <nav className="space-y-2 text-sm">
-                    <a 
-                      href="#" 
+                    <Link 
+                      href="/legal/cgu" 
                       className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
                     >
                       CGU
-                    </a>
-                    <a 
-                      href="#" 
+                    </Link>
+                    <Link 
+                      href="/legal" 
                       className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
                     >
                       Mentions légales
-                    </a>
+                    </Link>
                     <a 
-                      href="#" 
+                      href="https://github.com/Messaoudiam/camino-tv" 
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
                     >
-                      Contact
+                      Code Source
                     </a>
                   </nav>
                 </div>
@@ -142,18 +144,18 @@ export function Footer({
           /* Footer minimal */
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
             <div className="flex gap-4">
-              <a 
-                href="#" 
+              <Link 
+                href="/legal/cgu" 
                 className="hover:text-foreground transition-colors font-sans"
               >
                 CGU
-              </a>
-              <a 
-                href="#" 
+              </Link>
+              <Link 
+                href="/legal" 
                 className="hover:text-foreground transition-colors font-sans"
               >
                 Mentions légales
-              </a>
+              </Link>
               <a 
                 href="#" 
                 className="hover:text-foreground transition-colors font-sans"
