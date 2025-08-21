@@ -122,7 +122,7 @@ export function Header({ className }: HeaderProps) {
                   variant="ghost"
                   size="sm"
                   onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                  className="md:hidden relative group p-2"
+                  className="md:hidden relative group p-2 cursor-pointer hover:bg-transparent"
                 >
                   <div className="relative">
                     {theme === 'dark' ? (
@@ -241,7 +241,7 @@ export function Header({ className }: HeaderProps) {
                   variant="ghost"
                   size="sm"
                   onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                  className="hidden sm:flex relative group"
+                  className="hidden sm:flex relative group cursor-pointer hover:bg-transparent"
                 >
                   <div className="relative">
                     {theme === 'dark' ? (

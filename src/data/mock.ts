@@ -215,7 +215,7 @@ Lucas Chauvin, alias Supraw, incarne la nouvelle génération d'artistes frança
 Cette collaboration Supraw x Uniqlo illustre parfaitement la montée en puissance de la scène créative toulousaine et l'intérêt croissant des marques internationales pour les talents locaux français.
 
 **Rendez-vous fin février pour découvrir cette collection qui promet de réveiller l'enfant qui sommeille en nous !**`,
-    imageUrl: '/blog/supraw.png',
+    imageUrl: '/blog/supraw.jpg',
     category: 'streetwear',
     author: mockAuthors[0], // Sean
     publishedAt: '2025-01-19',
