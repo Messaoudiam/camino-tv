@@ -8,7 +8,7 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/sections/Hero';
-import { Zap, Users, TrendingUp, Star, Play, ExternalLink, Mic, Youtube, Instagram, Twitter, Twitch } from 'lucide-react';
+import { Zap, Users, TrendingUp, Star, Play, Mic, Youtube, Instagram, Twitter, Twitch } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { AnimatedNumber } from '@/components/ui/animated-number';

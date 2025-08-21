@@ -1,8 +1,6 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { Card } from '@/components/ui/card';
-import { ExternalLink, Twitter } from 'lucide-react';
 
 interface TwitterEmbedProps {
   tweetId: string;

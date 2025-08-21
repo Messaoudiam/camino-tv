@@ -4,7 +4,7 @@ import { Footer } from '@/components/layout/Footer';
 import { PageHeader } from '@/components/ui/page-header';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Instagram, Youtube, Twitter, Twitch, Users } from 'lucide-react';
+import { Instagram, Youtube, Twitter, Twitch, Users } from 'lucide-react';
 import { mockAuthors } from '@/data/mock';
 import { AnimatedNumber } from '@/components/ui/animated-number';
 import type { Metadata } from 'next';

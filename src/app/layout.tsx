@@ -18,6 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://camino.tv"),
   title: "Camino TV - We The Mouvement",
   description: "Découvrez les meilleurs deals sneakers en temps réel. Nike, Adidas, Jordan et bien plus encore. Plus de 100k passionnés nous font confiance.",
   keywords: ["sneakers", "deals", "nike", "adidas", "jordan", "réductions", "bons plans"],
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "fr_FR",
-    url: "https://caminotv.com",
+    url: "https://camino.tv",
     title: "Camino TV - Bons Plans Premium Sneakers",
     description: "La plateforme de référence pour dénicher les meilleurs deals sneakers en France.",
     siteName: "Camino TV",
@@ -36,11 +37,12 @@ export const metadata: Metadata = {
     title: "Camino TV - Bons Plans Premium Sneakers",
     description: "La plateforme de référence pour dénicher les meilleurs deals sneakers en France.",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
@@ -50,7 +52,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
-      <body className="font-sans antialiased bg-background text-foreground min-h-screen">
+      <body className="font-sans antialiased bg-background text-foreground min-h-screen" suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

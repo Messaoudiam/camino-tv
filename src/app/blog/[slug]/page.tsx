@@ -14,7 +14,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { 
   Calendar, 
   Clock, 
-  User, 
   ArrowLeft, 
   Share2,
   Twitter,
@@ -26,10 +25,9 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, notFound } from 'next/navigation';
-import { mockBlogPosts, mockAuthors } from '@/data/mock';
+import { mockBlogPosts } from '@/data/mock';
 import { markdownToHtml } from '@/lib/markdown';
 import { TwitterEmbed } from '@/components/blog/TwitterEmbed';
-import { TwitterEmbedSimple } from '@/components/blog/TwitterEmbedSimple';
 import { useState, useEffect } from 'react';
 
 export default function BlogPostPage() {

@@ -1,221 +1,29 @@
 'use client';
 
 /**
- * Header PREMIUM PRO - Niveau enterprise avec fonctionnalités avancées
- * Micro-interactions, feedback utilisateur, accessibilité, performance
- * Démonstration de maîtrise technique complète pour entretien
+ * Header component - Navigation principale du site
  */
 
 import { 
-  Search, Sparkles, Clock, TrendingUp, User, Bell, Settings, Moon, Sun, 
-  Menu, Users, Home, Zap, Command, ArrowRight, X, Loader2, 
-  AlertCircle, Star, Bookmark, History, BookOpen, Check, Eye 
+  Sparkles, TrendingUp, Moon, Sun, 
+  Menu, Users, Home, Zap, AlertCircle, Bookmark, BookOpen
 } from 'lucide-react';
-import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuShortcut } from '@/components/ui/dropdown-menu';
-import { Switch } from '@/components/ui/switch';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
 import { HeaderProps } from '@/types';
-import { mockDeals } from '@/data/mock';
 import { cn } from '@/lib/utils';
-
-interface Notification {
-  id: string;
-  title: string;
-  message: string;
-  time: string;
-  isRead: boolean;
-  type: 'deal' | 'trend' | 'article' | 'system';
-  priority: 'low' | 'medium' | 'high';
-}
 
 export function Header({ className }: HeaderProps) {
   const { theme, setTheme } = useTheme();
   
-  // États principaux
-  const [searchQuery, setSearchQuery] = useState('');
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const [notifications, setNotifications] = useState<Notification[]>([
-    {
-      id: '1',
-      title: 'Nouveau deal Nike Air Max',
-      message: 'Réduction de 40% disponible maintenant',
-      time: 'Il y a 5 min',
-      isRead: false,
-      type: 'deal',
-      priority: 'high'
-    },
-    {
-      id: '2',
-      title: 'Tendance Jordan 1',
-      message: '+150% de recherches cette semaine',
-      time: 'Il y a 2h',
-      isRead: false,
-      type: 'trend',
-      priority: 'medium'
-    },
-    {
-      id: '3',
-      title: 'Nouvel article équipe',
-      message: 'Découvrez l\'interview de Sean',
-      time: 'Hier',
-      isRead: true,
-      type: 'article',
-      priority: 'low'
-    }
-  ]);
-  
-  // États avancés pour fonctionnalités premium
-  const [isSearching, setIsSearching] = useState(false);
-  const [searchHistory, setSearchHistory] = useState<string[]>(['Nike Air Max', 'Jordan 1 Retro']);
-  const [favorites] = useState<string[]>(['deals', 'team']);
+  // États utilisés
+  const [isSearchFocused] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
-  const [keyboardShortcuts, setKeyboardShortcuts] = useState(true);
-  
-  // Refs pour fonctionnalités avancées
-  const searchRef = useRef<HTMLInputElement>(null);
-  const searchTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
-
-  // Suggestions intelligentes avec debounce et scoring
-  const suggestions = useMemo(() => {
-    if (searchQuery.length < 2) return [];
-    
-    return mockDeals
-      .filter(deal => {
-        const query = searchQuery.toLowerCase();
-        const titleMatch = deal.title.toLowerCase().includes(query);
-        const brandMatch = deal.brand.toLowerCase().includes(query);
-        return titleMatch || brandMatch;
-      })
-      .sort((a, b) => {
-        // Scoring intelligent : deals récents et populaires en premier
-        const aScore = (a.isNew ? 10 : 0) + (a.discountPercentage / 10);
-        const bScore = (b.isNew ? 10 : 0) + (b.discountPercentage / 10);
-        return bScore - aScore;
-      })
-      .slice(0, 6);
-  }, [searchQuery]);
-
-  // Données premium pour suggestions avancées
-  const trendingSearches = ['Jordan 4 Black Cat', 'Nike Dunk Low', 'Stussy Hoodie'];
-  const quickActions = [
-    { label: 'Nouveautés', icon: Sparkles, href: '/deals?filter=new' },
-    { label: 'Meilleures offres', icon: TrendingUp, href: '/deals?sort=discount' },
-    { label: 'Favoris', icon: Bookmark, href: '/favorites' },
-  ];
-
-  // Fonctions premium avec performance optimisée
-  const handleSearchChange = useCallback((value: string) => {
-    setSearchQuery(value);
-    
-    // Simuler loading pour demo UX
-    if (value.length > 2) {
-      setIsSearching(true);
-      clearTimeout(searchTimeoutRef.current);
-      searchTimeoutRef.current = setTimeout(() => {
-        setIsSearching(false);
-      }, 300);
-    }
-  }, []);
-
-  const addToSearchHistory = useCallback((query: string) => {
-    setSearchHistory(prev => {
-      const filtered = prev.filter(item => item !== query);
-      return [query, ...filtered].slice(0, 5);
-    });
-  }, []);
-
-  const executeSearch = useCallback((query: string) => {
-    if (query.trim()) {
-      addToSearchHistory(query.trim());
-      setShowSuggestions(false);
-      setIsSearchFocused(false);
-      // Navigation vers results
-      console.log('Searching for:', query);
-    }
-  }, [addToSearchHistory]);
-
-  // Fonctions de gestion des notifications
-  const unreadCount = useMemo(() => 
-    notifications.filter(n => !n.isRead).length, 
-    [notifications]
-  );
-
-  const markNotificationAsRead = useCallback((notificationId: string) => {
-    setNotifications(prev => 
-      prev.map(notification => 
-        notification.id === notificationId 
-          ? { ...notification, isRead: true }
-          : notification
-      )
-    );
-  }, []);
-
-  const markAllAsRead = useCallback(() => {
-    setNotifications(prev => 
-      prev.map(notification => ({ ...notification, isRead: true }))
-    );
-  }, []);
-
-  const getNotificationColor = useCallback((notification: Notification) => {
-    if (notification.isRead) return 'bg-muted';
-    
-    switch (notification.priority) {
-      case 'high': return 'bg-red-500';
-      case 'medium': return 'bg-yellow-500';
-      case 'low': return 'bg-blue-500';
-      default: return 'bg-brand-500';
-    }
-  }, []);
-
-  const getNotificationTypeColor = useCallback((type: string) => {
-    switch (type) {
-      case 'deal': return 'bg-brand-500';
-      case 'trend': return 'bg-green-500';
-      case 'article': return 'bg-blue-500';
-      case 'system': return 'bg-orange-500';
-      default: return 'bg-muted';
-    }
-  }, []);
-
-  // Raccourcis clavier professionnels
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!keyboardShortcuts) return;
-      
-      // Cmd/Ctrl + K pour focus search
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        searchRef.current?.focus();
-        setIsSearchFocused(true);
-        setShowSuggestions(true);
-      }
-      
-      // Escape pour fermer search
-      if (e.key === 'Escape' && isSearchFocused) {
-        searchRef.current?.blur();
-        setShowSuggestions(false);
-        setIsSearchFocused(false);
-      }
-      
-      // Enter pour rechercher
-      if (e.key === 'Enter' && isSearchFocused && searchQuery) {
-        executeSearch(searchQuery);
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [keyboardShortcuts, isSearchFocused, searchQuery, executeSearch]);
 
   // Détection état online/offline
   useEffect(() => {
@@ -229,19 +37,6 @@ export function Header({ className }: HeaderProps) {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
-  }, []);
-
-  // Click outside handler
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setShowSuggestions(false);
-        setIsSearchFocused(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
@@ -458,10 +253,7 @@ export function Header({ className }: HeaderProps) {
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p className="flex items-center gap-1">
-                  {theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
-                  {keyboardShortcuts && <kbd className="px-1 py-0.5 bg-muted border border-border rounded text-xs">⌘D</kbd>}
-                </p>
+                <p>{theme === 'dark' ? 'Mode clair' : 'Mode sombre'}</p>
               </TooltipContent>
             </Tooltip>
           </div>

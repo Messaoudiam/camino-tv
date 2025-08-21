@@ -19,11 +19,10 @@ import {
   BookOpen, 
   TrendingUp, 
   Users, 
-  Calendar,
   Clock,
-  Tag,
-  ArrowRight
+  Tag
 } from 'lucide-react';
+import Image from 'next/image';
 import { useState, useMemo } from 'react';
 import { mockBlogPosts, blogCategories, mockAuthors } from '@/data/mock';
 import { BlogCategory } from '@/types';
@@ -48,13 +47,6 @@ export default function BlogPage() {
     });
   }, [searchQuery, selectedCategory, selectedAuthor]);
 
-  // Stats pour l'affichage
-  const stats = {
-    totalPosts: mockBlogPosts.length,
-    categories: blogCategories.length,
-    authors: mockAuthors.length,
-    avgReadTime: Math.round(mockBlogPosts.reduce((acc, post) => acc + post.readTime, 0) / mockBlogPosts.length)
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -162,9 +154,11 @@ export default function BlogPage() {
                         onClick={() => setSelectedAuthor(selectedAuthor === author.id ? 'all' : author.id)}
                       >
                         <div className="relative w-10 h-10 rounded-full overflow-hidden">
-                          <img
+                          <Image
                             src={author.avatar}
                             alt={author.name}
+                            width={40}
+                            height={40}
                             className="w-full h-full object-cover"
                           />
                         </div>

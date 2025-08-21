@@ -52,7 +52,7 @@ export const DealCard = memo(function DealCard({
           text: `Deal ${deal.brand} - ${deal.currentPrice}€`,
           url: window.location.href
         });
-      } catch (_err) {
+      } catch {
         console.log('Share cancelled');
       }
     } else {

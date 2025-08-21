@@ -44,7 +44,7 @@ export function Breadcrumb({ className, customItems }: BreadcrumbProps) {
     
     // Construire les segments
     let currentPath = '';
-    segments.forEach((segment, index) => {
+    segments.forEach((segment) => {
       currentPath += `/${segment}`;
       
       // Obtenir le label depuis le mapping ou utiliser le segment

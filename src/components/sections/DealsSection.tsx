@@ -4,17 +4,15 @@
  */
 
 import { useState } from 'react';
-import { Filter, Grid3X3, Star, Zap, Heart, Search } from 'lucide-react';
+import { Filter, Grid3X3, Search } from 'lucide-react';
 import { useFavorites } from '@/hooks/useFavorites';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Slider } from '@/components/ui/slider';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { Switch } from '@/components/ui/switch';
-import { Separator } from '@/components/ui/separator';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { DealGrid } from '@/components/demo/DealGrid';
 import { Deal } from '@/types';
 import { mockDeals, categories } from '@/data/mock';
@@ -32,7 +30,7 @@ export function DealsSection({ className }: DealsSectionProps) {
   const [sortBy, setSortBy] = useState<string>('newest');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [minDiscount, setMinDiscount] = useState<number[]>([0]);
-  const { favorites, favoritesCount } = useFavorites();
+  useFavorites();
 
   // Filtrage intelligent et tri des deals
   const filteredDeals = deals
