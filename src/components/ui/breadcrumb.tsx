@@ -21,6 +21,11 @@ const pathLabels: Record<string, string> = {
   '/blog': 'Blog',
   '/team': 'Équipe',
   '/favorites': 'Favoris',
+  '/contact': 'Contact',
+  '/legal': 'Mentions légales',
+  '/legal/cgu': 'CGU',
+  '/cgu': 'CGU',
+  '/mentions-legales': 'Mentions légales'
 };
 
 export function Breadcrumb({ className, customItems }: BreadcrumbProps) {

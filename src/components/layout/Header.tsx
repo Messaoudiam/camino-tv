@@ -6,7 +6,7 @@
 
 import { 
   Sparkles, TrendingUp, Moon, Sun, 
-  Menu, Users, Home, Zap, AlertCircle, Bookmark, BookOpen
+  Menu, Users, Home, Zap, AlertCircle, Bookmark, BookOpen, Mail
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
@@ -113,6 +113,12 @@ export function Header({ className }: HeaderProps) {
                   Équipe
                 </Link>
               </Button>
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/contact" className="flex items-center gap-2">
+                  <Mail className="h-4 w-4" />
+                  Contact
+                </Link>
+              </Button>
             </div>
             
             {/* Toggle dark mode mobile */}
@@ -202,6 +208,13 @@ export function Header({ className }: HeaderProps) {
                     >
                       <Users className="h-4 w-4" />
                       <span>Équipe</span>
+                    </Link>
+                    <Link 
+                      href="/contact" 
+                      className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors group"
+                    >
+                      <Mail className="h-4 w-4" />
+                      <span>Contact</span>
                     </Link>
                   </div>
 

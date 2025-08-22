@@ -240,7 +240,7 @@ export default function TeamPage() {
         </div>
 
         {/* Call to Action */}
-        <div className="text-center bg-gradient-to-r from-brand-500/10 via-brand-600/5 to-brand-500/10 rounded-3xl p-12 border border-brand-200/50 dark:border-brand-800/30">
+        <Card className="text-center p-12">
           <h2 className="text-3xl font-bold text-foreground mb-4">
             Rejoignez l'aventure Camino TV
           </h2>
@@ -273,7 +273,7 @@ export default function TeamPage() {
               </a>
             </Button>
           </div>
-        </div>
+        </Card>
       </div>
 
         <Footer showFullContent={false} variant="minimal" size="compact" />

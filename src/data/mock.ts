@@ -164,7 +164,7 @@ Retrouvez ci-dessous notre thread Twitter complet avec tous les créateurs séle
     id: '8',
     title: 'Supraw x Uniqlo : L\'art toulousain s\'invite aux Zinzins de l\'Espace',
     slug: 'supraw-uniqlo-collaboration-zinzins-espace-toulouse',
-    excerpt: 'L\'artiste toulousain Supraw collabore avec Uniqlo pour une collection exclusive inspirée des Zinzins de l\'Espace. Pop-up éphémère à Toulouse les 28-29 février 2025.',
+    excerpt: 'L\'artiste toulousain Supraw collabore avec Uniqlo pour une collection exclusive inspirée des Zinzins de l\'Espace. Pop-up éphémère à Toulouse les 28/02/25 et 01/03/25.',
     content: `# Supraw x Uniqlo : Quand l'art toulousain rencontre les Zinzins de l'Espace
 
 L'univers créatif toulousain s'apprête à vivre un moment unique avec la collaboration entre **Supraw** (Lucas Chauvin) et **Uniqlo**. Cette collection exclusive, inspirée de la mythique série animée française "Les Zinzins de l'Espace", sera dévoilée lors d'un pop-up éphémère dans la ville rose.
@@ -173,7 +173,7 @@ L'univers créatif toulousain s'apprête à vivre un moment unique avec la colla
 
 ## L'événement incontournable du streetwear toulousain
 
-**📅 Dates :** 28-29 février 2025  
+**📅 Dates :** 28/02/25 et 01/03/25  
 **📍 Lieu :** Uniqlo Toulouse, 3 Rue du Poids de l'Huile  
 **⏰ Modalités :** Sur inscription, premier arrivé, premier servi
 

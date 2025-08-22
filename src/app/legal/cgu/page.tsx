@@ -25,15 +25,15 @@ export default function CGUPage() {
           />
 
           {/* Avertissement Important */}
-          <Card className="mb-8 border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-950/20">
+          <Card className="mb-8">
             <CardContent className="p-6">
               <div className="flex items-start gap-4">
                 <AlertTriangle className="h-6 w-6 text-orange-600 dark:text-orange-400 mt-1 flex-shrink-0" />
                 <div>
-                  <h2 className="text-lg font-semibold text-orange-900 dark:text-orange-100 mb-2">
+                  <h2 className="text-lg font-semibold text-foreground mb-2">
                     ⚠️ Site de Démonstration Technique
                   </h2>
-                  <p className="text-orange-800 dark:text-orange-200 leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed">
                     <strong>Ce site n'est PAS le site officiel de Camino TV.</strong> Il s'agit d'un projet de portfolio développeur créé uniquement pour présenter des compétences techniques. Aucune transaction commerciale, aucune collecte de données réelles.
                   </p>
                 </div>
