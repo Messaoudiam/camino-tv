@@ -7,7 +7,7 @@
 
 import { memo, useState } from 'react';
 import Image from 'next/image';
-import { Heart, ExternalLink, Share2, TrendingUp, Eye, Clock } from 'lucide-react';
+import { Heart, ExternalLink, Share2, TrendingUp, Eye, Clock, Tag, Copy } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -25,7 +25,17 @@ export const DealCard = memo(function DealCard({
 }: DealCardProps) {
   const { isFavorite, toggleFavorite } = useFavorites();
   const [isSharing, setIsSharing] = useState(false);
+  const [promoCodeCopied, setPromoCodeCopied] = useState(false);
   const isFavorited = isFavorite(deal.id);
+  
+  // Vérifier si le deal est encore "nouveau" (moins de 7 jours)
+  const isRecentlyNew = () => {
+    if (!deal.createdAt || !deal.isNew) return false;
+    const createdDate = new Date(deal.createdAt);
+    const now = new Date();
+    const daysDiff = (now.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
+    return daysDiff <= 7;
+  };
   
   const handleClick = () => {
     onClick?.();
@@ -63,6 +73,15 @@ export const DealCard = memo(function DealCard({
     setTimeout(() => setIsSharing(false), 500);
   };
 
+  const handleCopyPromoCode = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (deal.promoCode) {
+      await navigator.clipboard.writeText(deal.promoCode);
+      setPromoCodeCopied(true);
+      setTimeout(() => setPromoCodeCopied(false), 2000);
+    }
+  };
+
   return (
     <TooltipProvider>
       <Card 
@@ -85,33 +104,38 @@ export const DealCard = memo(function DealCard({
           
           {/* Badges améliorés */}
           <div className="absolute top-3 left-3 flex flex-col gap-2">
-            {deal.isNew && (
-              <Badge className="bg-brand-500 hover:bg-brand-600 text-white text-xs font-medium shadow-lg">
+            {isRecentlyNew() && (
+              <Badge className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white text-xs font-bold shadow-lg border border-green-400">
                 <TrendingUp className="h-3 w-3 mr-1" />
                 NOUVEAU
               </Badge>
             )}
-            {deal.isLimited && (
-              <Badge variant="secondary" className="text-xs bg-yellow-500 dark:bg-yellow-600 text-white">
-                LIMITÉ
-              </Badge>
-            )}
           </div>
 
-          {/* Badge réduction redesigné - affiché même pour 0% */}
-          {deal.discountPercentage > 0 ? (
-            <Badge 
-              className="absolute top-3 right-3 bg-foreground text-background font-bold text-sm px-3 py-1 shadow-lg"
-            >
-              -{deal.discountPercentage}%
-            </Badge>
-          ) : (
-            <Badge 
-              className="absolute top-3 right-3 bg-blue-500 text-white font-bold text-sm px-3 py-1 shadow-lg"
-            >
-              BON PLAN
-            </Badge>
-          )}
+          {/* Badge réduction avec indication code promo */}
+          <div className="absolute top-3 right-3 flex flex-col gap-1 items-end">
+            {deal.promoCode && (
+              <Badge 
+                className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold text-xs px-2.5 py-1.5 shadow-lg flex items-center gap-1 border border-red-400"
+              >
+                <Tag className="h-2.5 w-2.5" />
+                CODE PROMO
+              </Badge>
+            )}
+            {deal.discountPercentage > 0 ? (
+              <Badge 
+                className="bg-foreground text-background font-bold text-sm px-3 py-1 shadow-lg"
+              >
+                -{deal.discountPercentage}%
+              </Badge>
+            ) : !deal.promoCode ? (
+              <Badge 
+                className="bg-blue-500 text-white font-bold text-sm px-3 py-1 shadow-lg"
+              >
+                BON PLAN
+              </Badge>
+            ) : null}
+          </div>
 
           {/* Actions overlay premium avec Dialog */}
           <div className="absolute bottom-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -184,6 +208,11 @@ export const DealCard = memo(function DealCard({
                       <Badge className="bg-brand-500">
                         -{deal.discountPercentage}%
                       </Badge>
+                    ) : deal.promoCode ? (
+                      <Badge className="bg-gradient-to-r from-brand-500 to-brand-600 text-white flex items-center gap-1 border border-brand-400">
+                        <Tag className="h-3 w-3" />
+                        CODE PROMO
+                      </Badge>
                     ) : (
                       <Badge className="bg-blue-500">
                         BON PLAN
@@ -239,13 +268,47 @@ export const DealCard = memo(function DealCard({
                     
                     <Separator />
                     
+                    {/* Code promo section */}
+                    {deal.promoCode && (
+                      <div className="space-y-3 p-4 bg-gradient-to-br from-brand-50 to-brand-100 dark:from-brand-900/20 dark:to-brand-800/10 rounded-xl border-2 border-brand-200 dark:border-brand-700 shadow-lg">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-semibold text-brand-700 dark:text-brand-300 flex items-center gap-2">
+                            <Tag className="h-4 w-4" />
+                            Code promo exclusif
+                          </span>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-7 text-xs"
+                            onClick={handleCopyPromoCode}
+                          >
+                            <Copy className="h-3 w-3 mr-1" />
+                            {promoCodeCopied ? 'Copié!' : 'Copier'}
+                          </Button>
+                        </div>
+                        <div className="relative">
+                          <div className="font-mono text-xl font-bold text-brand-600 dark:text-brand-400 bg-white dark:bg-gray-800 px-4 py-3 rounded-lg border-2 border-brand-300 dark:border-brand-600 text-center shadow-inner bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900">
+                            {deal.promoCode}
+                          </div>
+                          <div className="absolute -top-1 -right-1 w-3 h-3 bg-brand-500 rounded-full animate-ping"></div>
+                        </div>
+                        {deal.promoDescription && (
+                          <div className="bg-brand-100 dark:bg-brand-900/30 p-3 rounded-lg border border-brand-200 dark:border-brand-700">
+                            <p className="text-xs text-brand-600 dark:text-brand-400 font-medium">
+                              <span className="text-brand-700 dark:text-brand-300 font-semibold">⚠️ Conditions:</span> {deal.promoDescription}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    
                     {/* Infos deal */}
                     <div className="space-y-2 text-sm text-muted-foreground">
                       <div className="flex items-center gap-2">
                         <Clock className="h-4 w-4" />
                         <span>Offre limitée dans le temps</span>
                       </div>
-                      {deal.isNew && (
+                      {isRecentlyNew() && (
                         <div className="flex items-center gap-2">
                           <TrendingUp className="h-4 w-4" />
                           <span>Nouveau deal</span>
@@ -272,16 +335,31 @@ export const DealCard = memo(function DealCard({
         {/* Contenu amélioré */}
         <div className="p-4 space-y-3">
           
-          {/* Prix avec meilleure hiérarchie */}
+          {/* Prix avec indication code promo */}
           <div className="flex items-baseline justify-between">
-            <div className="flex items-baseline gap-2">
-              <span className="text-xl font-bold text-foreground">
-                {deal.currentPrice}€
-              </span>
-              {deal.originalPrice !== deal.currentPrice && (
-                <span className="text-sm text-muted-foreground line-through">
-                  {deal.originalPrice}€
+            <div className="flex flex-col gap-1">
+              <div className="flex items-baseline gap-2">
+                <span className="text-xl font-bold text-foreground">
+                  {deal.currentPrice}€
                 </span>
+                {deal.originalPrice !== deal.currentPrice && (
+                  <span className="text-sm text-muted-foreground line-through">
+                    {deal.originalPrice}€
+                  </span>
+                )}
+              </div>
+              {deal.promoCode && (
+                <button 
+                  onClick={handleCopyPromoCode}
+                  className="text-xs text-red-600 dark:text-red-400 font-semibold hover:text-red-700 dark:hover:text-red-300 cursor-pointer transition-all duration-200 bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded border border-red-200 dark:border-red-700 hover:bg-red-100 dark:hover:bg-red-800/30 hover:scale-105 flex items-center gap-1"
+                >
+                  avec le code <span className="font-mono">{deal.promoCode}</span> 
+                  {promoCodeCopied ? (
+                    <span className="text-green-600">✓</span>
+                  ) : (
+                    <span className="opacity-70">📋</span>
+                  )}
+                </button>
               )}
             </div>
             

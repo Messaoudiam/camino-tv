@@ -13,8 +13,11 @@ export interface Deal {
   imageUrl: string;
   category: DealCategory;
   isNew?: boolean;
+  createdAt?: string;
   isLimited?: boolean;
   affiliateUrl: string;
+  promoCode?: string;
+  promoDescription?: string;
 }
 
 export type DealCategory = 

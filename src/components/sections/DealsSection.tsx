@@ -14,7 +14,7 @@ import { Slider } from '@/components/ui/slider';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { DealGrid } from '@/components/demo/DealGrid';
-import { Deal } from '@/types';
+import { Deal, DealCategory } from '@/types';
 import { mockDeals, categories } from '@/data/mock';
 import { cn } from '@/lib/utils';
 
@@ -31,6 +31,17 @@ export function DealsSection({ className }: DealsSectionProps) {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [minDiscount, setMinDiscount] = useState<number[]>([0]);
   useFavorites();
+
+  // Calculer dynamiquement le nombre de deals par catégorie
+  const getDealCountByCategory = (categoryId: DealCategory) => {
+    return deals.filter(deal => deal.category === categoryId).length;
+  };
+
+  // Créer les catégories avec compteurs dynamiques
+  const dynamicCategories = categories.map(category => ({
+    ...category,
+    count: getDealCountByCategory(category.id as DealCategory)
+  }));
 
   // Filtrage intelligent et tri des deals
   const filteredDeals = deals
@@ -77,10 +88,10 @@ export function DealsSection({ className }: DealsSectionProps) {
                       Tout ({deals.length})
                     </TabsTrigger>
                     <TabsTrigger value="sneakers" className="text-xs">
-                      Sneakers ({categories.find(c => c.id === 'sneakers')?.count || 0})
+                      Sneakers ({getDealCountByCategory('sneakers')})
                     </TabsTrigger>
                     <TabsTrigger value="streetwear" className="text-xs">
-                      Streetwear ({categories.find(c => c.id === 'streetwear')?.count || 0})
+                      Streetwear ({getDealCountByCategory('streetwear')})
                     </TabsTrigger>
                   </TabsList>
                   
@@ -125,7 +136,7 @@ export function DealsSection({ className }: DealsSectionProps) {
                         </Badge>
                       </TabsTrigger>
                       
-                      {categories.map((category) => (
+                      {dynamicCategories.map((category) => (
                         <TabsTrigger 
                           key={category.id} 
                           value={category.id}
@@ -228,7 +239,7 @@ export function DealsSection({ className }: DealsSectionProps) {
                 <DealGrid deals={filteredDeals} loading={loading} />
               </TabsContent>
             
-              {categories.map((category) => (
+              {dynamicCategories.map((category) => (
                 <TabsContent key={category.id} value={category.id} className="mt-8">
                   <DealGrid deals={filteredDeals} loading={loading} />
                 </TabsContent>

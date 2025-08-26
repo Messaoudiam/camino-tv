@@ -19,11 +19,17 @@ import { HeaderProps } from '@/types';
 import { cn } from '@/lib/utils';
 
 export function Header({ className }: HeaderProps) {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   
   // États utilisés
   const [isSearchFocused] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
+
+  // Hydration fix - éviter le mismatch server/client
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Détection état online/offline
   useEffect(() => {
@@ -131,7 +137,9 @@ export function Header({ className }: HeaderProps) {
                   className="md:hidden relative group p-2 cursor-pointer hover:bg-transparent"
                 >
                   <div className="relative">
-                    {theme === 'dark' ? (
+                    {!mounted || !resolvedTheme ? (
+                      <div className="h-7 w-7" />
+                    ) : resolvedTheme === 'dark' ? (
                       <Sun className="h-7 w-7 transition-transform group-hover:rotate-180" />
                     ) : (
                       <Moon className="h-7 w-7 transition-transform group-hover:-rotate-12" />
@@ -140,7 +148,7 @@ export function Header({ className }: HeaderProps) {
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{theme === 'dark' ? 'Mode clair' : 'Mode sombre'}</p>
+                <p>{!mounted || !resolvedTheme ? 'Changer de thème' : resolvedTheme === 'dark' ? 'Mode clair' : 'Mode sombre'}</p>
               </TooltipContent>
             </Tooltip>
 
@@ -257,7 +265,9 @@ export function Header({ className }: HeaderProps) {
                   className="hidden sm:flex relative group cursor-pointer hover:bg-transparent"
                 >
                   <div className="relative">
-                    {theme === 'dark' ? (
+                    {!mounted || !resolvedTheme ? (
+                      <div className="h-4 w-4" />
+                    ) : resolvedTheme === 'dark' ? (
                       <Sun className="h-4 w-4 transition-transform group-hover:rotate-180" />
                     ) : (
                       <Moon className="h-4 w-4 transition-transform group-hover:-rotate-12" />
@@ -266,7 +276,7 @@ export function Header({ className }: HeaderProps) {
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{theme === 'dark' ? 'Mode clair' : 'Mode sombre'}</p>
+                <p>{!mounted || !resolvedTheme ? 'Changer de thème' : resolvedTheme === 'dark' ? 'Mode clair' : 'Mode sombre'}</p>
               </TooltipContent>
             </Tooltip>
           </div>
