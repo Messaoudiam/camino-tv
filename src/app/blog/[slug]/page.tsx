@@ -1,10 +1,4 @@
-'use client';
-
-/**
- * Page d'article de blog individuel - Route dynamique [slug]
- * Design cohérent avec le reste du projet Camino TV
- */
-
+import { Metadata } from 'next';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Breadcrumb } from '@/components/ui/breadcrumb';
@@ -15,45 +9,79 @@ import {
   Calendar, 
   Clock, 
   ArrowLeft, 
-  Share2,
-  Twitter,
-  Facebook,
-  Link as LinkIcon,
   Tag,
   TrendingUp
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useParams, notFound } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { mockBlogPosts } from '@/data/mock';
-import { markdownToHtml } from '@/lib/markdown';
 import { TwitterEmbed } from '@/components/blog/TwitterEmbed';
-import { useState, useEffect } from 'react';
+import { BlogInteractions } from '@/components/blog/BlogInteractions';
+import { ShareButtons } from '@/components/blog/ShareButtons';
 
-export default function BlogPostPage() {
-  // Ajouter les styles d'animation modernes
-  useEffect(() => {
-    const animationStyles = `
-      @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      @keyframes slideInFromLeft {
-        from { opacity: 0; transform: translateX(-30px); }
-        to { opacity: 1; transform: translateX(0); }
-      }
-    `;
-    
-    const existingStyle = document.getElementById('blog-animations');
-    if (!existingStyle) {
-      const style = document.createElement('style');
-      style.id = 'blog-animations';
-      style.textContent = animationStyles;
-      document.head.appendChild(style);
-    }
-  }, []);
-  const params = useParams();
-  const slug = params.slug as string;
+interface Props {
+  params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const post = mockBlogPosts.find(p => p.slug === slug);
+  
+  if (!post) {
+    return {
+      title: 'Article non trouvé | Camino TV',
+      description: 'Cet article n\'existe pas ou a été supprimé.'
+    };
+  }
+
+  const siteUrl = 'https://camino.tv';
+  const articleUrl = `${siteUrl}/blog/${post.slug}`;
+  const imageUrl = post.imageUrl.startsWith('/') ? `${siteUrl}${post.imageUrl}` : post.imageUrl;
+
+  return {
+    title: `${post.title} | Camino TV Blog`,
+    description: post.excerpt,
+    keywords: post.tags.join(', '),
+    authors: [{ name: post.author.name }],
+    creator: post.author.name,
+    publishedTime: post.publishedAt,
+    category: post.category,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: 'article',
+      locale: 'fr_FR',
+      url: articleUrl,
+      siteName: 'Camino TV',
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        }
+      ],
+      publishedTime: post.publishedAt,
+      authors: [post.author.name],
+      section: post.category,
+      tags: post.tags,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+      images: [imageUrl],
+      creator: '@CaminoTV',
+    },
+    alternates: {
+      canonical: articleUrl,
+    },
+  };
+}
+
+export default async function BlogPostPage({ params }: Props) {
+  const { slug } = await params;
   
   // Trouver l'article par son slug
   const post = mockBlogPosts.find(p => p.slug === slug);
@@ -61,40 +89,6 @@ export default function BlogPostPage() {
   if (!post) {
     notFound();
   }
-
-  const [shareMenuOpen, setShareMenuOpen] = useState(false);
-
-  // Ajouter des styles personnalisés pour Twitter
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      .twitter-tweet {
-        margin: 0 auto !important;
-        border-radius: 12px !important;
-        border: 1px solid hsl(var(--border)) !important;
-        box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) !important;
-      }
-      
-      .twitter-tweet:hover {
-        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
-        transform: translateY(-1px);
-        transition: all 0.2s ease;
-      }
-      
-      /* Responsive */
-      @media (max-width: 550px) {
-        .twitter-tweet {
-          width: 100% !important;
-          max-width: 100% !important;
-        }
-      }
-    `;
-    document.head.appendChild(style);
-    
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, []);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -119,8 +113,6 @@ export default function BlogPostPage() {
     .filter(p => p.id !== post.id && (p.author.id === post.author.id || p.category === post.category))
     .slice(0, 3);
 
-  const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
-
   // Configuration du breadcrumb personnalisé
   const breadcrumbItems = [
     { href: '/', label: 'Accueil' },
@@ -128,8 +120,52 @@ export default function BlogPostPage() {
     { href: `/blog/${post.slug}`, label: post.title }
   ];
 
+  // JSON-LD Schema pour SEO
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt,
+    image: post.imageUrl.startsWith('/') ? `https://camino.tv${post.imageUrl}` : post.imageUrl,
+    author: {
+      '@type': 'Person',
+      name: post.author.name,
+      jobTitle: post.author.role,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Camino TV',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://camino.tv/logo.png'
+      }
+    },
+    datePublished: post.publishedAt,
+    dateModified: post.publishedAt,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://camino.tv/blog/${post.slug}`
+    },
+    articleSection: post.category,
+    keywords: post.tags.join(', '),
+    wordCount: post.content.length,
+    timeRequired: `PT${post.readTime}M`,
+    inLanguage: 'fr-FR',
+    isPartOf: {
+      '@type': 'Blog',
+      name: 'Camino TV Blog',
+      url: 'https://camino.tv/blog'
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      {/* JSON-LD Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <Header />
       
       {/* Breadcrumb et navigation */}
@@ -144,49 +180,7 @@ export default function BlogPostPage() {
               </Button>
             </Link>
             
-            <div className="relative">
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => setShareMenuOpen(!shareMenuOpen)}
-                className="hover:bg-brand-50 dark:hover:bg-brand-950/50"
-              >
-                <Share2 className="h-4 w-4 mr-2" />
-                Partager
-              </Button>
-              
-              {shareMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-background border border-border rounded-lg shadow-lg z-10">
-                  <div className="p-2 space-y-1">
-                    <a
-                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(shareUrl)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition-colors"
-                    >
-                      <Twitter className="h-4 w-4" />
-                      Twitter
-                    </a>
-                    <a
-                      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition-colors"
-                    >
-                      <Facebook className="h-4 w-4" />
-                      Facebook
-                    </a>
-                    <button
-                      onClick={() => navigator.clipboard.writeText(shareUrl)}
-                      className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition-colors w-full text-left"
-                    >
-                      <LinkIcon className="h-4 w-4" />
-                      Copier le lien
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
+            <BlogInteractions post={post} />
           </div>
         </div>
       </section>
@@ -220,7 +214,7 @@ export default function BlogPostPage() {
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Calendar className="h-4 w-4" />
-                  <span>{formatDate(post.publishedAt)}</span>
+                  <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />
@@ -241,16 +235,16 @@ export default function BlogPostPage() {
             />
           </div>
 
-          {/* Contenu de l'article - UNIFIÉ POUR TOUS */}
+          {/* Contenu de l'article - HTML sémantique direct */}
           <div className="leading-relaxed text-foreground space-y-6" style={{
             fontSize: 'clamp(1rem, 0.8rem + 0.4vw, 1.125rem)',
             lineHeight: 'clamp(1.6, 1.5 + 0.2vw, 1.8)'
           }}>
-            {/* Contenu principal - même traitement pour tous */}
-            <div className="prose prose-lg dark:prose-invert max-w-none">
+            {/* Contenu principal - HTML sémantique */}
+            <div className="max-w-none">
               <div 
                 dangerouslySetInnerHTML={{ 
-                  __html: markdownToHtml(post.content)
+                  __html: post.content
                 }} 
               />
             </div>
@@ -295,49 +289,7 @@ export default function BlogPostPage() {
               <div className="text-sm text-muted-foreground">
                 Partager cet article
               </div>
-              <div className="flex items-center gap-3" role="group" aria-label="Boutons de partage social">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-2 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                  onClick={() => {
-                    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(window.location.href)}&via=CaminoTV`;
-                    window.open(url, '_blank');
-                  }}
-                  aria-label={`Partager "${post.title}" sur Twitter`}
-                >
-                  <Twitter className="h-4 w-4" aria-hidden="true" />
-                  <span className="hidden sm:inline">Twitter</span>
-                </Button>
-                
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-2 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                  onClick={() => {
-                    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
-                    window.open(url, '_blank');
-                  }}
-                  aria-label={`Partager "${post.title}" sur Facebook`}
-                >
-                  <Facebook className="h-4 w-4" aria-hidden="true" />
-                  <span className="hidden sm:inline">Facebook</span>
-                </Button>
-                
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-2 hover:bg-green-50 hover:border-green-300 hover:text-green-600 transition-colors focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-                  onClick={() => {
-                    navigator.clipboard.writeText(window.location.href);
-                    // TODO: Ajouter une notification toast
-                  }}
-                  aria-label="Copier le lien de l'article"
-                >
-                  <LinkIcon className="h-4 w-4" aria-hidden="true" />
-                  <span className="hidden sm:inline">Copier</span>
-                </Button>
-              </div>
+              <ShareButtons post={post} />
             </div>
           </div>
         </div>
@@ -356,13 +308,9 @@ export default function BlogPostPage() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {recommendedPosts.map((recommendedPost, index) => (
+              {recommendedPosts.map((recommendedPost) => (
                 <Link key={recommendedPost.id} href={`/blog/${recommendedPost.slug}`}>
-                  <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-brand-500/20 cursor-pointer"
-                    style={{
-                      animationDelay: `${index * 100}ms`,
-                      animation: 'fadeInUp 0.6s ease-out forwards'
-                    }}>
+                  <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-brand-500/20 cursor-pointer">
                     <div className="relative h-48 overflow-hidden rounded-t-lg">
                       <Image
                         src={recommendedPost.imageUrl}
