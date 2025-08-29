@@ -48,7 +48,7 @@ User-agent: SemrushBot
 Disallow: /
 
 # Référencer le sitemap (à créer si nécessaire)
-Sitemap: https://camino.tv/sitemap.xml
+Sitemap: https://camino-tv.vercel.app/sitemap.xml
 
 # Délai d'exploration recommandé (en secondes)
 Crawl-delay: 1

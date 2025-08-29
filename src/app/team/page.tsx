@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "fr_FR",
-    url: "https://caminotv.com/team",
+    url: "https://camino-tv.vercel.app/team",
     title: "Équipe Camino TV - Créateurs & Influenceurs Streetwear",
     description: "Rencontrez les visages passionnés derrière Camino TV. De Sean le fondateur à Keusmo l'influenceur, découvrez notre équipe de créateurs streetwear français.",
     siteName: "Camino TV",
@@ -52,7 +52,7 @@ export default function TeamPage() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Camino TV",
-    "url": "https://caminotv.com",
+    "url": "https://camino-tv.vercel.app",
     "description": "Plateforme streetwear française et communauté de créateurs de contenu mode urbaine",
     "foundingDate": "2020",
     "founders": [

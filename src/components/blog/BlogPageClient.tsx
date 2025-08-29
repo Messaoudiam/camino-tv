@@ -19,7 +19,6 @@ import {
   BookOpen, 
   TrendingUp, 
   Users, 
-  Clock,
   Tag
 } from 'lucide-react';
 import Image from 'next/image';

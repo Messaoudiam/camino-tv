@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const siteUrl = 'https://camino.tv';
+  const siteUrl = 'https://camino-tv.vercel.app';
   const articleUrl = `${siteUrl}/blog/${post.slug}`;
   const imageUrl = post.imageUrl.startsWith('/') ? `${siteUrl}${post.imageUrl}` : post.imageUrl;
 
@@ -45,7 +45,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     keywords: post.tags.join(', '),
     authors: [{ name: post.author.name }],
     creator: post.author.name,
-    publishedTime: post.publishedAt,
     category: post.category,
     openGraph: {
       title: post.title,
@@ -126,7 +125,7 @@ export default async function BlogPostPage({ params }: Props) {
     '@type': 'Article',
     headline: post.title,
     description: post.excerpt,
-    image: post.imageUrl.startsWith('/') ? `https://camino.tv${post.imageUrl}` : post.imageUrl,
+    image: post.imageUrl.startsWith('/') ? `https://camino-tv.vercel.app${post.imageUrl}` : post.imageUrl,
     author: {
       '@type': 'Person',
       name: post.author.name,
@@ -137,14 +136,14 @@ export default async function BlogPostPage({ params }: Props) {
       name: 'Camino TV',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://camino.tv/logo.png'
+        url: 'https://camino-tv.vercel.app/logo.png'
       }
     },
     datePublished: post.publishedAt,
     dateModified: post.publishedAt,
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://camino.tv/blog/${post.slug}`
+      '@id': `https://camino-tv.vercel.app/blog/${post.slug}`
     },
     articleSection: post.category,
     keywords: post.tags.join(', '),
@@ -154,7 +153,7 @@ export default async function BlogPostPage({ params }: Props) {
     isPartOf: {
       '@type': 'Blog',
       name: 'Camino TV Blog',
-      url: 'https://camino.tv/blog'
+      url: 'https://camino-tv.vercel.app/blog'
     }
   };
 

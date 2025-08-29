@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "fr_FR",
-    url: "https://caminotv.com/contact",
+    url: "https://camino-tv.vercel.app/contact",
     title: "Contact - Nous contacter | Camino TV",
     description: "Envoyez un message à l'équipe Camino TV. Nous sommes à votre écoute pour toutes vos questions et propositions.",
     siteName: "Camino TV",
@@ -39,7 +39,7 @@ export default function ContactPage() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Camino TV",
-    "url": "https://caminotv.com",
+    "url": "https://camino-tv.vercel.app",
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "customer service",

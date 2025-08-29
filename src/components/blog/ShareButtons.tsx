@@ -20,13 +20,13 @@ export function ShareButtons({ post }: ShareButtonsProps) {
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(currentUrl || `https://camino.tv/blog/${post.slug}`);
+      await navigator.clipboard.writeText(currentUrl || `https://camino-tv.vercel.app/blog/${post.slug}`);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
+    } catch {
       // Fallback for browsers that don't support clipboard API
       const textArea = document.createElement('textarea');
-      textArea.value = currentUrl || `https://camino.tv/blog/${post.slug}`;
+      textArea.value = currentUrl || `https://camino-tv.vercel.app/blog/${post.slug}`;
       document.body.appendChild(textArea);
       textArea.select();
       document.execCommand('copy');
@@ -37,12 +37,12 @@ export function ShareButtons({ post }: ShareButtonsProps) {
   };
 
   const handleTwitterShare = () => {
-    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(currentUrl || `https://camino.tv/blog/${post.slug}`)}&via=CaminoTV`;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(currentUrl || `https://camino-tv.vercel.app/blog/${post.slug}`)}&via=CaminoTV`;
     window.open(url, '_blank', 'width=550,height=420');
   };
 
   const handleFacebookShare = () => {
-    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl || `https://camino.tv/blog/${post.slug}`)}`;
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl || `https://camino-tv.vercel.app/blog/${post.slug}`)}`;
     window.open(url, '_blank', 'width=580,height=296');
   };
 

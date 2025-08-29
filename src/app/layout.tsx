@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://camino.tv"),
+  metadataBase: new URL("https://camino-tv.vercel.app"),
   title: "Camino TV - We The Mouvement",
   description: "Découvrez les meilleurs deals sneakers en temps réel. Nike, Adidas, Jordan et bien plus encore. Plus de 100k passionnés nous font confiance.",
   keywords: ["sneakers", "deals", "nike", "adidas", "jordan", "réductions", "bons plans"],
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "fr_FR",
-    url: "https://camino.tv",
+    url: "https://camino-tv.vercel.app",
     title: "Camino TV - Bons Plans Premium Sneakers",
     description: "La plateforme de référence pour dénicher les meilleurs deals sneakers en France.",
     siteName: "Camino TV",
