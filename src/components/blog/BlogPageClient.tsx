@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { validateSearch, blogSearchSchema } from '@/lib/validations/search';
 import { 
   Search, 
   Filter, 
@@ -31,6 +32,12 @@ interface BlogPageClientProps {
 
 export function BlogPageClient({ jsonLd }: BlogPageClientProps) {
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Gestion sécurisée de la recherche avec Zod
+  const handleSearchChange = (value: string) => {
+    const validatedQuery = validateSearch(value, blogSearchSchema);
+    setSearchQuery(validatedQuery);
+  };
   const [selectedCategory, setSelectedCategory] = useState<BlogCategory | 'all'>('all');
   const [selectedAuthor, setSelectedAuthor] = useState<string | 'all'>('all');
 
@@ -82,7 +89,8 @@ export function BlogPageClient({ jsonLd }: BlogPageClientProps) {
                   placeholder="Rechercher un article..."
                   className="pl-10"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                  maxLength={100}
                 />
               </div>
             </div>

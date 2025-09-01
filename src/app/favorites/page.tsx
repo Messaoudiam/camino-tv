@@ -13,6 +13,7 @@ import { PageHeader } from '@/components/ui/page-header';
 import { DealCard } from '@/components/demo/DealCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { validateSearch, favoritesSearchSchema } from '@/lib/validations/search';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -25,6 +26,12 @@ import type { Deal } from '@/types';
 export default function FavoritesPage() {
   const { favorites, isLoading, favoritesCount } = useFavorites();
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Gestion sécurisée de la recherche avec Zod
+  const handleSearchChange = (value: string) => {
+    const validatedQuery = validateSearch(value, favoritesSearchSchema);
+    setSearchQuery(validatedQuery);
+  };
   const [sortBy, setSortBy] = useState('newest');
   const [filterBy, setFilterBy] = useState('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -206,8 +213,9 @@ export default function FavoritesPage() {
                     <Input
                       placeholder="Rechercher dans vos favoris..."
                       value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onChange={(e) => handleSearchChange(e.target.value)}
                       className="pl-10"
+                      maxLength={100}
                     />
                   </div>
                   

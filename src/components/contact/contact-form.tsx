@@ -10,93 +10,43 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
 import { Send, Check, AlertCircle, Loader2 } from 'lucide-react';
+import { contactFormSchema, type ContactFormData, type ContactFormErrors, formatZodErrors } from '@/lib/validations/contact';
+import { z } from 'zod';
 
-interface FormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  subject: string;
-  category: string;
-  message: string;
-}
-
-interface FormErrors {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  subject?: string;
-  category?: string;
-  message?: string;
-}
 
 export function ContactForm() {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<ContactFormData>({
     firstName: '',
     lastName: '',
     email: '',
     subject: '',
-    category: '',
+    category: 'general',
     message: ''
   });
 
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [errors, setErrors] = useState<ContactFormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  // Validation des entrées sécurisées
-  const validateField = (name: string, value: string): string | undefined => {
-    const trimmedValue = value.trim();
-    
-    switch (name) {
-      case 'firstName':
-      case 'lastName':
-        if (!trimmedValue) return 'Ce champ est requis';
-        if (trimmedValue.length < 2) return 'Minimum 2 caractères';
-        if (trimmedValue.length > 50) return 'Maximum 50 caractères';
-        if (!/^[a-zA-ZÀ-ÿ\s-']+$/.test(trimmedValue)) return 'Caractères alphabétiques uniquement';
-        break;
-        
-      case 'email':
-        if (!trimmedValue) return 'L\'email est requis';
-        if (trimmedValue.length > 254) return 'Email trop long';
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (!emailRegex.test(trimmedValue)) return 'Format d\'email invalide';
-        break;
-        
-      case 'subject':
-        if (!trimmedValue) return 'Le sujet est requis';
-        if (trimmedValue.length < 5) return 'Minimum 5 caractères';
-        if (trimmedValue.length > 100) return 'Maximum 100 caractères';
-        break;
-        
-      case 'category':
-        if (!trimmedValue) return 'Veuillez sélectionner une catégorie';
-        break;
-        
-      case 'message':
-        if (!trimmedValue) return 'Le message est requis';
-        if (trimmedValue.length < 20) return 'Minimum 20 caractères';
-        if (trimmedValue.length > 2000) return 'Maximum 2000 caractères';
-        break;
+  // Validation sécurisée avec Zod
+  const validateField = (name: keyof ContactFormData, value: string | undefined): string | undefined => {
+    try {
+      const fieldSchema = contactFormSchema.shape[name];
+      fieldSchema.parse(value);
+      return undefined;
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return error.issues[0]?.message;
+      }
+      return 'Erreur de validation';
     }
-    
-    return undefined;
   };
 
-  // Sanitisation des entrées
-  const sanitizeInput = (value: string): string => {
-    return value
-      .trim()
-      .replace(/[<>\"'&]/g, '') // Supprime les caractères potentiellement dangereux
-      .replace(/\s+/g, ' '); // Normalise les espaces
-  };
-
-  const handleInputChange = (name: string, value: string) => {
-    const sanitizedValue = sanitizeInput(value);
-    setFormData(prev => ({ ...prev, [name]: sanitizedValue }));
+  const handleInputChange = (name: keyof ContactFormData, value: string) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
     
     // Validation en temps réel
-    const error = validateField(name, sanitizedValue);
+    const error = validateField(name, value);
     setErrors(prev => ({ ...prev, [name]: error }));
     
     // Reset submit status si on modifie après succès
@@ -106,19 +56,18 @@ export function ContactForm() {
   };
 
   const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
-    let isValid = true;
-
-    Object.keys(formData).forEach(key => {
-      const error = validateField(key, formData[key as keyof FormData]);
-      if (error) {
-        newErrors[key as keyof FormErrors] = error;
-        isValid = false;
+    try {
+      contactFormSchema.parse(formData);
+      setErrors({});
+      return true;
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const formattedErrors = formatZodErrors(error);
+        setErrors(formattedErrors);
+        return false;
       }
-    });
-
-    setErrors(newErrors);
-    return isValid;
+      return false;
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -132,8 +81,14 @@ export function ContactForm() {
     setSubmitStatus('idle');
 
     try {
+      // Validation finale côté client avec Zod
+      const validatedData = contactFormSchema.parse(formData);
+      
       // Simulation d'envoi (pas de vrai backend pour l'instant)
       await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Ici, vous enverriez validatedData à votre API
+      console.log('Données validées:', validatedData);
       
       // Succès simulé
       setSubmitStatus('success');
@@ -145,7 +100,7 @@ export function ContactForm() {
           lastName: '',
           email: '',
           subject: '',
-          category: '',
+          category: 'general',
           message: ''
         });
         setSubmitStatus('idle');
@@ -266,7 +221,7 @@ export function ContactForm() {
             </Label>
             <Select
               value={formData.category}
-              onValueChange={(value) => handleInputChange('category', value)}
+              onValueChange={(value) => handleInputChange('category', value as ContactFormData['category'])}
               disabled={isSubmitting}
             >
               <SelectTrigger className={errors.category ? 'border-red-500 focus-visible:ring-red-500' : ''}>

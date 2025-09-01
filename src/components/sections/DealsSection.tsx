@@ -17,6 +17,7 @@ import { DealGrid } from '@/components/demo/DealGrid';
 import { Deal, DealCategory } from '@/types';
 import { mockDeals, categories } from '@/data/mock';
 import { cn } from '@/lib/utils';
+import { validateSearch, productSearchSchema } from '@/lib/validations/search';
 
 interface DealsSectionProps {
   className?: string;
@@ -29,6 +30,12 @@ export function DealsSection({ className }: DealsSectionProps) {
   const [priceRange, setPriceRange] = useState<number[]>([500]);
   const [sortBy, setSortBy] = useState<string>('newest');
   const [searchQuery, setSearchQuery] = useState<string>('');
+
+  // Gestion sécurisée de la recherche avec Zod
+  const handleSearchChange = (value: string) => {
+    const validatedQuery = validateSearch(value, productSearchSchema);
+    setSearchQuery(validatedQuery);
+  };
   const [minDiscount, setMinDiscount] = useState<number[]>([0]);
   useFavorites();
 
@@ -83,17 +90,33 @@ export function DealsSection({ className }: DealsSectionProps) {
               
                 {/* Mobile: Interface simplifiée */}
                 <div className="md:hidden space-y-4">
-                  <TabsList className="grid w-full grid-cols-3 h-9">
-                    <TabsTrigger value="all" className="text-xs">
-                      Tout ({deals.length})
-                    </TabsTrigger>
-                    <TabsTrigger value="sneakers" className="text-xs">
-                      Sneakers ({getDealCountByCategory('sneakers')})
-                    </TabsTrigger>
-                    <TabsTrigger value="streetwear" className="text-xs">
-                      Streetwear ({getDealCountByCategory('streetwear')})
-                    </TabsTrigger>
-                  </TabsList>
+                  <div className="space-y-2">
+                    {/* Première ligne: Tout + 2 premières catégories */}
+                    <TabsList className="grid w-full grid-cols-3 h-9">
+                      <TabsTrigger value="all" className="text-xs">
+                        Tout ({deals.length})
+                      </TabsTrigger>
+                      <TabsTrigger value="sneakers" className="text-xs">
+                        Sneakers ({getDealCountByCategory('sneakers')})
+                      </TabsTrigger>
+                      <TabsTrigger value="streetwear" className="text-xs">
+                        Streetwear ({getDealCountByCategory('streetwear')})
+                      </TabsTrigger>
+                    </TabsList>
+                    
+                    {/* Deuxième ligne: 3 dernières catégories */}
+                    <TabsList className="grid w-full grid-cols-3 h-9">
+                      <TabsTrigger value="accessories" className="text-xs">
+                        Accessoires ({getDealCountByCategory('accessories')})
+                      </TabsTrigger>
+                      <TabsTrigger value="electronics" className="text-xs">
+                        Tech ({getDealCountByCategory('electronics')})
+                      </TabsTrigger>
+                      <TabsTrigger value="lifestyle" className="text-xs">
+                        Lifestyle ({getDealCountByCategory('lifestyle')})
+                      </TabsTrigger>
+                    </TabsList>
+                  </div>
                   
                   {/* Barre de recherche mobile */}
                   <div className="relative">
@@ -103,7 +126,8 @@ export function DealsSection({ className }: DealsSectionProps) {
                       placeholder="Rechercher..."
                       className="pl-10 h-9"
                       value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onChange={(e) => handleSearchChange(e.target.value)}
+                      maxLength={100}
                     />
                   </div>
                   
@@ -161,7 +185,8 @@ export function DealsSection({ className }: DealsSectionProps) {
                           placeholder="Rechercher un produit, une marque..."
                           className="pl-10 w-full"
                           value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
+                          onChange={(e) => handleSearchChange(e.target.value)}
+                          maxLength={100}
                         />
                       </div>
                     </div>

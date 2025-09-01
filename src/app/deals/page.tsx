@@ -22,7 +22,7 @@ export default function DealsPage() {
       return { icon: Package, text: 'Bientôt des deals' };
     }
     if (hasDiscounts) {
-      return { icon: Zap, text: 'Promos LIVE' };
+      return { icon: Zap, text: 'Sélection LIVE' };
     }
     if (hasNewItems) {
       return { icon: Zap, text: 'Nouveautés' };
@@ -35,7 +35,7 @@ export default function DealsPage() {
       return 'Aucun bon plan pour le moment';
     }
     return hasDiscounts 
-      ? 'Bons plans en promotion'
+      ? 'Nos bons plans du moment'
       : 'Les bons plans du moment';
   };
 
