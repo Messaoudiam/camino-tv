@@ -30,12 +30,12 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline' vercel.live",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' vercel.live *.instagram.com www.instagram.com",
               "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: blob: https:",
+              "img-src 'self' data: blob: https: *.cdninstagram.com *.fbcdn.net",
               "font-src 'self' data:",
-              "connect-src 'self' https: wss:",
-              "frame-src 'self' https:",
+              "connect-src 'self' https: wss: *.instagram.com",
+              "frame-src 'self' https: *.instagram.com www.instagram.com",
             ].join('; ')
           }
         ]

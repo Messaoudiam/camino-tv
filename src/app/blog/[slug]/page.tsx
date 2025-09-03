@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { mockBlogPosts } from '@/data/mock';
 import { TwitterEmbed } from '@/components/blog/TwitterEmbed';
+import { InstagramEmbed } from '@/components/blog/InstagramEmbed';
 import { BlogInteractions } from '@/components/blog/BlogInteractions';
 import { ShareButtons } from '@/components/blog/ShareButtons';
 
@@ -254,6 +255,7 @@ export default async function BlogPostPage({ params }: Props) {
                 <TwitterEmbed tweetId="1948059197062398025" className="max-w-none" />
               </div>
             )}
+            
             
             {/* Call-to-action unifié pour TOUS les articles */}
             <div className="bg-gradient-to-r from-brand-500/10 via-brand-600/5 to-brand-500/10 rounded-xl p-6 border border-brand-200/50 dark:border-brand-800/30 mt-8">

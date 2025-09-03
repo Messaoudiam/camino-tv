@@ -109,60 +109,94 @@ export default function TeamPage() {
       
       <div className="max-w-6xl mx-auto px-4 py-16">
 
-        {/* Équipe Grid */}
-        <section aria-labelledby="team-heading">
-          <h2 id="team-heading" className="sr-only">Membres de l'équipe Camino TV</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {mockAuthors.map((member, index) => (
-            <Card key={member.id} className="group overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-brand-500/10 border hover:border-brand-300 dark:hover:border-brand-700 bg-card rounded-xl">
-              <CardContent className="p-0">
-                <div className="relative h-80 overflow-hidden rounded-t-xl">
-                  <Image
-                    src={member.avatar}
-                    alt={`${member.name}, ${member.role} chez Camino TV - Créateur de contenu streetwear français`}
-                    fill
-                    className="object-cover object-center transition-all duration-300 group-hover:scale-105 rounded-t-xl"
-                    priority={index < 3}
-                    loading={index >= 3 ? "lazy" : "eager"}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  
-                  {/* Social Links Overlay */}
-                  <div className="absolute bottom-4 left-4 right-4 transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                    <div className="flex gap-2">
-                      <Button asChild size="sm" variant="secondary" className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/20 hover:scale-105 transition-all duration-200">
-                        <a href={getSocialLink(member.id, 'instagram')} target="_blank" rel="noopener noreferrer">
-                          <Instagram className="h-4 w-4" />
-                        </a>
-                      </Button>
-                      {getSocialLink(member.id, 'twitter') !== '#' && (
-                        <Button asChild size="sm" variant="secondary" className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/20 hover:scale-105 transition-all duration-200">
-                          <a href={getSocialLink(member.id, 'twitter')} target="_blank" rel="noopener noreferrer">
-                            <Twitter className="h-4 w-4" />
-                          </a>
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold text-foreground group-hover:text-brand-600 transition-colors mb-3">
-                    {member.name}
-                  </h3>
-                  
-                  <p className="text-brand-600 dark:text-brand-400 font-semibold mb-3">
-                    {member.role}
-                  </p>
-                  
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                    {getmemberDescription(member.id)}
-                  </p>
-                  
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+        {/* Les Fondateurs */}
+        <section className="mb-16">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="h-1 w-8 bg-brand-500 rounded-full" />
+            <h2 className="text-2xl font-bold text-foreground">Les Fondateurs</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {getTeamMembersByIds(['sean', 'keusmo', 'monroe', 'piway', 'elssy', 'mike']).map((member, index) => (
+              <TeamMemberCard key={member.id} member={member} index={index} />
+            ))}
+          </div>
+        </section>
+
+        {/* Pôle Content */}
+        <section className="mb-16">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="h-1 w-8 bg-red-500 rounded-full" />
+            <h2 className="text-2xl font-bold text-foreground">Pôle Content</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {getTeamMembersByIds(['sean', 'chasseur', 'saku', 'keusmo', 'elssy']).map((member, index) => (
+              <TeamMemberCard key={member.id} member={member} index={index} />
+            ))}
+          </div>
+        </section>
+
+        {/* Pôle Stylisme */}
+        <section className="mb-16">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="h-1 w-8 bg-purple-500 rounded-full" />
+            <h2 className="text-2xl font-bold text-foreground">Pôle Stylisme</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {getTeamMembersByIds(['monroe', 'mike', 'souk']).map((member, index) => (
+              <TeamMemberCard key={member.id} member={member} index={index} />
+            ))}
+          </div>
+        </section>
+
+        {/* Pôle Social */}
+        <section className="mb-16">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="h-1 w-8 bg-pink-500 rounded-full" />
+            <h2 className="text-2xl font-bold text-foreground">Pôle Social</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {getTeamMembersByIds(['bous', 'piway', 'wade']).map((member, index) => (
+              <TeamMemberCard key={member.id} member={member} index={index} />
+            ))}
+          </div>
+        </section>
+
+        {/* Pôle IT */}
+        <section className="mb-16">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="h-1 w-8 bg-blue-500 rounded-full" />
+            <h2 className="text-2xl font-bold text-foreground">Pôle IT</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {getTeamMembersByIds(['adlane', 'alexis', 'messaoud']).map((member, index) => (
+              <TeamMemberCard key={member.id} member={member} index={index} />
+            ))}
+          </div>
+        </section>
+
+        {/* Pôle Projet */}
+        <section className="mb-16">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="h-1 w-8 bg-green-500 rounded-full" />
+            <h2 className="text-2xl font-bold text-foreground">Pôle Projet</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {getTeamMembersByIds(['linda']).map((member, index) => (
+              <TeamMemberCard key={member.id} member={member} index={index} />
+            ))}
+          </div>
+        </section>
+
+        {/* Pôle Ensemble */}
+        <section className="mb-16">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="h-1 w-8 bg-orange-500 rounded-full" />
+            <h2 className="text-2xl font-bold text-foreground">Pôle Ensemble</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {getTeamMembersByIds(['sean', 'chasseur', 'linda', 'greed']).map((member, index) => (
+              <TeamMemberCard key={member.id} member={member} index={index} />
+            ))}
           </div>
         </section>
 
@@ -282,18 +316,52 @@ export default function TeamPage() {
   );
 }
 
-function getmemberDescription(id: string): string {
-  const descriptions: Record<string, string> = {
-    sean: "Fondateur visionnaire de Camino TV, Sean allie passion pour la culture streetwear et expertise business pour créer du contenu authentique.",
-    mike: "Expert en création de contenu, Mike apporte sa créativité et son œil artistique pour produire des visuels qui marquent les esprits.",
-    keusmo: "Influenceur streetwear reconnu, Keusmo partage sa connaissance pointue des tendances et son style unique avec la communauté.",
-    elssy: "Journaliste mode spécialisée, Elssy analyse les tendances et décrypte l'actualité streetwear avec un regard expert et passionné.",
-    monroe: "Passionné de sneakers depuis toujours, Monroe déniche les meilleures opportunités et partage ses coups de cœur avec la communauté.",
-    piway: "Photographe talentueux, Piway capture l'essence de la culture urbaine à travers son objectif et sublime chaque création.",
-    messaoud: "Développeur passionné du pôle IT. Messaoud, avec Adlane et Alexis, crée et maintient les plateformes techniques qui permettent à Camino TV de rayonner à travers le monde et jusqu'à l'infini.",
-  };
-  
-  return descriptions[id] || "Membre passionné de l'équipe Camino TV, contribuant à créer du contenu exceptionnel pour la communauté.";
+function getTeamMembersByIds(ids: string[]) {
+  return ids.map(id => mockAuthors.find(author => author.id === id)).filter(Boolean) as typeof mockAuthors;
+}
+
+function TeamMemberCard({ member, index }: { member: typeof mockAuthors[0], index: number }) {
+  return (
+    <Card className="group overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-brand-500/10 border hover:border-brand-300 dark:hover:border-brand-700 bg-card rounded-xl">
+      <CardContent className="p-0">
+        <div className="relative h-48 overflow-hidden rounded-t-xl">
+          <Image
+            src={member.avatar}
+            alt={`${member.name}, ${member.role} chez Camino TV`}
+            fill
+            className="object-cover object-center transition-all duration-300 group-hover:scale-105 rounded-t-xl"
+            priority={index < 3}
+            loading={index >= 3 ? "lazy" : "eager"}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          
+          {/* Social Links Overlay */}
+          <div className="absolute bottom-2 left-2 right-2 transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+            <div className="flex gap-1 justify-center">
+              <Button asChild size="sm" variant="secondary" className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/20 hover:scale-105 transition-all duration-200 h-8 w-8 p-0">
+                <a href={getSocialLink(member.id, 'instagram')} target="_blank" rel="noopener noreferrer">
+                  <Instagram className="h-3 w-3" />
+                </a>
+              </Button>
+              {getSocialLink(member.id, 'twitter') !== '#' && (
+                <Button asChild size="sm" variant="secondary" className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/20 hover:scale-105 transition-all duration-200 h-8 w-8 p-0">
+                  <a href={getSocialLink(member.id, 'twitter')} target="_blank" rel="noopener noreferrer">
+                    <Twitter className="h-3 w-3" />
+                  </a>
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+        
+        <div className="p-4">
+          <h3 className="text-lg font-bold text-foreground group-hover:text-brand-600 transition-colors text-center">
+            {member.name}
+          </h3>
+        </div>
+      </CardContent>
+    </Card>
+  );
 }
 
 function getSocialLink(memberId: string, platform: 'instagram' | 'twitter'): string {
@@ -324,6 +392,42 @@ function getSocialLink(memberId: string, platform: 'instagram' | 'twitter'): str
     },
     messaoud: {
       instagram: 'https://www.instagram.com/messaoudiam/',
+      twitter: '#'
+    },
+    chasseur: {
+      instagram: 'https://www.instagram.com/yanisd_/',
+      twitter: '#'
+    },
+    saku: {
+      instagram: 'https://www.instagram.com/sakuart/',
+      twitter: '#'
+    },
+    souk: {
+      instagram: '#',
+      twitter: '#'
+    },
+    bous: {
+      instagram: 'https://www.instagram.com/pineapplebous/',
+      twitter: '#'
+    },
+    wade: {
+      instagram: 'https://www.instagram.com/wadejr_/',
+      twitter: '#'
+    },
+    linda: {
+      instagram: 'https://www.instagram.com/linda_hss/',
+      twitter: '#'
+    },
+    adlane: {
+      instagram: '#',
+      twitter: '#'
+    },
+    alexis: {
+      instagram: 'https://www.instagram.com/alexis.mrtntw/',
+      twitter: '#'
+    },
+    greed: {
+      instagram: 'https://www.instagram.com/greed.telada/',
       twitter: '#'
     }
   };

@@ -225,46 +225,6 @@ export function BlogPageClient({ jsonLd }: BlogPageClientProps) {
                 </CardContent>
               </Card>
 
-              {/* Équipe d'auteurs */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <Users className="h-5 w-5" />
-                    Notre équipe
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {mockAuthors.slice(0, 4).map((author) => (
-                      <button
-                        key={author.id}
-                        onClick={() => setSelectedAuthor(author.id)}
-                        className={`w-full flex items-center gap-3 p-2 rounded-md transition-colors hover:bg-muted ${
-                          selectedAuthor === author.id ? 'bg-muted' : ''
-                        }`}
-                      >
-                        <div className="relative w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                          <Image
-                            src={author.avatar}
-                            alt={author.name}
-                            fill
-                            className="object-cover"
-                            sizes="32px"
-                          />
-                        </div>
-                        <div className="text-left flex-1 min-w-0">
-                          <div className="text-sm font-medium text-foreground truncate">
-                            {author.name}
-                          </div>
-                          <div className="text-xs text-muted-foreground truncate">
-                            {author.role}
-                          </div>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
             </div>
           </div>
         </div>
