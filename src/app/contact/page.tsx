@@ -49,7 +49,9 @@ export default function ContactPage() {
     "sameAs": [
       "https://www.youtube.com/@CaminoTV",
       "https://www.instagram.com/caminotv/", 
-      "https://x.com/CaminoTV"
+      "https://x.com/CaminoTV",
+      "https://www.twitch.tv/caminotv",
+      "https://www.tiktok.com/@caminotv"
     ]
   };
 

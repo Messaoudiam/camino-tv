@@ -19,10 +19,8 @@ import {
   Filter, 
   BookOpen, 
   TrendingUp, 
-  Users, 
   Tag
 } from 'lucide-react';
-import Image from 'next/image';
 import { mockBlogPosts, blogCategories, mockAuthors } from '@/data/mock';
 import { BlogCategory } from '@/types';
 

@@ -83,7 +83,8 @@ export default function TeamPage() {
       "https://www.youtube.com/@CaminoTV",
       "https://www.instagram.com/caminotv/", 
       "https://x.com/CaminoTV",
-      "https://www.twitch.tv/caminotv"
+      "https://www.twitch.tv/caminotv",
+      "https://www.tiktok.com/@caminotv"
     ]
   };
 
@@ -238,7 +239,7 @@ export default function TeamPage() {
             Notre communauté
           </h2>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 mb-16">
           <a href="https://youtube.com/@CaminoTV" target="_blank" rel="noopener noreferrer" className="text-center p-8 bg-card rounded-xl border border-red-200/50 dark:border-red-800/30 hover:border-red-400 dark:hover:border-red-600 hover:scale-[1.02] hover:shadow-lg hover:shadow-red-500/10 transition-all duration-300 group cursor-pointer block">
             <div className="text-4xl font-bold text-red-600 dark:text-red-400 mb-4 group-hover:scale-105 group-hover:text-red-500 transition-all duration-300">
               <AnimatedNumber value={300000} suffix="+" duration={2500} delay={200} />
@@ -269,6 +270,16 @@ export default function TeamPage() {
             </div>
             <div className="flex justify-center">
               <Twitter className="h-8 w-8 text-gray-800 dark:text-gray-200 group-hover:scale-105 group-hover:text-gray-600 transition-all duration-300" />
+            </div>
+          </a>
+          <a href="https://www.tiktok.com/@caminotv?lang=fr" target="_blank" rel="noopener noreferrer" className="text-center p-8 bg-card rounded-xl border border-slate-200/50 dark:border-slate-800/30 hover:border-slate-400 dark:hover:border-slate-600 hover:scale-[1.02] hover:shadow-lg hover:shadow-slate-500/10 transition-all duration-300 group cursor-pointer block">
+            <div className="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-4 group-hover:scale-105 group-hover:text-gray-600 transition-all duration-300">
+              <AnimatedNumber value={708000} suffix="+" duration={2500} delay={1000} />
+            </div>
+            <div className="flex justify-center">
+              <svg className="h-8 w-8 text-gray-800 dark:text-gray-200 group-hover:scale-105 group-hover:text-gray-600 transition-all duration-300" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fillRule="evenodd" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-.88-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43V7.83a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.26" clipRule="evenodd" />
+              </svg>
             </div>
           </a>
         </div>
@@ -304,6 +315,14 @@ export default function TeamPage() {
               <a href="https://x.com/CaminoTV" target="_blank" rel="noopener noreferrer">
                 <Twitter className="mr-2 h-4 w-4" />
                 X (Twitter)
+              </a>
+            </Button>
+            <Button asChild variant="outline" className="border-slate-300 text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-950/50">
+              <a href="https://www.tiktok.com/@caminotv?lang=fr" target="_blank" rel="noopener noreferrer">
+                <svg className="mr-2 h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fillRule="evenodd" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-.88-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43V7.83a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.26" clipRule="evenodd" />
+                </svg>
+                TikTok
               </a>
             </Button>
           </div>
@@ -355,9 +374,25 @@ function TeamMemberCard({ member, index }: { member: typeof mockAuthors[0], inde
         </div>
         
         <div className="p-4">
-          <h3 className="text-lg font-bold text-foreground group-hover:text-brand-600 transition-colors text-center">
+          <h3 className="text-lg font-bold text-foreground group-hover:text-brand-600 transition-colors text-center mb-3">
             {member.name}
           </h3>
+          
+          {/* Social Links pour mobile - toujours visibles */}
+          <div className="flex gap-2 justify-center md:hidden">
+            <Button asChild size="sm" variant="outline" className="h-8 w-8 p-0">
+              <a href={getSocialLink(member.id, 'instagram')} target="_blank" rel="noopener noreferrer">
+                <Instagram className="h-3 w-3" />
+              </a>
+            </Button>
+            {getSocialLink(member.id, 'twitter') !== '#' && (
+              <Button asChild size="sm" variant="outline" className="h-8 w-8 p-0">
+                <a href={getSocialLink(member.id, 'twitter')} target="_blank" rel="noopener noreferrer">
+                  <Twitter className="h-3 w-3" />
+                </a>
+              </Button>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>

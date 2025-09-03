@@ -109,7 +109,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card variant="default" size="lg" padding="lg" className="group relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50/50 dark:from-gray-950/20 dark:via-card dark:to-gray-950/10 border border-gray-200/50 dark:border-gray-800/30 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-xl hover:shadow-gray-500/10 dark:hover:shadow-gray-500/5 transition-all duration-500 hover:-translate-y-1">
               <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <CardContent className="relative z-10 p-8 text-center">
@@ -151,6 +151,25 @@ export default function Home() {
                 </a>
               </CardContent>
             </Card>
+
+            <Card variant="default" size="lg" padding="lg" className="group relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50/50 dark:from-gray-950/20 dark:via-card dark:to-gray-950/10 border border-gray-200/50 dark:border-gray-800/30 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-xl hover:shadow-gray-500/10 dark:hover:shadow-gray-500/5 transition-all duration-500 hover:-translate-y-1">
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <CardContent className="relative z-10 p-8 text-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-gray-800 to-black shadow-lg shadow-gray-800/25 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <Play className="h-10 w-10 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-foreground">Industrie plante</h3>
+                <p className="text-muted-foreground mb-8 leading-relaxed">
+                  Des humains inspirants de l'industrie de la mode à qui on vole du temps, du savoir et des ressources... Tout ça légalement et on te le partage, tu connais
+                </p>
+                <a 
+                  href="#" 
+                  className="inline-flex items-center justify-center px-6 py-3 bg-gray-400 text-white font-medium rounded-xl cursor-not-allowed opacity-60"
+                >
+                  Bientôt disponible
+                </a>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
@@ -172,7 +191,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             <Card variant="default" size="lg" padding="lg" className="group relative overflow-hidden bg-gradient-to-br from-red-50 via-white to-red-50/50 dark:from-red-950/20 dark:via-card dark:to-red-950/10 border border-red-200/50 dark:border-red-800/30 hover:border-red-300 dark:hover:border-red-700 hover:shadow-xl hover:shadow-red-500/10 dark:hover:shadow-red-500/5 transition-all duration-500 hover:-translate-y-1">
               <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <CardContent className="relative z-10 p-6 text-center">
@@ -255,6 +274,30 @@ export default function Home() {
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-purple-500 hover:bg-purple-600 text-white font-medium rounded-xl transition-all duration-300 group/btn hover:scale-105"
+                >
+                  Suivre
+                </a>
+              </CardContent>
+            </Card>
+
+            <Card variant="default" size="lg" padding="lg" className="group relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-slate-50/50 dark:from-slate-950/20 dark:via-card dark:to-slate-950/10 border border-slate-200/50 dark:border-slate-800/30 hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-xl hover:shadow-slate-500/10 dark:hover:shadow-slate-500/5 transition-all duration-500 hover:-translate-y-1">
+              <div className="absolute inset-0 bg-gradient-to-br from-slate-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <CardContent className="relative z-10 p-6 text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-black to-gray-900 shadow-lg shadow-black/25 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                  <svg className="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fillRule="evenodd" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-.88-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43V7.83a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.26" clipRule="evenodd" fill="white" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-2">TikTok</h3>
+                <p className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-1">
+                  <AnimatedNumber value={708000} suffix="+" duration={2500} delay={1000} />
+                </p>
+                <p className="text-sm text-muted-foreground mb-6">abonnés</p>
+                <a 
+                  href="https://www.tiktok.com/@caminotv?lang=fr" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-black hover:bg-gray-800 text-white font-medium rounded-xl transition-all duration-300 group/btn hover:scale-105"
                 >
                   Suivre
                 </a>

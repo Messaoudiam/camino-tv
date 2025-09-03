@@ -17,7 +17,6 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { mockBlogPosts } from '@/data/mock';
 import { TwitterEmbed } from '@/components/blog/TwitterEmbed';
-import { InstagramEmbed } from '@/components/blog/InstagramEmbed';
 import { BlogInteractions } from '@/components/blog/BlogInteractions';
 import { ShareButtons } from '@/components/blog/ShareButtons';
 

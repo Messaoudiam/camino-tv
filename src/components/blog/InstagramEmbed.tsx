@@ -85,7 +85,6 @@ export function InstagramEmbed({ postUrl, className }: InstagramEmbedProps) {
 
     // Créer le blockquote Instagram
     if (embedRef.current) {
-      const postId = postUrl.split('/reel/')[1]?.split('/')[0] || postUrl.split('/p/')[1]?.split('/')[0];
       embedRef.current.innerHTML = `
         <blockquote 
           class="instagram-media" 

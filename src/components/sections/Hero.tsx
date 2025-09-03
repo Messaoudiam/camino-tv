@@ -49,7 +49,7 @@ export function Hero({ className }: HeroProps) {
           {/* Statistiques impressionnantes */}
           <div className="flex flex-wrap justify-center gap-8 md:gap-12 mb-12">
             <div className="text-center group hover:scale-105 transition-transform duration-300">
-              <div className="text-3xl md:text-4xl font-bold text-red-500 mb-1">1.4M+</div>
+              <div className="text-3xl md:text-4xl font-bold text-red-500 mb-1">2.2M+</div>
               <div className="text-sm text-muted-foreground font-medium">Abonnés total</div>
             </div>
             <div className="text-center group hover:scale-105 transition-transform duration-300">
