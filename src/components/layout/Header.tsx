@@ -4,8 +4,8 @@
  * Header component - Navigation principale du site
  */
 
-import { 
-  Sparkles, TrendingUp, Moon, Sun, 
+import {
+  Sparkles, TrendingUp, Moon, Sun,
   Menu, Users, Home, Zap, AlertCircle, Bookmark, BookOpen, Mail
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -17,6 +17,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { HeaderProps } from '@/types';
 import { cn } from '@/lib/utils';
+import { AuthButton } from './AuthButton';
 
 export function Header({ className }: HeaderProps) {
   const { theme, setTheme, resolvedTheme } = useTheme();
@@ -125,8 +126,11 @@ export function Header({ className }: HeaderProps) {
                   Contact
                 </Link>
               </Button>
+
+              {/* Auth Button */}
+              <AuthButton />
             </div>
-            
+
             {/* Toggle dark mode mobile */}
             <Tooltip>
               <TooltipTrigger asChild>

@@ -44,77 +44,8 @@ export const mockBrands: Brand[] = [
   },
 ];
 
-export const mockDeals: Deal[] = [
-  {
-    id: 'xiaomi-type-c-earphones',
-    title: 'Xiaomi Type-C Earphones',
-    brand: 'Xiaomi',
-    originalPrice: 10,
-    currentPrice: 10,
-    discountPercentage: 0,
-    imageUrl: '/Xiaomi Type-C Earphones.png',
-    category: 'electronics',
-    isNew: true,
-    createdAt: '2025-01-26T14:00:00.000Z',
-    affiliateUrl: 'https://www.mi.com/fr/product/xiaomi-type-c-earphones/?utm_campaign=loweu&utm_channel=affiliate&utm_source=awin&utm_medium=paid-affiliate&utm_type=1&aw_affid=331635&awc=22897_1756213311_9db2995485bbe3e0c6c13906f9bbf1fb',
-  },
-  {
-    id: 'aj4-worn-blue',
-    title: 'Jordan Air Jordan 4 Retro TEX Worn Blue',
-    brand: 'Air Jordan',
-    originalPrice: 210,
-    currentPrice: 179,
-    discountPercentage: 15,
-    imageUrl: '/aj4.png',
-    category: 'sneakers',
-    isNew: true,
-    createdAt: '2025-01-26T10:00:00.000Z',
-    affiliateUrl: 'https://www.kickz.com/fr-FR/Jordan-Air-Jordan-4-Retro-TEX-Worn-Blue-Femmes-Blanc-C100/p/IB6716-100?awc=23153_1756132613_6e376c0b97ce7e15a0835fc14481fa84&amp;creativenumber=0&amp;creativetype=0&amp;publisherid=737541-&amp;size=36%2C5&amp;sv1=affiliate&amp;sv_campaign_id=737541&amp;utm_campaign=WhenToCop%3F+-+Le+calendrier+fran%C3%A7ais+des+sneakers&amp;utm_medium=aff&amp;utm_source=AWIN_FR&sv1=affiliate&sv_campaign_id=331635&awc=23153_1756212284_8ce920f8304d776f4af95995e8d9cb16',
-    promoCode: 'WORNBLUE',
-    promoDescription: 'Code valable jusqu\'au 31 mars 2025, dans la limite des stocks disponibles',
-  },
-  {
-    id: '9',
-    title: 'Veste Survêtement Decathlon AFLF',
-    brand: 'Decathlon',
-    originalPrice: 35,
-    currentPrice: 35,
-    discountPercentage: 0,
-    imageUrl: '/decath-veste.jpg',
-    category: 'streetwear',
-    isNew: true,
-    createdAt: '2025-01-15T08:00:00.000Z',
-    affiliateUrl: 'https://www.decathlon.fr/p/veste-de-survetement-decathlon-aflf-marron/_/R-p-360225?mc=8959692&c=noir',
-  },
-  {
-    id: '10', 
-    title: 'Pantalon Survêtement Decathlon AFLF',
-    brand: 'Decathlon',
-    originalPrice: 30,
-    currentPrice: 30,
-    discountPercentage: 0,
-    imageUrl: '/decath-bas.jpg',
-    category: 'streetwear',
-    isNew: true,
-    createdAt: '2025-01-15T08:00:00.000Z',
-    affiliateUrl: 'https://www.decathlon.fr/p/pantalon-de-survetement-decathlon-aflf-marron/_/R-p-360375?mc=8959697&c=noir',
-  },
-  {
-    id: 'nike-bode-rec-lacing-knit',
-    title: 'Nike x Bode Rec. Lacing Knit',
-    brand: 'Nike',
-    originalPrice: 249,
-    currentPrice: 142,
-    discountPercentage: 43,
-    imageUrl: '/bodexnike1.jpg',
-    category: 'streetwear',
-    isNew: true,
-    createdAt: '2025-01-29T12:00:00.000Z',
-    affiliateUrl: 'https://www.asphaltgold.com/fr/products/nikex-bode-rec-lacing-knit-ecru-shadow-brown?wgu=300900_214131_17564511410979_58e815a296&wgexpiry=1787987141&utm_source=affiliate&utm_medium=track_webgains&utm_campaign=214131&source=webgains',
-    promoCode: 'DESK25',
-    promoDescription: 'Code promo valable sur le site Asphalt Gold',
-  }
-];
+// Mock deals removed - now using database via API
+export const mockDeals: Deal[] = [];
 
 /**
  * Catégories pour la navigation et les filtres

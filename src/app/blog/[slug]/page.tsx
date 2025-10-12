@@ -1,7 +1,14 @@
 import { Metadata } from 'next';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator
+} from '@/components/ui/breadcrumb';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -112,12 +119,6 @@ export default async function BlogPostPage({ params }: Props) {
     .filter(p => p.id !== post.id && (p.author.id === post.author.id || p.category === post.category))
     .slice(0, 3);
 
-  // Configuration du breadcrumb personnalisé
-  const breadcrumbItems = [
-    { href: '/', label: 'Accueil' },
-    { href: '/blog', label: 'Blog' },
-    { href: `/blog/${post.slug}`, label: post.title }
-  ];
 
   // JSON-LD Schema pour SEO
   const jsonLd = {
@@ -170,7 +171,25 @@ export default async function BlogPostPage({ params }: Props) {
       {/* Breadcrumb et navigation */}
       <section className="py-6 bg-muted/30 border-b border-border">
         <div className="max-w-4xl mx-auto px-4">
-          <Breadcrumb customItems={breadcrumbItems} className="mb-4" />
+          <Breadcrumb className="mb-4">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/">Accueil</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/blog">Blog</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{post.title}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
           <div className="flex items-center justify-between">
             <Link href="/blog">
               <Button variant="ghost" size="sm" className="hover:bg-brand-50 dark:hover:bg-brand-950/50">

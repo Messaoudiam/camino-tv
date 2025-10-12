@@ -1,0 +1,175 @@
+// Prisma Schema for Camino TV
+// Next.js 15 + Better Auth + PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ============================================
+// Authentication Models (Better Auth)
+// ============================================
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  role          UserRole  @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  sessions  Session[]
+  accounts  Account[]
+  favorites Favorite[]
+
+  @@index([email])
+  @@map("users")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  expiresAt DateTime
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@map("sessions")
+}
+
+model Account {
+  id           String    @id @default(cuid())
+  userId       String
+  accountId    String
+  providerId   String
+  accessToken  String?   @db.Text
+  refreshToken String?   @db.Text
+  idToken      String?   @db.Text
+  expiresAt    DateTime?
+  password     String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, value])
+  @@map("verifications")
+}
+
+// ============================================
+// Business Models
+// ============================================
+
+model Deal {
+  id                 String       @id @default(cuid())
+  title              String
+  brand              String
+  originalPrice      Decimal?     @db.Decimal(10, 2)
+  currentPrice       Decimal      @db.Decimal(10, 2)
+  discountPercentage Int          @default(0)
+  imageUrl           String
+  category           DealCategory
+  isNew              Boolean      @default(false)
+  isLimited          Boolean      @default(false)
+  affiliateUrl       String
+  promoCode          String?
+  promoDescription   String?
+  isActive           Boolean      @default(true)
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+
+  favorites Favorite[]
+
+  @@index([category, isActive])
+  @@index([createdAt])
+  @@index([isActive])
+  @@map("deals")
+}
+
+enum DealCategory {
+  sneakers
+  streetwear
+  accessories
+  electronics
+  lifestyle
+}
+
+model Favorite {
+  userId    String
+  dealId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deal Deal @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  @@id([userId, dealId])
+  @@index([userId])
+  @@index([dealId])
+  @@map("favorites")
+}
+
+model BlogPost {
+  id          String       @id @default(cuid())
+  title       String
+  slug        String       @unique
+  excerpt     String
+  content     String       @db.Text
+  imageUrl    String
+  category    BlogCategory
+  authorName  String
+  authorImage String
+  authorRole  String
+  publishedAt DateTime
+  readTime    Int
+  tags        String[]
+  isFeatured  Boolean      @default(false)
+  isPublished Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([slug])
+  @@index([category, publishedAt])
+  @@index([isPublished])
+  @@map("blog_posts")
+}
+
+enum BlogCategory {
+  culture
+  streetwear
+  musique
+  interview
+  lifestyle
+  tendances
+}

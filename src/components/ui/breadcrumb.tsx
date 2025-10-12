@@ -1,102 +1,109 @@
-'use client';
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { ChevronRight, MoreHorizontal } from "lucide-react"
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { ChevronRight, Home } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils"
 
-interface BreadcrumbItem {
-  label: string;
-  href: string;
+function Breadcrumb({ ...props }: React.ComponentProps<"nav">) {
+  return <nav aria-label="breadcrumb" data-slot="breadcrumb" {...props} />
 }
 
-interface BreadcrumbProps {
-  className?: string;
-  customItems?: BreadcrumbItem[];
+function BreadcrumbList({ className, ...props }: React.ComponentProps<"ol">) {
+  return (
+    <ol
+      data-slot="breadcrumb-list"
+      className={cn(
+        "text-muted-foreground flex flex-wrap items-center gap-1.5 text-sm break-words sm:gap-2.5",
+        className
+      )}
+      {...props}
+    />
+  )
 }
 
-const pathLabels: Record<string, string> = {
-  '/': 'Accueil',
-  '/deals': 'Bons plans',
-  '/blog': 'Blog',
-  '/team': 'Équipe',
-  '/favorites': 'Favoris',
-  '/contact': 'Contact',
-  '/legal': 'Mentions légales',
-  '/legal/cgu': 'CGU',
-  '/cgu': 'CGU',
-  '/mentions-legales': 'Mentions légales'
-};
+function BreadcrumbItem({ className, ...props }: React.ComponentProps<"li">) {
+  return (
+    <li
+      data-slot="breadcrumb-item"
+      className={cn("inline-flex items-center gap-1.5", className)}
+      {...props}
+    />
+  )
+}
 
-export function Breadcrumb({ className, customItems }: BreadcrumbProps) {
-  const pathname = usePathname();
-
-  // Si on est sur la page d'accueil, ne pas afficher le breadcrumb
-  if (pathname === '/') {
-    return null;
-  }
-
-  let items: BreadcrumbItem[] = [];
-
-  if (customItems) {
-    items = customItems;
-  } else {
-    // Génération automatique basée sur le pathname
-    const segments = pathname.split('/').filter(Boolean);
-    
-    // Toujours commencer par Accueil
-    items = [{ label: 'Accueil', href: '/' }];
-    
-    // Construire les segments
-    let currentPath = '';
-    segments.forEach((segment) => {
-      currentPath += `/${segment}`;
-      
-      // Obtenir le label depuis le mapping ou utiliser le segment
-      let label = pathLabels[currentPath] || segment;
-      
-      // Cas spécial pour les articles de blog
-      if (currentPath.startsWith('/blog/') && segment !== 'blog') {
-        label = decodeURIComponent(segment).replace(/-/g, ' ');
-        // Capitaliser la première lettre de chaque mot
-        label = label.split(' ').map(word => 
-          word.charAt(0).toUpperCase() + word.slice(1)
-        ).join(' ');
-      }
-      
-      items.push({
-        label,
-        href: currentPath
-      });
-    });
-  }
+function BreadcrumbLink({
+  asChild,
+  className,
+  ...props
+}: React.ComponentProps<"a"> & {
+  asChild?: boolean
+}) {
+  const Comp = asChild ? Slot : "a"
 
   return (
-    <nav aria-label="Breadcrumb" className={cn("mb-8", className)}>
-      <ol className="flex items-center space-x-2 text-sm text-muted-foreground">
-        {items.map((item, index) => (
-          <li key={item.href} className="flex items-center">
-            {index === 0 && (
-              <Home className="h-4 w-4 mr-1" />
-            )}
-            {index < items.length - 1 ? (
-              <Link 
-                href={item.href} 
-                className="hover:text-foreground transition-colors"
-              >
-                {item.label}
-              </Link>
-            ) : (
-              <span className="text-foreground font-medium">
-                {item.label}
-              </span>
-            )}
-            {index < items.length - 1 && (
-              <ChevronRight className="h-4 w-4 mx-2" />
-            )}
-          </li>
-        ))}
-      </ol>
-    </nav>
-  );
+    <Comp
+      data-slot="breadcrumb-link"
+      className={cn("hover:text-foreground transition-colors", className)}
+      {...props}
+    />
+  )
+}
+
+function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
+  return (
+    <span
+      data-slot="breadcrumb-page"
+      role="link"
+      aria-disabled="true"
+      aria-current="page"
+      className={cn("text-foreground font-normal", className)}
+      {...props}
+    />
+  )
+}
+
+function BreadcrumbSeparator({
+  children,
+  className,
+  ...props
+}: React.ComponentProps<"li">) {
+  return (
+    <li
+      data-slot="breadcrumb-separator"
+      role="presentation"
+      aria-hidden="true"
+      className={cn("[&>svg]:size-3.5", className)}
+      {...props}
+    >
+      {children ?? <ChevronRight />}
+    </li>
+  )
+}
+
+function BreadcrumbEllipsis({
+  className,
+  ...props
+}: React.ComponentProps<"span">) {
+  return (
+    <span
+      data-slot="breadcrumb-ellipsis"
+      role="presentation"
+      aria-hidden="true"
+      className={cn("flex size-9 items-center justify-center", className)}
+      {...props}
+    >
+      <MoreHorizontal className="size-4" />
+      <span className="sr-only">More</span>
+    </span>
+  )
+}
+
+export {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
 }

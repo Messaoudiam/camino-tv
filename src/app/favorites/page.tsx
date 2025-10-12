@@ -19,12 +19,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useFavorites } from '@/hooks/useFavorites';
-import { mockDeals } from '@/data/mock';
 import { cn } from '@/lib/utils';
 import type { Deal } from '@/types';
 
 export default function FavoritesPage() {
-  const { favorites, isLoading, favoritesCount } = useFavorites();
+  const { favorites, isLoading: favoritesLoading, favoritesCount, isAuthenticated } = useFavorites();
   const [searchQuery, setSearchQuery] = useState('');
 
   // Gestion sécurisée de la recherche avec Zod
@@ -37,12 +36,42 @@ export default function FavoritesPage() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [favoriteDeals, setFavoriteDeals] = useState<Deal[]>([]);
   const [showClearDialog, setShowClearDialog] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Filtrer les bons plans favoris depuis les données mock
+  // Fetch favorite deals from API
   useEffect(() => {
-    const filteredDeals = mockDeals.filter(deal => favorites.includes(deal.id));
-    setFavoriteDeals(filteredDeals);
-  }, [favorites]);
+    const fetchFavoriteDeals = async () => {
+      if (!isAuthenticated) {
+        setFavoriteDeals([]);
+        setIsLoading(false);
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        const response = await fetch('/api/favorites', {
+          credentials: 'include',
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setFavoriteDeals(data.favorites || []);
+        } else {
+          console.error('Error fetching favorites:', response.statusText);
+          setFavoriteDeals([]);
+        }
+      } catch (error) {
+        console.error('Error fetching favorites:', error);
+        setFavoriteDeals([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (!favoritesLoading) {
+      fetchFavoriteDeals();
+    }
+  }, [favorites, isAuthenticated, favoritesLoading]);
 
   // Filtrage et tri des favoris
   const processedDeals = favoriteDeals
@@ -73,10 +102,23 @@ export default function FavoritesPage() {
   const availableCategories = Array.from(new Set(favoriteDeals.map(deal => deal.category)));
 
   // Fonction pour vider tous les favoris
-  const handleClearFavorites = () => {
-    localStorage.removeItem('camino-favorites');
-    setShowClearDialog(false);
-    window.location.reload();
+  const handleClearFavorites = async () => {
+    try {
+      // Delete all favorites via API
+      const deletePromises = favorites.map(dealId =>
+        fetch(`/api/favorites?dealId=${dealId}`, {
+          method: 'DELETE',
+          credentials: 'include',
+        })
+      );
+
+      await Promise.all(deletePromises);
+
+      setShowClearDialog(false);
+      setFavoriteDeals([]);
+    } catch (error) {
+      console.error('Error clearing favorites:', error);
+    }
   };
 
   if (isLoading) {

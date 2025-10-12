@@ -1,49 +1,101 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useAuth } from '@/lib/auth-client';
 
 export function useFavorites() {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { user, isAuthenticated } = useAuth();
 
-  // Load favorites from localStorage on mount
+  // Load favorites from API on mount
   useEffect(() => {
+    const loadFavorites = async () => {
+      if (!isAuthenticated) {
+        setFavorites([]);
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/favorites', {
+          credentials: 'include',
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const favoriteIds = data.favorites.map((fav: any) => fav.id);
+          setFavorites(favoriteIds);
+        } else {
+          console.error('Error loading favorites:', response.statusText);
+          setFavorites([]);
+        }
+      } catch (error) {
+        console.error('Error loading favorites:', error);
+        setFavorites([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadFavorites();
+  }, [isAuthenticated]);
+
+  const addToFavorites = async (id: string) => {
+    if (!isAuthenticated) {
+      console.warn('User must be authenticated to add favorites');
+      return;
+    }
+
     try {
-      const stored = localStorage.getItem('camino-favorites');
-      if (stored) {
-        setFavorites(JSON.parse(stored));
+      const response = await fetch('/api/favorites', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ dealId: id }),
+      });
+
+      if (response.ok) {
+        setFavorites(prev => [...prev, id]);
+      } else {
+        const error = await response.json();
+        console.error('Error adding favorite:', error);
       }
     } catch (error) {
-      console.error('Error loading favorites:', error);
-    } finally {
-      setIsLoading(false);
+      console.error('Error adding favorite:', error);
     }
-  }, []);
+  };
 
-  // Save to localStorage whenever favorites change
-  useEffect(() => {
-    if (!isLoading) {
-      try {
-        localStorage.setItem('camino-favorites', JSON.stringify(favorites));
-      } catch (error) {
-        console.error('Error saving favorites:', error);
+  const removeFromFavorites = async (id: string) => {
+    if (!isAuthenticated) {
+      console.warn('User must be authenticated to remove favorites');
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/favorites?dealId=${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        setFavorites(prev => prev.filter(fav => fav !== id));
+      } else {
+        const error = await response.json();
+        console.error('Error removing favorite:', error);
       }
+    } catch (error) {
+      console.error('Error removing favorite:', error);
     }
-  }, [favorites, isLoading]);
-
-  const addToFavorites = (id: string) => {
-    setFavorites(prev => [...prev, id]);
   };
 
-  const removeFromFavorites = (id: string) => {
-    setFavorites(prev => prev.filter(fav => fav !== id));
-  };
-
-  const toggleFavorite = (id: string) => {
+  const toggleFavorite = async (id: string) => {
     if (favorites.includes(id)) {
-      removeFromFavorites(id);
+      await removeFromFavorites(id);
     } else {
-      addToFavorites(id);
+      await addToFavorites(id);
     }
   };
 
@@ -56,6 +108,7 @@ export function useFavorites() {
     removeFromFavorites,
     toggleFavorite,
     isFavorite,
-    favoritesCount: favorites.length
+    favoritesCount: favorites.length,
+    isAuthenticated,
   };
 }

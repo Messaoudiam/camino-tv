@@ -4,17 +4,39 @@
  * Page Deals - Tous les deals dans une page dédiée
  */
 
+import { useState, useEffect } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { PageHeader } from '@/components/ui/page-header';
 import { DealsSection } from '@/components/sections/DealsSection';
 import { Zap, Package } from 'lucide-react';
-import { mockDeals } from '@/data/mock';
+import type { Deal } from '@/types';
 
 export default function DealsPage() {
-  const dealsCount = mockDeals.length;
-  const hasDiscounts = mockDeals.some(deal => deal.discountPercentage > 0);
-  const hasNewItems = mockDeals.some(deal => deal.isNew);
+  const [deals, setDeals] = useState<Deal[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDeals = async () => {
+      try {
+        const response = await fetch('/api/deals');
+        if (response.ok) {
+          const data = await response.json();
+          setDeals(data.deals || []);
+        }
+      } catch (error) {
+        console.error('Error fetching deals:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDeals();
+  }, []);
+
+  const dealsCount = deals.length;
+  const hasDiscounts = deals.some(deal => deal.discountPercentage > 0);
+  const hasNewItems = deals.some(deal => deal.isNew);
 
   // Configuration dynamique selon le contexte
   const getBadgeConfig = () => {
@@ -31,15 +53,21 @@ export default function DealsPage() {
   };
 
   const getTitle = () => {
+    if (loading) {
+      return 'Chargement...';
+    }
     if (dealsCount === 0) {
       return 'Aucun bon plan pour le moment';
     }
-    return hasDiscounts 
+    return hasDiscounts
       ? 'Nos bons plans du moment'
       : 'Les bons plans du moment';
   };
 
   const getDescription = () => {
+    if (loading) {
+      return 'Chargement des bons plans en cours...';
+    }
     if (dealsCount === 0) {
       return 'Notre équipe travaille à dénicher les meilleures offres streetwear. Revenez bientôt !';
     }

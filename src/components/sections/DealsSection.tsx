@@ -3,7 +3,7 @@
  * UX épurée avec Tabs, Slider, Select - focus utilisateur
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Filter, Grid3X3, Search } from 'lucide-react';
 import { useFavorites } from '@/hooks/useFavorites';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { DealGrid } from '@/components/demo/DealGrid';
 import { Deal, DealCategory } from '@/types';
-import { mockDeals, categories } from '@/data/mock';
+import { categories } from '@/data/mock';
 import { cn } from '@/lib/utils';
 import { validateSearch, productSearchSchema } from '@/lib/validations/search';
 
@@ -24,8 +24,8 @@ interface DealsSectionProps {
 }
 
 export function DealsSection({ className }: DealsSectionProps) {
-  const [deals] = useState<Deal[]>(mockDeals);
-  const [loading] = useState(false);
+  const [deals, setDeals] = useState<Deal[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<string>('all');
   const [priceRange, setPriceRange] = useState<number[]>([500]);
   const [sortBy, setSortBy] = useState<string>('newest');
@@ -38,6 +38,30 @@ export function DealsSection({ className }: DealsSectionProps) {
   };
   const [minDiscount, setMinDiscount] = useState<number[]>([0]);
   useFavorites();
+
+  // Fetch deals from API
+  useEffect(() => {
+    const fetchDeals = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch('/api/deals');
+        if (response.ok) {
+          const data = await response.json();
+          setDeals(data.deals || []);
+        } else {
+          console.error('Error fetching deals:', response.statusText);
+          setDeals([]);
+        }
+      } catch (error) {
+        console.error('Error fetching deals:', error);
+        setDeals([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDeals();
+  }, []);
 
   // Calculer dynamiquement le nombre de deals par catégorie
   const getDealCountByCategory = (categoryId: DealCategory) => {
