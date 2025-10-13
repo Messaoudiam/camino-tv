@@ -23,14 +23,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Loader2, Upload, X, Image as ImageIcon } from 'lucide-react'
+import { Loader2, X } from 'lucide-react'
 
 const dealFormSchema = z.object({
   title: z.string().min(10, 'Le titre doit contenir au moins 10 caractères'),
   brand: z.string().min(2, 'La marque doit contenir au moins 2 caractères'),
-  originalPrice: z.number().nonnegative().optional().default(0),
+  originalPrice: z.union([z.number().nonnegative(), z.nan()]).transform(val => isNaN(val) ? 0 : val),
   currentPrice: z.number().positive('Le prix actuel doit être positif'),
-  discountPercentage: z.number().min(0).max(99).optional().default(0),
+  discountPercentage: z.union([z.number().min(0).max(99), z.nan()]).transform(val => isNaN(val) ? 0 : val),
   imageUrl: z.string().min(1, 'Une image est requise'),
   category: z.enum(['sneakers', 'streetwear', 'accessories', 'electronics', 'lifestyle']),
   affiliateUrl: z.string().url('URL d\'affiliation invalide'),

@@ -6,7 +6,7 @@ import { useAuth } from '@/lib/auth-client';
 export function useFavorites() {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   // Load favorites from API on mount
   useEffect(() => {
