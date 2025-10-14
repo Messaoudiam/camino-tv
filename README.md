@@ -1,8 +1,8 @@
 # 🎯 Camino TV - Plateforme Deals Streetwear
 
-> **Projet de démonstration technique** - Showcase moderne avec Next.js 15 et React 19
+> **Application Full-Stack en Production** - Next.js 15, React 19, PostgreSQL & Better Auth
 
-Une plateforme élégante inspirée de l'univers Camino TV pour découvrir les meilleurs deals sneakers et streetwear. Développée avec les dernières technologies web et un focus sur l'expérience utilisateur moderne.
+Une plateforme complète inspirée de l'univers Camino TV pour découvrir et gérer les meilleurs deals sneakers et streetwear. Développée avec les dernières technologies web, un backend complet et un système d'authentification avancé.
 
 ## 🚀 Démonstration Live
 
@@ -12,111 +12,178 @@ Une plateforme élégante inspirée de l'univers Camino TV pour découvrir les m
 
 ## ✨ Fonctionnalités Principales
 
+### 🔐 Authentification & Sécurité
+- **Better Auth** intégré avec Prisma adapter
+- **Email/Password** + Google OAuth (social login)
+- **Sessions sécurisées** stockées en base de données
+- **Middleware de protection** pour les routes admin
+- **Role-based access** (USER/ADMIN) avec gestion fine
+
 ### 🎨 Interface Moderne
 - **Design System** complet avec Shadcn UI et Tailwind CSS v4
 - **Dark/Light Mode** avec transition fluide (next-themes)
-- **Animations** et micro-interactions personnalisées
+- **24+ composants** Shadcn UI personnalisés
 - **Responsive Design** mobile-first sur tous devices
 
-### 🛍️ Catalogue Deals Interactif
-- **Grille produits** responsive avec DealCard optimisées
-- **Badges visuels** : Nouveau, Limité, Réductions
-- **Images optimisées** Next.js avec lazy loading
-- **Navigation fluide** entre les catégories
+### 🛍️ Catalogue Deals Dynamique
+- **API RESTful** avec endpoints CRUD complets
+- **Base de données** PostgreSQL avec Prisma ORM
+- **Grille produits** avec données en temps réel
+- **Filtres avancés** par catégorie, statut, recherche
+- **Pagination** et lazy loading optimisés
 
-### ❤️ Système de Favoris Avancé
-- **Hook personnalisé** useFavorites avec TypeScript strict
-- **Persistance localStorage** synchronisée en temps réel
-- **Page dédiée** /favorites pour la wishlist utilisateur
-- **État global** partagé entre tous les composants
+### ❤️ Système de Favoris API-First
+- **Integration API** avec fallback localStorage
+- **Authentification requise** pour la persistance
+- **Synchronisation** temps réel entre devices
+- **Page dédiée** /favorites avec gestion complète
 
-### 📝 Blog Intégré
-- **Pages dynamiques** [slug] avec App Router Next.js 15
-- **Rich content** avec support markdown et Twitter embeds
-- **Catégorisation** par culture, streetwear, interviews, etc.
-- **Équipe Camino TV** avec profils des créateurs
+### 🎛️ Dashboard Admin Complet
+- **KPI en temps réel** : deals, users, favorites, engagement
+- **CRUD Deals** : création, édition, suppression avec validation Zod
+- **Upload d'images** vers Supabase Storage (5MB max)
+- **Gestion utilisateurs** : rôles, statuts, recherche
+- **Interface moderne** avec Shadcn Sidebar et tables
 
-### 📱 Expérience Mobile Optimisée
-- **Navigation responsive** avec header adaptatif
-- **Performance** optimisée (React 19 + Next.js 15)
-- **Interactions tactiles** natives iOS/Android
-- **Bundle optimisé** avec code splitting automatique
+### 📝 Blog & Contenu
+- **Pages dynamiques** [slug] avec App Router
+- **Rich content** avec Twitter embeds
+- **Catégorisation** et profils équipe
+- **Gestion admin** (création/édition en cours)
 
-## 🛠 Stack Technique Moderne
+### 📱 Performance & UX
+- **React 19** + **Next.js 15** avec Turbopack
+- **Server Components** et optimisations automatiques
+- **Bundle optimisé** avec code splitting
+- **SEO complet** : sitemap, robots.txt, metadata
 
-### Core Framework
-- **Next.js 15.4.6** - App Router, Server Components, Turbopack
-- **React 19.1.0** - Nouvelles APIs, performance améliorée
-- **TypeScript 5** - Configuration stricte, zéro `any`
+## 🛠 Stack Technique Full-Stack
 
-### UI & Styling
-- **Tailwind CSS v4** - Design system avec variables CSS personnalisées
-- **Shadcn UI** - Composants accessibles basés sur Radix UI primitives
-- **next-themes 0.4.6** - Gestion dark/light mode server-safe
-- **Lucide React** - Iconographie moderne et optimisée
-- **class-variance-authority** - Variants de composants type-safe
+### Frontend
+- **Next.js 15.5.2** - App Router, Server Components, Turbopack
+- **React 19.1.0** - Dernières APIs et optimisations
+- **TypeScript 5** - Configuration stricte end-to-end
+- **Tailwind CSS v4** - Design system avec CSS variables
+- **Shadcn UI (24+ composants)** - Radix UI primitives accessibles
+- **next-themes 0.4.6** - Dark/Light mode persistant
+- **Lucide React** - Icons modernes SVG optimisés
 
-### État & Hooks
-- **Custom Hooks** - useFavorites avec localStorage sync
-- **React 19** - Nouvelles APIs de state management
-- **TypeScript Interfaces** - Types stricts pour toutes les données
+### Backend & Database
+- **PostgreSQL** - Base de données production (Supabase)
+- **Prisma 6.16.3** - ORM type-safe avec migrations
+- **Better Auth 1.3.26** - Authentication moderne avec sessions DB
+- **Supabase Storage** - Stockage d'images sécurisé
+- **Zod 4.1.5** - Validation schemas côté serveur/client
 
-### Qualité & Développement
-- **ESLint 9** - Configuration Next.js avec règles modernes
-- **Turbopack** - Bundler ultra-rapide en développement
-- **Components.json** - Configuration Shadcn UI standardisée
+### API & Security
+- **Next.js Route Handlers** - API RESTful type-safe
+- **Middleware protection** - Routes admin sécurisées
+- **Role-based access** - Gestion permissions USER/ADMIN
+- **Session management** - Better Auth + Prisma adapter
+- **CSRF protection** - Sécurité built-in
 
-## 🏗 Architecture Next.js 15 App Router
+### DevOps & Testing
+- **Jest 30** - Tests unitaires et intégration
+- **Testing Library** - Tests composants React
+- **ESLint 9** - Linting Next.js + TypeScript
+- **Prisma Migrate** - Versioning schéma database
+- **Vercel** - CI/CD automatique + preview deployments
+
+## 🏗 Architecture Full-Stack
 
 ```
 src/
-├── app/                 # App Router Next.js 15
-│   ├── blog/           # Blog avec pages dynamiques [slug]
-│   │   ├── [slug]/     # Articles individuels
-│   │   └── page.tsx    # Liste des articles
-│   ├── deals/          # Catalogue produits avec filtres
-│   ├── favorites/      # Page wishlist utilisateur
-│   ├── team/           # Présentation équipe Camino TV
-│   ├── layout.tsx      # Root layout avec métadonnées SEO
-│   └── globals.css     # Styles globaux Tailwind + variables CSS
+├── app/
+│   ├── (public)/           # Routes publiques
+│   │   ├── page.tsx        # Homepage
+│   │   ├── blog/           # Blog dynamique [slug]
+│   │   ├── deals/          # Catalogue deals
+│   │   ├── favorites/      # Wishlist utilisateur
+│   │   ├── team/           # Équipe Camino TV
+│   │   ├── contact/        # Formulaire contact
+│   │   └── legal/          # Pages légales
+│   │
+│   ├── (auth)/             # Routes authentification
+│   │   ├── login/          # Connexion
+│   │   └── signup/         # Inscription
+│   │
+│   ├── (admin)/            # Dashboard admin protégé
+│   │   └── admin/
+│   │       ├── dashboard/  # KPI stats temps réel
+│   │       ├── deals/      # CRUD deals + upload
+│   │       ├── blog/       # Gestion articles
+│   │       └── users/      # Administration users
+│   │
+│   └── api/                # API RESTful
+│       ├── auth/[...all]/  # Better Auth endpoints
+│       ├── deals/          # GET/POST/PUT/DELETE
+│       ├── favorites/      # Gestion favoris
+│       ├── users/          # Admin users API
+│       └── upload/         # Upload Supabase Storage
+│
 ├── components/
-│   ├── ui/             # Shadcn UI components (18 composants)
-│   ├── layout/         # Header responsive, Footer
-│   ├── sections/       # Hero, DealsSection modulaires
-│   ├── blog/           # BlogCard, BlogGrid, TwitterEmbed
-│   ├── demo/           # DealCard, DealGrid spécifiques
-│   └── providers/      # ThemeProvider (next-themes)
-├── hooks/              # useFavorites.ts - localStorage sync
-├── lib/                # utils.ts - Tailwind merge helpers
-├── types/              # index.ts - Interfaces TypeScript strictes
-└── data/               # mock.ts - 10 deals + 7 articles + équipe
+│   ├── ui/                 # 24+ Shadcn UI components
+│   ├── admin/              # DealForm, DealsTable, Sidebar
+│   ├── layout/             # Header, Footer, AuthButton
+│   ├── sections/           # Hero, DealsSection
+│   └── providers/          # ThemeProvider
+│
+├── lib/
+│   ├── auth.ts             # Better Auth config server
+│   ├── auth-client.ts      # Better Auth client + hooks
+│   ├── db.ts               # Prisma client singleton
+│   └── supabase.ts         # Supabase client (storage)
+│
+├── hooks/                  # useFavorites (API + localStorage)
+├── types/                  # TypeScript interfaces
+└── data/                   # Mock data (migration reference)
+
+prisma/
+├── schema.prisma           # Models: User, Deal, Favorite, etc.
+└── migrations/             # Database migrations history
 ```
 
 ## 🎯 Points Forts Techniques
 
-### Performance Next.js 15
-- **Turbopack** - Build 700x plus rapide que Webpack
-- **App Router** - Server Components + optimisations automatiques
-- **Next.js Image** - Lazy loading et formats modernes (WebP, AVIF)
-- **Code splitting** - Bundles optimisés par route
+### Backend Architecture
+- **Type-safety end-to-end** - Prisma → API → Frontend
+- **RESTful API** - Endpoints CRUD avec Zod validation
+- **Session management** - Better Auth avec database persistence
+- **Role-based access** - Middleware protection + permissions
+- **Image upload** - Supabase Storage avec validation (5MB, formats)
+- **Database migrations** - Prisma versioning avec rollback support
 
-### Accessibilité Radix UI
-- **Primitives accessibles** - ARIA patterns complets
-- **Navigation clavier** - Focus management automatique
-- **Screen readers** - Semantic HTML + live regions
-- **Contraste WCAG 2.1** - Vérification automatique dark/light
+### Performance & Optimization
+- **Turbopack** - Build 700x plus rapide que Webpack
+- **Server Components** - Rendering optimisé côté serveur
+- **API Route Handlers** - Streaming et edge-ready
+- **Database pooling** - Supabase connection pooling
+- **Image optimization** - Next.js Image + Supabase CDN
+- **Code splitting** - Automatic bundle optimization
+
+### Security & Authentication
+- **Better Auth** - Modern auth avec social login support
+- **Middleware protection** - Route guards automatiques
+- **CSRF protection** - Built-in security headers
+- **Environment variables** - Secrets management Vercel
+- **SQL injection safe** - Prisma parameterized queries
+- **XSS protection** - React automatic escaping
 
 ### Developer Experience
-- **TypeScript strict** - 100% typé, interfaces exhaustives
-- **Shadcn UI** - Composants copy-paste customisables
-- **ESLint + Next.js** - Règles optimisées React 19
-- **File-based routing** - Architecture App Router intuitive
+- **Full-stack TypeScript** - Types partagés DB → UI
+- **Prisma Studio** - GUI pour gérer la database
+- **Hot reload** - Turbopack instant updates
+- **API testing** - Type-safe endpoints avec autocomplete
+- **Database seeding** - Scripts de données de test
+- **Error handling** - Consistent API error responses
 
 ### User Experience
-- **État persistant** - Favoris localStorage synchronisés
-- **Navigation fluide** - Transitions et animations CSS
-- **Responsive design** - Breakpoints mobile-first
-- **Dark mode** - Préférence système + toggle manuel
+- **Real-time updates** - API sync avec optimistic UI
+- **Persistent state** - Favoris API + localStorage fallback
+- **Admin dashboard** - Interface complète de gestion
+- **Responsive design** - Mobile-first breakpoints
+- **Dark mode** - System preference + manual toggle
+- **Accessibility** - WCAG 2.1 + Radix UI primitives
 
 ## 🚦 Installation et Développement
 
@@ -126,31 +193,59 @@ git clone https://github.com/Messaoudiam/camino-tv.git
 cd camino-tv
 npm install
 
-# Développement avec Turbopack (ultra-rapide)
-npm run dev --turbo
+# Configuration environnement
+cp .env.example .env
+# Éditer .env avec tes credentials Supabase
 
-# Build production optimisé
+# Base de données (Prisma local dev)
+npx prisma dev              # Démarre serveur PostgreSQL local
+npm run db:generate         # Génère Prisma Client
+npm run db:migrate          # Applique les migrations
+npm run db:studio           # Ouvre GUI Prisma Studio
+
+# Développement avec Turbopack
+npm run dev
+
+# Build production
 npm run build
 npm run start
 
-# Linting Next.js ESLint
+# Tests
+npm test
+npm run test:watch
+
+# Linting
 npm run lint
 ```
 
 **Serveur de développement** : [http://localhost:3000](http://localhost:3000)
+**Prisma Studio** : [http://localhost:5555](http://localhost:5555)
 
 ## 📊 Métriques de Qualité
 
-- ✅ **Next.js 15** : App Router + React 19 + Turbopack
-- ✅ **TypeScript** : Configuration stricte, 100% typé, 0 erreurs
-- ✅ **Shadcn UI** : 18 composants accessibles intégrés
-- ✅ **ESLint** : 0 warnings/errors, code 100% propre
-- ✅ **Bundle Size** : 151KB First Load JS optimisé
+### Frontend
+- ✅ **Next.js 15.5.2** : App Router + React 19 + Turbopack
+- ✅ **TypeScript** : 100% typé, strict mode, 0 erreurs
+- ✅ **Shadcn UI** : 24+ composants accessibles
+- ✅ **ESLint** : Code clean avec standards Next.js
+- ✅ **Bundle Size** : ~175KB First Load JS optimisé
 - ✅ **Responsive** : Mobile-first design system
-- ✅ **Performance** : Optimisations automatiques Next.js
-- ✅ **SEO Ready** : Métadonnées complètes + sitemap + robots.txt
-- ✅ **PWA Ready** : Manifest.json + icônes optimisées
-- ✅ **Sécurité** : 0 vulnérabilités, headers sécurisés
+
+### Backend
+- ✅ **PostgreSQL + Prisma** : Base de données production-ready
+- ✅ **Better Auth** : Authentification complète + OAuth
+- ✅ **API RESTful** : 8+ endpoints avec validation Zod
+- ✅ **Supabase Storage** : Upload d'images sécurisé
+- ✅ **Middleware** : Protection routes + role-based access
+- ✅ **Migrations** : Database versioning avec Prisma
+
+### Production
+- ✅ **Vercel** : Déployé avec CI/CD automatique
+- ✅ **Environment** : Variables sécurisées (Supabase, Auth)
+- ✅ **Performance** : Server Components + optimizations
+- ✅ **SEO** : Metadata complètes + sitemap + robots.txt
+- ✅ **Security** : Headers sécurisés + CSRF protection
+- ✅ **Monitoring** : Ready pour analytics et error tracking
 
 ## 🎨 Design System Tailwind + Shadcn
 
@@ -218,28 +313,38 @@ export function useFavorites() {
 
 ## 📈 État Actuel et Roadmap
 
-### ✅ Implémenté (v1.0) - **DÉPLOYÉ EN PRODUCTION**
-- **Interface complète** - 6 pages responsives (Home, Deals, Blog, Team, Favorites + routes dynamiques)
-- **Système favoris** - Hook localStorage + persistance temps réel
-- **Blog dynamique** - Pages [slug] + articles riches avec Twitter embeds
-- **Dark/Light mode** - Thème système + toggle manuel
-- **Design system** - Shadcn UI + 18 composants + variables CSS
-- **Production Ready** - Build optimisé, 0 erreurs, déployé sur Vercel
-- **SEO Complet** - Sitemap, robots.txt, métadonnées OpenGraph
-- **PWA Features** - Manifest.json, icônes optimisées
-- **Performance** - 151KB bundle, optimisations Next.js 15
+### ✅ Implémenté (v2.0) - **PRODUCTION FULL-STACK**
+- **Backend complet** - PostgreSQL + Prisma + Better Auth
+- **API RESTful** - 8+ endpoints CRUD avec validation Zod
+- **Authentification** - Email/password + Google OAuth + sessions DB
+- **Admin Dashboard** - KPI, CRUD deals, gestion users, upload images
+- **Base de données** - Migrations Prisma + models (User, Deal, Favorite, etc.)
+- **Storage** - Supabase Storage pour images avec API upload
+- **Sécurité** - Middleware protection + role-based access
+- **Interface complète** - 10+ pages (public + auth + admin)
+- **Favoris API** - Integration backend avec fallback localStorage
+- **Blog dynamique** - Pages [slug] + articles riches
+- **Dark/Light mode** - Persistant avec next-themes
+- **Design system** - Shadcn UI (24+ composants) + Tailwind v4
+- **SEO & Performance** - Optimisé Next.js 15 + Server Components
 
-### 🔄 Améliorations Techniques (Futures)
-- **Tests** - Jest + Testing Library + Playwright E2E
-- **Performance** - Bundle analyzer + Core Web Vitals monitoring
-- **PWA** - Service Worker + offline support
-- **Monitoring** - Error tracking + analytics avancées
+### 🔄 Améliorations Prévues
+- **Tests E2E** - Playwright pour scénarios complets admin
+- **Blog Backend** - API CRUD pour création articles
+- **Search** - Full-text search PostgreSQL ou Algolia
+- **Email** - Transactional emails (welcome, reset password)
+- **Analytics** - Vercel Analytics + custom events
+- **Monitoring** - Sentry pour error tracking
+- **Cache** - Redis pour sessions et API responses
+- **Rate limiting** - Protection API endpoints
 
 ### 🚀 Évolutions Fonctionnelles
-- **API Backend** - Vraies données deals avec CMS headless
-- **Authentification** - Auth.js + comptes utilisateurs
-- **Recherche** - Algolia ou solution full-text
-- **Analytics** - Vercel Analytics + événements personnalisés
+- **Social features** - Comments, reviews, ratings
+- **Notifications** - Push notifications pour nouveaux deals
+- **Mobile App** - React Native avec API partagée
+- **CMS Integration** - Sanity ou Strapi pour contenu
+- **Multi-langue** - i18n support FR/EN
+- **Payment** - Stripe pour abonnements premium
 
 ## 👥 Équipe et Crédits
 
@@ -269,21 +374,25 @@ Tous les droits sur la marque "Camino TV" appartiennent à leurs propriétaires 
 
 ## 🌟 Résumé du Projet
 
-**🚀 Showcase Technique Next.js 15 + React 19 - DÉPLOYÉ EN PRODUCTION**
+**🚀 Application Full-Stack Production-Ready - Next.js 15 + PostgreSQL + Better Auth**
 
-*Démonstration complète des dernières technologies web avec focus UX/UI moderne*
+*Plateforme complète de deals streetwear avec backend, authentification, admin dashboard et API*
 
 **✅ Live Demo** : [https://camino-tv.vercel.app](https://camino-tv.vercel.app)
 
-**🛠 Stack** : Next.js 15 • React 19 • TypeScript • Shadcn UI • Tailwind v4
+**🛠 Stack Complète** :
+- **Frontend** : Next.js 15 • React 19 • TypeScript • Shadcn UI • Tailwind v4
+- **Backend** : PostgreSQL • Prisma • Better Auth • Supabase Storage
+- **API** : RESTful endpoints • Zod validation • Role-based access
 
-**📊 Audit Technique** : 
-- ✅ Build: RÉUSSI (0 erreurs)
-- ✅ TypeScript: 100% typé 
-- ✅ ESLint: 0 warnings
-- ✅ Sécurité: 0 vulnérabilités
-- ✅ Performance: 151KB optimisé
-- ✅ SEO: Complet (sitemap, robots.txt, métadonnées)
-- ✅ PWA: Ready (manifest, icônes)
+**📊 Audit Technique** :
+- ✅ **Build** : Réussi avec 0 erreurs TypeScript
+- ✅ **Database** : Migrations Prisma + 6 models relationnels
+- ✅ **Auth** : Email/password + Google OAuth opérationnels
+- ✅ **API** : 8+ endpoints CRUD sécurisés
+- ✅ **Admin** : Dashboard complet (deals, users, stats)
+- ✅ **Storage** : Upload images vers Supabase (5MB max)
+- ✅ **Security** : Middleware + CSRF + headers sécurisés
+- ✅ **SEO** : Metadata complètes + sitemap + robots.txt
 
-**🎯 Score Final : 100/100** - Prêt pour la production !
+**🎯 Version 2.0 Full-Stack** - Production-ready avec backend complet !
