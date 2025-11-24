@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
 interface AnimatedNumberProps {
   value: number;
@@ -13,10 +13,10 @@ interface AnimatedNumberProps {
 
 const defaultFormatNumber = (num: number): string => {
   if (num >= 1000000) {
-    return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
   }
   if (num >= 1000) {
-    return (num / 1000).toFixed(0) + 'k';
+    return (num / 1000).toFixed(0) + "k";
   }
   return num.toString();
 };
@@ -25,8 +25,8 @@ export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({
   value,
   duration = 2000,
   delay = 0,
-  suffix = '',
-  className = '',
+  suffix = "",
+  className = "",
   formatNumber = defaultFormatNumber,
 }) => {
   const [current, setCurrent] = useState(0);
@@ -40,10 +40,10 @@ export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({
           setHasStarted(true);
         }
       },
-      { 
+      {
         threshold: 0.3,
-        rootMargin: '0px 0px -100px 0px'
-      }
+        rootMargin: "0px 0px -100px 0px",
+      },
     );
 
     const currentRef = ref.current;
@@ -69,11 +69,11 @@ export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({
       const now = Date.now();
       const elapsed = Math.max(0, now - startTime);
       const progress = Math.min(elapsed / duration, 1);
-      
+
       // Smooth easing function
       const easedProgress = progress * progress * (3 - 2 * progress);
       const newValue = Math.floor(easedProgress * value);
-      
+
       setCurrent(newValue);
 
       if (progress < 1) {
@@ -92,7 +92,8 @@ export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({
 
   return (
     <span ref={ref} className={className}>
-      {formatNumber(current)}{suffix}
+      {formatNumber(current)}
+      {suffix}
     </span>
   );
 };
