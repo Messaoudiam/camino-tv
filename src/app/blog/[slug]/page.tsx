@@ -22,6 +22,9 @@ import { BlogInteractions } from "@/components/blog/BlogInteractions";
 import { ShareButtons } from "@/components/blog/ShareButtons";
 import { BlogPost, BlogCategory } from "@/types";
 
+// Force dynamic rendering to avoid build-time database connection
+export const dynamic = "force-dynamic";
+
 // Transform DB post to frontend format
 function transformPost(dbPost: any): BlogPost {
   return {

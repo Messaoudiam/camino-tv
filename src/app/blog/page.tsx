@@ -2,6 +2,9 @@ import { Metadata } from "next";
 import { BlogPageClient } from "@/components/blog/BlogPageClient";
 import { prisma } from "@/lib/db";
 
+// Force dynamic rendering to avoid build-time database connection
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Blog Camino TV | Actualité Streetwear & Culture",
   description:
