@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/db'
-import { auth } from '@/lib/auth'
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/db";
+import { auth } from "@/lib/auth";
 
 /**
  * Users API Routes
@@ -14,13 +14,10 @@ import { auth } from '@/lib/auth'
 export async function GET(request: NextRequest) {
   try {
     // Check authentication
-    const session = await auth.api.getSession({ headers: request.headers })
+    const session = await auth.api.getSession({ headers: request.headers });
 
-    if (!session || (session.user as { role?: string }).role !== 'ADMIN') {
-      return NextResponse.json(
-        { error: 'Non autorisé' },
-        { status: 401 }
-      )
+    if (!session || (session.user as { role?: string }).role !== "ADMIN") {
+      return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
 
     const users = await prisma.user.findMany({
@@ -40,16 +37,16 @@ export async function GET(request: NextRequest) {
         },
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: "desc",
       },
-    })
+    });
 
-    return NextResponse.json({ users })
+    return NextResponse.json({ users });
   } catch (error) {
-    console.error('Error fetching users:', error)
+    console.error("Error fetching users:", error);
     return NextResponse.json(
-      { error: 'Erreur lors de la récupération des utilisateurs' },
-      { status: 500 }
-    )
+      { error: "Erreur lors de la récupération des utilisateurs" },
+      { status: 500 },
+    );
   }
 }

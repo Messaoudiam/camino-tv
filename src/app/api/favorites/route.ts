@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/db'
-import { auth } from '@/lib/auth'
-import { z } from 'zod'
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/db";
+import { requireAuth } from "@/lib/auth-helpers";
+import { z } from "zod";
 
 /**
  * Favorites API Routes
@@ -11,8 +11,8 @@ import { z } from 'zod'
  */
 
 const favoriteSchema = z.object({
-  dealId: z.string().cuid('ID de deal invalide'),
-})
+  dealId: z.string().cuid("ID de deal invalide"),
+});
 
 /**
  * GET /api/favorites
@@ -20,37 +20,38 @@ const favoriteSchema = z.object({
  */
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({ headers: request.headers })
-
-    if (!session) {
+    // CRITICAL SECURITY: Multi-layered auth check
+    const authResult = await requireAuth(request.headers);
+    if (authResult.error) {
       return NextResponse.json(
-        { error: 'Non authentifié' },
-        { status: 401 }
-      )
+        { error: authResult.error },
+        { status: authResult.status },
+      );
     }
 
+    // At this point, we know authResult.session exists (error was checked above)
     const favorites = await prisma.favorite.findMany({
-      where: { userId: session.user.id },
+      where: { userId: authResult.session!.user.id },
       include: {
         deal: true,
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: "desc",
       },
-    })
+    });
 
     return NextResponse.json({
       favorites: favorites.map((fav) => ({
         ...fav.deal,
         favoritedAt: fav.createdAt,
       })),
-    })
+    });
   } catch (error) {
-    console.error('Error fetching favorites:', error)
+    console.error("Error fetching favorites:", error);
     return NextResponse.json(
-      { error: 'Erreur lors de la récupération des favoris' },
-      { status: 500 }
-    )
+      { error: "Erreur lors de la récupération des favoris" },
+      { status: 500 },
+    );
   }
 }
 
@@ -60,72 +61,69 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({ headers: request.headers })
-
-    if (!session) {
+    // CRITICAL SECURITY: Multi-layered auth check
+    const authResult = await requireAuth(request.headers);
+    if (authResult.error) {
       return NextResponse.json(
-        { error: 'Non authentifié' },
-        { status: 401 }
-      )
+        { error: authResult.error },
+        { status: authResult.status },
+      );
     }
 
-    const body = await request.json()
-    const { dealId } = favoriteSchema.parse(body)
+    const body = await request.json();
+    const { dealId } = favoriteSchema.parse(body);
 
     // Check if deal exists
     const deal = await prisma.deal.findUnique({
       where: { id: dealId },
-    })
+    });
 
     if (!deal) {
-      return NextResponse.json(
-        { error: 'Deal non trouvé' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: "Deal non trouvé" }, { status: 404 });
     }
 
     // Check if already favorited
     const existing = await prisma.favorite.findUnique({
       where: {
         userId_dealId: {
-          userId: session.user.id,
+          userId: authResult.session!.user.id,
           dealId,
         },
       },
-    })
+    });
 
     if (existing) {
       return NextResponse.json(
-        { error: 'Deal déjà dans les favoris' },
-        { status: 409 }
-      )
+        { error: "Deal déjà dans les favoris" },
+        { status: 409 },
+      );
     }
 
     // Create favorite
     const favorite = await prisma.favorite.create({
       data: {
-        userId: session.user.id,
+        userId: authResult.session!.user.id,
         dealId,
       },
       include: {
         deal: true,
       },
-    })
+    });
 
-    return NextResponse.json(favorite, { status: 201 })
+    return NextResponse.json(favorite, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Données invalides', details: error.issues },
-        { status: 400 }
-      )
+        { error: "Données invalides", details: error.issues },
+        { status: 400 },
+      );
     }
 
-    console.error('Error adding favorite:', error)
+    console.error("Error adding favorite:", error);
     return NextResponse.json(
-      { error: 'Erreur lors de l\'ajout aux favoris' },
-      { status: 500 }
-    )
+      { error: "Erreur lors de l'ajout aux favoris" },
+      { status: 500 },
+    );
   }
 }
 
@@ -136,49 +134,43 @@ export async function POST(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
-    const session = await auth.api.getSession({ headers: request.headers })
-
-    if (!session) {
+    // CRITICAL SECURITY: Multi-layered auth check
+    const authResult = await requireAuth(request.headers);
+    if (authResult.error) {
       return NextResponse.json(
-        { error: 'Non authentifié' },
-        { status: 401 }
-      )
+        { error: authResult.error },
+        { status: authResult.status },
+      );
     }
 
-    const { searchParams } = new URL(request.url)
-    const dealId = searchParams.get('dealId')
+    const { searchParams } = new URL(request.url);
+    const dealId = searchParams.get("dealId");
 
     if (!dealId) {
-      return NextResponse.json(
-        { error: 'dealId requis' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: "dealId requis" }, { status: 400 });
     }
 
     await prisma.favorite.delete({
       where: {
         userId_dealId: {
-          userId: session.user.id,
+          userId: authResult.session!.user.id,
           dealId,
         },
       },
-    })
+    });
 
     return NextResponse.json({
-      message: 'Retiré des favoris avec succès',
-    })
+      message: "Retiré des favoris avec succès",
+    });
   } catch (error: any) {
-    if (error.code === 'P2025') {
-      return NextResponse.json(
-        { error: 'Favori non trouvé' },
-        { status: 404 }
-      )
+    if (error.code === "P2025") {
+      return NextResponse.json({ error: "Favori non trouvé" }, { status: 404 });
     }
 
-    console.error('Error removing favorite:', error)
+    console.error("Error removing favorite:", error);
     return NextResponse.json(
-      { error: 'Erreur lors du retrait des favoris' },
-      { status: 500 }
-    )
+      { error: "Erreur lors du retrait des favoris" },
+      { status: 500 },
+    );
   }
 }
