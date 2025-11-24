@@ -29,6 +29,7 @@ model User {
   sessions  Session[]
   accounts  Account[]
   favorites Favorite[]
+  blogPosts BlogPost[]
 
   @@index([email])
   @@map("users")
@@ -96,7 +97,7 @@ model Deal {
   id                 String       @id @default(cuid())
   title              String
   brand              String
-  originalPrice      Decimal?     @db.Decimal(10, 2)
+  originalPrice      Decimal      @db.Decimal(10, 2)
   currentPrice       Decimal      @db.Decimal(10, 2)
   discountPercentage Int          @default(0)
   imageUrl           String
@@ -107,6 +108,7 @@ model Deal {
   promoCode          String?
   promoDescription   String?
   isActive           Boolean      @default(true)
+  deletedAt          DateTime?
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
 
@@ -115,6 +117,7 @@ model Deal {
   @@index([category, isActive])
   @@index([createdAt])
   @@index([isActive])
+  @@index([brand])
   @@map("deals")
 }
 
@@ -148,11 +151,17 @@ model BlogPost {
   content     String       @db.Text
   imageUrl    String
   category    BlogCategory
+
+  // Author - relation optionnelle (fallback sur authorName si pas de user)
+  authorId    String?
+  author      User?        @relation(fields: [authorId], references: [id], onDelete: SetNull)
   authorName  String
   authorImage String
   authorRole  String
+
   publishedAt DateTime
   readTime    Int
+  views       Int          @default(0)
   tags        String[]
   isFeatured  Boolean      @default(false)
   isPublished Boolean      @default(true)
@@ -162,6 +171,7 @@ model BlogPost {
   @@index([slug])
   @@index([category, publishedAt])
   @@index([isPublished])
+  @@index([authorId])
   @@map("blog_posts")
 }
 
