@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { createAuthClient } from 'better-auth/react'
-import type {} from '@/types/better-auth'
+import { createAuthClient } from "better-auth/react";
+import type {} from "@/types/better-auth";
 
 /**
  * Better Auth Client for React Components
@@ -21,18 +21,18 @@ import type {} from '@/types/better-auth'
  */
 
 export const authClient = createAuthClient({
-  baseURL: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
-})
+  baseURL: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+});
 
 /**
  * Custom hook for easy auth access
  * Provides a clean API for authentication state and methods
  */
 export function useAuth() {
-  const { data: session, isPending, error } = authClient.useSession()
+  const { data: session, isPending, error } = authClient.useSession();
 
   // Type assertion for custom User fields
-  const user = session?.user as { role?: 'USER' | 'ADMIN' } | undefined
+  const user = session?.user as { role?: "USER" | "ADMIN" } | undefined;
 
   return {
     // Session data
@@ -52,7 +52,7 @@ export function useAuth() {
     signOut: authClient.signOut,
 
     // Helper for role-based access
-    isAdmin: user?.role === 'ADMIN',
-    isUser: user?.role === 'USER',
-  }
+    isAdmin: user?.role === "ADMIN",
+    isUser: user?.role === "USER",
+  };
 }

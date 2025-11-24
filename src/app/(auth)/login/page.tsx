@@ -1,15 +1,22 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { authClient } from '@/lib/auth-client'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Alert } from '@/components/ui/alert'
-import { Eye, EyeOff } from 'lucide-react'
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Alert } from "@/components/ui/alert";
+import { Eye, EyeOff } from "lucide-react";
 
 /**
  * Login Page
@@ -17,53 +24,53 @@ import { Eye, EyeOff } from 'lucide-react'
  * Supports Google OAuth (if configured)
  */
 export default function LoginPage() {
-  const router = useRouter()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   async function handleEmailLogin(e: React.FormEvent) {
-    e.preventDefault()
-    setError('')
-    setIsLoading(true)
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
 
     try {
       const { data, error: authError } = await authClient.signIn.email({
         email,
         password,
-      })
+      });
 
       if (authError) {
-        setError(authError.message || 'Identifiants incorrects')
-        setIsLoading(false)
-        return
+        setError(authError.message || "Identifiants incorrects");
+        setIsLoading(false);
+        return;
       }
 
       if (data) {
         // Redirect to home or admin based on role
-        router.push('/')
-        router.refresh()
+        router.push("/");
+        router.refresh();
       }
     } catch {
-      setError('Une erreur est survenue. Veuillez réessayer.')
-      setIsLoading(false)
+      setError("Une erreur est survenue. Veuillez réessayer.");
+      setIsLoading(false);
     }
   }
 
   async function handleGoogleLogin() {
-    setError('')
-    setIsLoading(true)
+    setError("");
+    setIsLoading(true);
 
     try {
       await authClient.signIn.social({
-        provider: 'google',
-        callbackURL: '/',
-      })
+        provider: "google",
+        callbackURL: "/",
+      });
     } catch {
-      setError('Erreur lors de la connexion avec Google')
-      setIsLoading(false)
+      setError("Erreur lors de la connexion avec Google");
+      setIsLoading(false);
     }
   }
 
@@ -78,11 +85,7 @@ export default function LoginPage() {
 
       <CardContent className="space-y-4">
         <form onSubmit={handleEmailLogin} className="space-y-4">
-          {error && (
-            <Alert variant="destructive">
-              {error}
-            </Alert>
-          )}
+          {error && <Alert variant="destructive">{error}</Alert>}
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -126,18 +129,16 @@ export default function LoginPage() {
                   <Eye className="h-4 w-4 text-muted-foreground" />
                 )}
                 <span className="sr-only">
-                  {showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                  {showPassword
+                    ? "Masquer le mot de passe"
+                    : "Afficher le mot de passe"}
                 </span>
               </Button>
             </div>
           </div>
 
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Connexion...' : 'Se connecter'}
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? "Connexion..." : "Se connecter"}
           </Button>
         </form>
 
@@ -183,7 +184,7 @@ export default function LoginPage() {
 
       <CardFooter className="flex flex-col space-y-2 text-sm text-center text-muted-foreground">
         <p>
-          Pas encore de compte ?{' '}
+          Pas encore de compte ?{" "}
           <Link
             href="/signup"
             className="font-medium text-primary underline-offset-4 hover:underline"
@@ -193,5 +194,5 @@ export default function LoginPage() {
         </p>
       </CardFooter>
     </Card>
-  )
+  );
 }

@@ -1,32 +1,39 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { authClient } from '@/lib/auth-client'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Alert } from '@/components/ui/alert'
-import { PasswordStrength } from '@/components/auth/password-strength'
-import { validatePassword, isCommonPassword } from '@/lib/password-validation'
-import { Eye, EyeOff } from 'lucide-react'
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Alert } from "@/components/ui/alert";
+import { PasswordStrength } from "@/components/auth/password-strength";
+import { validatePassword, isCommonPassword } from "@/lib/password-validation";
+import { Eye, EyeOff } from "lucide-react";
 
 /**
  * Signup Page
  * User registration with Better Auth
  */
 export default function SignupPage() {
-  const router = useRouter()
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [error, setError] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const router = useRouter();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Check if form is valid
   const isFormValid =
@@ -36,68 +43,70 @@ export default function SignupPage() {
     confirmPassword.length >= 8 &&
     password === confirmPassword &&
     validatePassword(password).valid &&
-    !isCommonPassword(password)
+    !isCommonPassword(password);
 
   async function handleSignup(e: React.FormEvent) {
-    e.preventDefault()
-    setError('')
+    e.preventDefault();
+    setError("");
 
     // Validation
     if (password !== confirmPassword) {
-      setError('Les mots de passe ne correspondent pas')
-      return
+      setError("Les mots de passe ne correspondent pas");
+      return;
     }
 
     // Password strength validation (client-side, server validates too)
-    const validation = validatePassword(password)
+    const validation = validatePassword(password);
     if (!validation.valid) {
-      setError(validation.errors[0])
-      return
+      setError(validation.errors[0]);
+      return;
     }
 
     if (isCommonPassword(password)) {
-      setError('Ce mot de passe est trop commun. Veuillez en choisir un plus sécurisé')
-      return
+      setError(
+        "Ce mot de passe est trop commun. Veuillez en choisir un plus sécurisé",
+      );
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
       const { data, error: authError } = await authClient.signUp.email({
         email,
         password,
         name,
-      })
+      });
 
       if (authError) {
-        setError(authError.message || 'Erreur lors de la création du compte')
-        setIsLoading(false)
-        return
+        setError(authError.message || "Erreur lors de la création du compte");
+        setIsLoading(false);
+        return;
       }
 
       if (data) {
         // Auto-login after signup
-        router.push('/')
-        router.refresh()
+        router.push("/");
+        router.refresh();
       }
     } catch {
-      setError('Une erreur est survenue. Veuillez réessayer.')
-      setIsLoading(false)
+      setError("Une erreur est survenue. Veuillez réessayer.");
+      setIsLoading(false);
     }
   }
 
   async function handleGoogleSignup() {
-    setError('')
-    setIsLoading(true)
+    setError("");
+    setIsLoading(true);
 
     try {
       await authClient.signIn.social({
-        provider: 'google',
-        callbackURL: '/',
-      })
+        provider: "google",
+        callbackURL: "/",
+      });
     } catch {
-      setError('Erreur lors de l\'inscription avec Google')
-      setIsLoading(false)
+      setError("Erreur lors de l'inscription avec Google");
+      setIsLoading(false);
     }
   }
 
@@ -112,11 +121,7 @@ export default function SignupPage() {
 
       <CardContent className="space-y-4">
         <form onSubmit={handleSignup} className="space-y-4">
-          {error && (
-            <Alert variant="destructive">
-              {error}
-            </Alert>
-          )}
+          {error && <Alert variant="destructive">{error}</Alert>}
           <div className="space-y-2">
             <Label htmlFor="name">Nom complet</Label>
             <Input
@@ -174,16 +179,16 @@ export default function SignupPage() {
                   <Eye className="h-4 w-4 text-muted-foreground" />
                 )}
                 <span className="sr-only">
-                  {showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                  {showPassword
+                    ? "Masquer le mot de passe"
+                    : "Afficher le mot de passe"}
                 </span>
               </Button>
             </div>
           </div>
 
           {/* Password Strength Indicator */}
-          {password && (
-            <PasswordStrength password={password} />
-          )}
+          {password && <PasswordStrength password={password} />}
 
           <div className="space-y-2">
             <Label htmlFor="confirmPassword">Confirmer le mot de passe</Label>
@@ -214,7 +219,9 @@ export default function SignupPage() {
                   <Eye className="h-4 w-4 text-muted-foreground" />
                 )}
                 <span className="sr-only">
-                  {showConfirmPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                  {showConfirmPassword
+                    ? "Masquer le mot de passe"
+                    : "Afficher le mot de passe"}
                 </span>
               </Button>
             </div>
@@ -225,7 +232,7 @@ export default function SignupPage() {
             className="w-full"
             disabled={isLoading || !isFormValid}
           >
-            {isLoading ? 'Création...' : 'Créer mon compte'}
+            {isLoading ? "Création..." : "Créer mon compte"}
           </Button>
         </form>
 
@@ -271,7 +278,7 @@ export default function SignupPage() {
 
       <CardFooter className="flex flex-col space-y-2 text-sm text-center text-muted-foreground">
         <p>
-          Déjà un compte ?{' '}
+          Déjà un compte ?{" "}
           <Link
             href="/login"
             className="font-medium text-primary underline-offset-4 hover:underline"
@@ -280,12 +287,12 @@ export default function SignupPage() {
           </Link>
         </p>
         <p className="text-xs">
-          En créant un compte, vous acceptez nos{' '}
+          En créant un compte, vous acceptez nos{" "}
           <Link href="/legal/cgu" className="underline hover:text-foreground">
             conditions d&apos;utilisation
           </Link>
         </p>
       </CardFooter>
     </Card>
-  )
+  );
 }
