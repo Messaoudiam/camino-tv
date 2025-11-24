@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Package,
@@ -10,7 +10,7 @@ import {
   Settings,
   LogOut,
   ChevronDown,
-} from 'lucide-react'
+} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -22,15 +22,15 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarHeader,
-} from '@/components/ui/sidebar'
+} from "@/components/ui/sidebar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { useAuth } from '@/lib/auth-client'
-import Image from 'next/image'
+} from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/lib/auth-client";
+import Image from "next/image";
 
 /**
  * Admin Sidebar Component
@@ -39,35 +39,35 @@ import Image from 'next/image'
 
 const menuItems = [
   {
-    title: 'Dashboard',
+    title: "Dashboard",
     icon: LayoutDashboard,
-    href: '/admin/dashboard',
+    href: "/admin/dashboard",
   },
   {
-    title: 'Deals',
+    title: "Deals",
     icon: Package,
-    href: '/admin/deals',
+    href: "/admin/deals",
   },
   {
-    title: 'Blog',
+    title: "Blog",
     icon: FileText,
-    href: '/admin/blog',
+    href: "/admin/blog",
   },
   {
-    title: 'Utilisateurs',
+    title: "Utilisateurs",
     icon: Users,
-    href: '/admin/users',
+    href: "/admin/users",
   },
   {
-    title: 'Paramètres',
+    title: "Paramètres",
     icon: Settings,
-    href: '/admin/settings',
+    href: "/admin/settings",
   },
-]
+];
 
 export function AppSidebar() {
-  const pathname = usePathname()
-  const { user, signOut } = useAuth()
+  const pathname = usePathname();
+  const { user, signOut } = useAuth();
 
   return (
     <Sidebar>
@@ -116,12 +116,12 @@ export function AppSidebar() {
                   <div className="flex items-center gap-2 flex-1">
                     <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
                       <span className="text-sm font-semibold text-primary">
-                        {user?.name?.charAt(0) || user?.email?.charAt(0) || 'A'}
+                        {user?.name?.charAt(0) || user?.email?.charAt(0) || "A"}
                       </span>
                     </div>
                     <div className="flex flex-col items-start flex-1 min-w-0">
                       <span className="text-sm font-medium truncate w-full">
-                        {user?.name || 'Admin'}
+                        {user?.name || "Admin"}
                       </span>
                       <span className="text-xs text-muted-foreground truncate w-full">
                         {user?.email}
@@ -148,5 +148,5 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

@@ -1,7 +1,11 @@
-import type { Metadata } from 'next'
-import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar'
-import { AppSidebar } from '@/components/admin/app-sidebar'
-import { Separator } from '@/components/ui/separator'
+import type { Metadata } from "next";
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/admin/app-sidebar";
+import { Separator } from "@/components/ui/separator";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,13 +13,13 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Toaster } from '@/components/ui/sonner'
+} from "@/components/ui/breadcrumb";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
-  title: 'Administration - Camino TV',
-  description: 'Panneau d\'administration Camino TV',
-}
+  title: "Administration - Camino TV",
+  description: "Panneau d'administration Camino TV",
+};
 
 /**
  * Admin Layout
@@ -25,7 +29,7 @@ export const metadata: Metadata = {
 export default function AdminLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <SidebarProvider>
@@ -49,12 +53,10 @@ export default function AdminLayout({
               </BreadcrumbList>
             </Breadcrumb>
           </header>
-          <main className="flex-1 p-6">
-            {children}
-          </main>
+          <main className="flex-1 p-6">{children}</main>
         </SidebarInset>
       </div>
       <Toaster />
     </SidebarProvider>
-  )
+  );
 }

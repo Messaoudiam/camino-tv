@@ -1,176 +1,189 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Plus, Loader2 } from 'lucide-react'
-import { DealsTable } from '@/components/admin/deals-table'
-import { DealForm } from '@/components/admin/deal-form'
-import { useToast } from '@/hooks/use-toast'
+import { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Plus, Loader2 } from "lucide-react";
+import { DealsTable } from "@/components/admin/deals-table";
+import { DealForm } from "@/components/admin/deal-form";
+import { useToast } from "@/hooks/use-toast";
 
 type Deal = {
-  id: string
-  title: string
-  brand: string
-  originalPrice: number
-  currentPrice: number
-  discountPercentage: number
-  category: 'sneakers' | 'streetwear' | 'accessories' | 'electronics' | 'lifestyle'
-  imageUrl: string
-  affiliateUrl: string
-  promoCode: string | null
-  promoDescription: string | null
-  isActive: boolean
-  isNew: boolean
-  isLimited: boolean
-  createdAt: Date
+  id: string;
+  title: string;
+  brand: string;
+  originalPrice: number;
+  currentPrice: number;
+  discountPercentage: number;
+  category:
+    | "sneakers"
+    | "streetwear"
+    | "accessories"
+    | "electronics"
+    | "lifestyle";
+  imageUrl: string;
+  affiliateUrl: string;
+  promoCode: string | null;
+  promoDescription: string | null;
+  isActive: boolean;
+  isNew: boolean;
+  isLimited: boolean;
+  createdAt: Date;
   _count: {
-    favorites: number
-  }
-}
+    favorites: number;
+  };
+};
 
 /**
  * Deals Management Page
  * CRUD interface for managing deals
  */
 export default function DealsPage() {
-  const [deals, setDeals] = useState<Deal[]>([])
-  const [loading, setLoading] = useState(true)
-  const [dialogOpen, setDialogOpen] = useState(false)
-  const [editingDeal, setEditingDeal] = useState<Deal | null>(null)
-  const { toast } = useToast()
+  const [deals, setDeals] = useState<Deal[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingDeal, setEditingDeal] = useState<Deal | null>(null);
+  const { toast } = useToast();
 
   // Fetch deals
   const fetchDeals = async () => {
     try {
-      setLoading(true)
-      const response = await fetch('/api/deals')
-      const data = await response.json()
-      setDeals(data.deals)
+      setLoading(true);
+      const response = await fetch("/api/deals?all=true");
+      const data = await response.json();
+      setDeals(data.deals || []);
     } catch (error) {
       toast({
-        title: 'Erreur',
-        description: 'Impossible de charger les deals',
-        variant: 'destructive',
-      })
+        title: "Erreur",
+        description: "Impossible de charger les deals",
+        variant: "destructive",
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchDeals()
-  }, [])
+    fetchDeals();
+  }, []);
 
   // Create deal
   const handleCreate = async (data: any) => {
     try {
-      const response = await fetch('/api/deals', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/deals", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
-      })
+      });
 
       if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.error || 'Erreur lors de la création')
+        const error = await response.json();
+        throw new Error(error.error || "Erreur lors de la création");
       }
 
       toast({
-        title: 'Succès',
-        description: 'Le deal a été créé avec succès',
-      })
+        title: "Succès",
+        description: "Le deal a été créé avec succès",
+      });
 
-      setDialogOpen(false)
-      fetchDeals()
+      setDialogOpen(false);
+      fetchDeals();
     } catch (error: any) {
       toast({
-        title: 'Erreur',
+        title: "Erreur",
         description: error.message,
-        variant: 'destructive',
-      })
+        variant: "destructive",
+      });
     }
-  }
+  };
 
   // Update deal
   const handleUpdate = async (data: any) => {
-    if (!editingDeal) return
+    if (!editingDeal) return;
 
     try {
       const response = await fetch(`/api/deals/${editingDeal.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
-      })
+      });
 
       if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.error || 'Erreur lors de la modification')
+        const error = await response.json();
+        throw new Error(error.error || "Erreur lors de la modification");
       }
 
       toast({
-        title: 'Succès',
-        description: 'Le deal a été modifié avec succès',
-      })
+        title: "Succès",
+        description: "Le deal a été modifié avec succès",
+      });
 
-      setDialogOpen(false)
-      setEditingDeal(null)
-      fetchDeals()
+      setDialogOpen(false);
+      setEditingDeal(null);
+      fetchDeals();
     } catch (error: any) {
       toast({
-        title: 'Erreur',
+        title: "Erreur",
         description: error.message,
-        variant: 'destructive',
-      })
+        variant: "destructive",
+      });
     }
-  }
+  };
 
   // Delete deal
   const handleDelete = async (dealId: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer ce deal ?')) return
+    if (!confirm("Êtes-vous sûr de vouloir supprimer ce deal ?")) return;
 
     try {
       const response = await fetch(`/api/deals/${dealId}`, {
-        method: 'DELETE',
-      })
+        method: "DELETE",
+      });
 
       if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.error || 'Erreur lors de la suppression')
+        const error = await response.json();
+        throw new Error(error.error || "Erreur lors de la suppression");
       }
 
       toast({
-        title: 'Succès',
-        description: 'Le deal a été supprimé avec succès',
-      })
+        title: "Succès",
+        description: "Le deal a été supprimé avec succès",
+      });
 
-      fetchDeals()
+      fetchDeals();
     } catch (error: any) {
       toast({
-        title: 'Erreur',
+        title: "Erreur",
         description: error.message,
-        variant: 'destructive',
-      })
+        variant: "destructive",
+      });
     }
-  }
+  };
 
   // Open edit dialog
   const handleEdit = (deal: Deal) => {
-    setEditingDeal(deal)
-    setDialogOpen(true)
-  }
+    setEditingDeal(deal);
+    setDialogOpen(true);
+  };
 
   // Open create dialog
   const handleOpenCreate = () => {
-    setEditingDeal(null)
-    setDialogOpen(true)
-  }
+    setEditingDeal(null);
+    setDialogOpen(true);
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Gestion des Deals</h1>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Gestion des Deals
+          </h1>
           <p className="text-muted-foreground">
             Gérez les offres et promotions de votre plateforme
           </p>
@@ -208,13 +221,17 @@ export default function DealsPage() {
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         onSubmit={editingDeal ? handleUpdate : handleCreate}
-        initialData={editingDeal ? {
-          ...editingDeal,
-          promoCode: editingDeal.promoCode || undefined,
-          promoDescription: editingDeal.promoDescription || undefined,
-        } : undefined}
-        mode={editingDeal ? 'edit' : 'create'}
+        initialData={
+          editingDeal
+            ? {
+                ...editingDeal,
+                promoCode: editingDeal.promoCode || undefined,
+                promoDescription: editingDeal.promoDescription || undefined,
+              }
+            : undefined
+        }
+        mode={editingDeal ? "edit" : "create"}
       />
     </div>
-  )
+  );
 }

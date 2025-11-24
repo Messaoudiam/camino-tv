@@ -1,7 +1,7 @@
-import { Suspense } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Package, Users, Heart, TrendingUp } from 'lucide-react'
-import { prisma } from '@/lib/db'
+import { Suspense } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Package, Users, Heart, TrendingUp } from "lucide-react";
+import { prisma } from "@/lib/db";
 
 /**
  * Admin Dashboard Page
@@ -14,20 +14,20 @@ async function getStats() {
       prisma.deal.count({ where: { isActive: true } }),
       prisma.user.count(),
       prisma.favorite.count(),
-    ])
+    ]);
 
     return {
       dealsCount,
       usersCount,
       favoritesCount,
-    }
+    };
   } catch (error) {
-    console.error('Error fetching stats:', error)
+    console.error("Error fetching stats:", error);
     return {
       dealsCount: 0,
       usersCount: 0,
       favoritesCount: 0,
-    }
+    };
   }
 }
 
@@ -37,10 +37,10 @@ function StatsCard({
   icon: Icon,
   description,
 }: {
-  title: string
-  value: string | number
-  icon: React.ElementType
-  description?: string
+  title: string;
+  value: string | number;
+  icon: React.ElementType;
+  description?: string;
 }) {
   return (
     <Card>
@@ -55,7 +55,7 @@ function StatsCard({
         )}
       </CardContent>
     </Card>
-  )
+  );
 }
 
 function StatsCardSkeleton() {
@@ -69,11 +69,11 @@ function StatsCardSkeleton() {
         <div className="h-8 w-16 bg-muted animate-pulse rounded" />
       </CardContent>
     </Card>
-  )
+  );
 }
 
 async function DashboardStats() {
-  const stats = await getStats()
+  const stats = await getStats();
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -97,12 +97,16 @@ async function DashboardStats() {
       />
       <StatsCard
         title="Engagement"
-        value={stats.usersCount > 0 ? (stats.favoritesCount / stats.usersCount).toFixed(1) : '0'}
+        value={
+          stats.usersCount > 0
+            ? (stats.favoritesCount / stats.usersCount).toFixed(1)
+            : "0"
+        }
         icon={TrendingUp}
         description="Favoris par utilisateur"
       />
     </div>
-  )
+  );
 }
 
 export default function DashboardPage() {
@@ -151,5 +155,5 @@ export default function DashboardPage() {
         </Card>
       </div>
     </div>
-  )
+  );
 }

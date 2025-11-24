@@ -1,10 +1,16 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Loader2, Shield, Trash2, User } from 'lucide-react'
+import { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Loader2, Shield, Trash2, User } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -12,7 +18,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from "@/components/ui/table";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,120 +26,123 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
-import { useToast } from '@/hooks/use-toast'
+} from "@/components/ui/dropdown-menu";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import { useToast } from "@/hooks/use-toast";
 
 type User = {
-  id: string
-  name: string | null
-  email: string
-  emailVerified: boolean
-  image: string | null
-  role: 'USER' | 'ADMIN'
-  createdAt: Date
+  id: string;
+  name: string | null;
+  email: string;
+  emailVerified: boolean;
+  image: string | null;
+  role: "USER" | "ADMIN";
+  createdAt: Date;
   _count: {
-    favorites: number
-    sessions: number
-  }
-}
+    favorites: number;
+    sessions: number;
+  };
+};
 
 /**
  * Users Management Page
  * User administration and role management
  */
 export default function UsersPage() {
-  const [users, setUsers] = useState<User[]>([])
-  const [loading, setLoading] = useState(true)
-  const { toast } = useToast()
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   // Fetch users
   const fetchUsers = async () => {
     try {
-      setLoading(true)
-      const response = await fetch('/api/users')
-      const data = await response.json()
-      setUsers(data.users)
+      setLoading(true);
+      const response = await fetch("/api/users");
+      const data = await response.json();
+      setUsers(data.users);
     } catch (error) {
       toast({
-        title: 'Erreur',
-        description: 'Impossible de charger les utilisateurs',
-        variant: 'destructive',
-      })
+        title: "Erreur",
+        description: "Impossible de charger les utilisateurs",
+        variant: "destructive",
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchUsers()
-  }, [])
+    fetchUsers();
+  }, []);
 
   // Toggle user role
   const handleToggleRole = async (userId: string, currentRole: string) => {
-    const newRole = currentRole === 'ADMIN' ? 'USER' : 'ADMIN'
+    const newRole = currentRole === "ADMIN" ? "USER" : "ADMIN";
 
     try {
       const response = await fetch(`/api/users/${userId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ role: newRole }),
-      })
+      });
 
       if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.error || 'Erreur lors de la modification')
+        const error = await response.json();
+        throw new Error(error.error || "Erreur lors de la modification");
       }
 
       toast({
-        title: 'Succès',
+        title: "Succès",
         description: `Rôle modifié en ${newRole}`,
-      })
+      });
 
-      fetchUsers()
+      fetchUsers();
     } catch (error: any) {
       toast({
-        title: 'Erreur',
+        title: "Erreur",
         description: error.message,
-        variant: 'destructive',
-      })
+        variant: "destructive",
+      });
     }
-  }
+  };
 
   // Delete user
   const handleDelete = async (userId: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) return
+    if (!confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?"))
+      return;
 
     try {
       const response = await fetch(`/api/users/${userId}`, {
-        method: 'DELETE',
-      })
+        method: "DELETE",
+      });
 
       if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.error || 'Erreur lors de la suppression')
+        const error = await response.json();
+        throw new Error(error.error || "Erreur lors de la suppression");
       }
 
       toast({
-        title: 'Succès',
-        description: 'Utilisateur supprimé avec succès',
-      })
+        title: "Succès",
+        description: "Utilisateur supprimé avec succès",
+      });
 
-      fetchUsers()
+      fetchUsers();
     } catch (error: any) {
       toast({
-        title: 'Erreur',
+        title: "Erreur",
         description: error.message,
-        variant: 'destructive',
-      })
+        variant: "destructive",
+      });
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Gestion des Utilisateurs</h1>
+        <h1 className="text-3xl font-bold tracking-tight">
+          Gestion des Utilisateurs
+        </h1>
         <p className="text-muted-foreground">
           Administrez les comptes utilisateurs et leurs permissions
         </p>
@@ -182,13 +191,17 @@ export default function UsersPage() {
                             </div>
                           )}
                           <div>
-                            <div className="font-medium">{user.name || 'Sans nom'}</div>
-                            <div className="text-sm text-muted-foreground">{user.email}</div>
+                            <div className="font-medium">
+                              {user.name || "Sans nom"}
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              {user.email}
+                            </div>
                           </div>
                         </div>
                       </TableCell>
                       <TableCell>
-                        {user.role === 'ADMIN' ? (
+                        {user.role === "ADMIN" ? (
                           <Badge className="bg-purple-500">
                             <Shield className="mr-1 h-3 w-3" />
                             Admin
@@ -202,16 +215,24 @@ export default function UsersPage() {
                       </TableCell>
                       <TableCell>
                         {user.emailVerified ? (
-                          <Badge variant="default" className="bg-green-500">Vérifié</Badge>
+                          <Badge variant="default" className="bg-green-500">
+                            Vérifié
+                          </Badge>
                         ) : (
                           <Badge variant="outline">Non vérifié</Badge>
                         )}
                       </TableCell>
-                      <TableCell className="text-center">{user._count.favorites}</TableCell>
-                      <TableCell className="text-center">{user._count.sessions}</TableCell>
+                      <TableCell className="text-center">
+                        {user._count.favorites}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {user._count.sessions}
+                      </TableCell>
                       <TableCell>
                         <div className="text-sm">
-                          {format(new Date(user.createdAt), 'dd MMM yyyy', { locale: fr })}
+                          {format(new Date(user.createdAt), "dd MMM yyyy", {
+                            locale: fr,
+                          })}
                         </div>
                       </TableCell>
                       <TableCell>
@@ -223,8 +244,14 @@ export default function UsersPage() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem onClick={() => handleToggleRole(user.id, user.role)}>
-                              {user.role === 'ADMIN' ? '↓ Rétrograder en USER' : '↑ Promouvoir en ADMIN'}
+                            <DropdownMenuItem
+                              onClick={() =>
+                                handleToggleRole(user.id, user.role)
+                              }
+                            >
+                              {user.role === "ADMIN"
+                                ? "↓ Rétrograder en USER"
+                                : "↑ Promouvoir en ADMIN"}
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
@@ -246,5 +273,5 @@ export default function UsersPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

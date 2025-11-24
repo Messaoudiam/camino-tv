@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {
   ColumnDef,
@@ -10,10 +10,10 @@ import {
   SortingState,
   ColumnFiltersState,
   useReactTable,
-} from '@tanstack/react-table'
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+} from "@tanstack/react-table";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -21,9 +21,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import { Badge } from '@/components/ui/badge'
-import { ArrowUpDown, MoreHorizontal, Pencil, Trash2, Eye } from 'lucide-react'
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { ArrowUpDown, MoreHorizontal, Pencil, Trash2, Eye } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,45 +31,50 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
+} from "@/components/ui/dropdown-menu";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 type Deal = {
-  id: string
-  title: string
-  brand: string
-  originalPrice: number
-  currentPrice: number
-  discountPercentage: number
-  category: 'sneakers' | 'streetwear' | 'accessories' | 'electronics' | 'lifestyle'
-  imageUrl: string
-  affiliateUrl: string
-  promoCode: string | null
-  promoDescription: string | null
-  isActive: boolean
-  isNew: boolean
-  isLimited: boolean
-  createdAt: Date
+  id: string;
+  title: string;
+  brand: string;
+  originalPrice: number;
+  currentPrice: number;
+  discountPercentage: number;
+  category:
+    | "sneakers"
+    | "streetwear"
+    | "accessories"
+    | "electronics"
+    | "lifestyle";
+  imageUrl: string;
+  affiliateUrl: string;
+  promoCode: string | null;
+  promoDescription: string | null;
+  isActive: boolean;
+  isNew: boolean;
+  isLimited: boolean;
+  createdAt: Date;
   _count: {
-    favorites: number
-  }
-}
+    favorites: number;
+  };
+};
 
 interface DealsTableProps {
-  deals: Deal[]
-  onEdit: (deal: Deal) => void
-  onDelete: (dealId: string) => void
+  deals: Deal[];
+  onEdit: (deal: Deal) => void;
+  onDelete: (dealId: string) => void;
 }
 
 export function DealsTable({ deals, onEdit, onDelete }: DealsTableProps) {
-  const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const columns: ColumnDef<Deal>[] = [
     {
-      accessorKey: 'imageUrl',
-      header: 'Image',
+      accessorKey: "imageUrl",
+      header: "Image",
       cell: ({ row }) => (
         <div className="w-16 h-16 relative rounded overflow-hidden bg-muted">
           <img
@@ -81,56 +86,61 @@ export function DealsTable({ deals, onEdit, onDelete }: DealsTableProps) {
       ),
     },
     {
-      accessorKey: 'title',
+      accessorKey: "title",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             Titre
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
-        )
+        );
       },
       cell: ({ row }) => (
         <div className="max-w-[300px]">
           <div className="font-medium truncate">{row.original.title}</div>
-          <div className="text-sm text-muted-foreground">{row.original.brand}</div>
+          <div className="text-sm text-muted-foreground">
+            {row.original.brand}
+          </div>
         </div>
       ),
     },
     {
-      accessorKey: 'category',
-      header: 'Catégorie',
+      accessorKey: "category",
+      header: "Catégorie",
       cell: ({ row }) => {
         const categoryColors: Record<string, string> = {
-          sneakers: 'bg-blue-500/10 text-blue-600 border-blue-200',
-          streetwear: 'bg-purple-500/10 text-purple-600 border-purple-200',
-          accessories: 'bg-green-500/10 text-green-600 border-green-200',
-          electronics: 'bg-orange-500/10 text-orange-600 border-orange-200',
-          lifestyle: 'bg-pink-500/10 text-pink-600 border-pink-200',
-        }
+          sneakers: "bg-blue-500/10 text-blue-600 border-blue-200",
+          streetwear: "bg-purple-500/10 text-purple-600 border-purple-200",
+          accessories: "bg-green-500/10 text-green-600 border-green-200",
+          electronics: "bg-orange-500/10 text-orange-600 border-orange-200",
+          lifestyle: "bg-pink-500/10 text-pink-600 border-pink-200",
+        };
 
         return (
-          <Badge variant="outline" className={categoryColors[row.original.category]}>
+          <Badge
+            variant="outline"
+            className={categoryColors[row.original.category]}
+          >
             {row.original.category}
           </Badge>
-        )
+        );
       },
     },
     {
-      accessorKey: 'discountPercentage',
+      accessorKey: "discountPercentage",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             Réduction
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
-        )
+        );
       },
       cell: ({ row }) => (
         <Badge variant="destructive" className="font-bold">
@@ -139,17 +149,17 @@ export function DealsTable({ deals, onEdit, onDelete }: DealsTableProps) {
       ),
     },
     {
-      accessorKey: 'currentPrice',
+      accessorKey: "currentPrice",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             Prix
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
-        )
+        );
       },
       cell: ({ row }) => (
         <div>
@@ -161,62 +171,73 @@ export function DealsTable({ deals, onEdit, onDelete }: DealsTableProps) {
       ),
     },
     {
-      accessorKey: '_count.favorites',
+      accessorKey: "_count.favorites",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             ❤️ Favoris
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
-        )
+        );
       },
       cell: ({ row }) => (
         <div className="text-center font-medium">
-          {row.original._count.favorites}
+          {row.original._count?.favorites ?? 0}
         </div>
       ),
     },
     {
-      accessorKey: 'isActive',
-      header: 'Statut',
+      accessorKey: "isActive",
+      header: "Statut",
       cell: ({ row }) => (
         <div className="flex gap-1">
           {row.original.isActive ? (
-            <Badge variant="default" className="bg-green-500">Actif</Badge>
+            <Badge variant="default" className="bg-green-500">
+              Actif
+            </Badge>
           ) : (
             <Badge variant="secondary">Inactif</Badge>
           )}
           {row.original.isNew && <Badge variant="outline">New</Badge>}
-          {row.original.isLimited && <Badge variant="outline" className="border-orange-500 text-orange-600">Limited</Badge>}
+          {row.original.isLimited && (
+            <Badge
+              variant="outline"
+              className="border-orange-500 text-orange-600"
+            >
+              Limited
+            </Badge>
+          )}
         </div>
       ),
     },
     {
-      accessorKey: 'createdAt',
+      accessorKey: "createdAt",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
             Créé le
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
-        )
+        );
       },
       cell: ({ row }) => (
         <div className="text-sm">
-          {format(new Date(row.original.createdAt), 'dd MMM yyyy', { locale: fr })}
+          {format(new Date(row.original.createdAt), "dd MMM yyyy", {
+            locale: fr,
+          })}
         </div>
       ),
     },
     {
-      id: 'actions',
+      id: "actions",
       cell: ({ row }) => {
-        const deal = row.original
+        const deal = row.original;
 
         return (
           <DropdownMenu>
@@ -228,7 +249,9 @@ export function DealsTable({ deals, onEdit, onDelete }: DealsTableProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => window.open(`/deals/${deal.id}`, '_blank')}>
+              <DropdownMenuItem
+                onClick={() => window.open(`/deals/${deal.id}`, "_blank")}
+              >
                 <Eye className="mr-2 h-4 w-4" />
                 Voir le deal
               </DropdownMenuItem>
@@ -246,10 +269,10 @@ export function DealsTable({ deals, onEdit, onDelete }: DealsTableProps) {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        )
+        );
       },
     },
-  ]
+  ];
 
   const table = useReactTable({
     data: deals,
@@ -264,7 +287,7 @@ export function DealsTable({ deals, onEdit, onDelete }: DealsTableProps) {
       sorting,
       columnFilters,
     },
-  })
+  });
 
   return (
     <div className="space-y-4">
@@ -272,9 +295,9 @@ export function DealsTable({ deals, onEdit, onDelete }: DealsTableProps) {
       <div className="flex items-center gap-4">
         <Input
           placeholder="Rechercher par titre ou marque..."
-          value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
+          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn('title')?.setFilterValue(event.target.value)
+            table.getColumn("title")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
@@ -292,7 +315,7 @@ export function DealsTable({ deals, onEdit, onDelete }: DealsTableProps) {
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                   </TableHead>
                 ))}
@@ -304,13 +327,13 @@ export function DealsTable({ deals, onEdit, onDelete }: DealsTableProps) {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
+                  data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -355,5 +378,5 @@ export function DealsTable({ deals, onEdit, onDelete }: DealsTableProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }
