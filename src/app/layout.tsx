@@ -20,8 +20,17 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://camino-tv.vercel.app"),
   title: "Camino TV - We The Mouvement",
-  description: "Découvrez les meilleurs deals sneakers en temps réel. Nike, Adidas, Jordan et bien plus encore. Plus de 100k passionnés nous font confiance.",
-  keywords: ["sneakers", "deals", "nike", "adidas", "jordan", "réductions", "bons plans"],
+  description:
+    "Découvrez les meilleurs deals sneakers en temps réel. Nike, Adidas, Jordan et bien plus encore. Plus de 100k passionnés nous font confiance.",
+  keywords: [
+    "sneakers",
+    "deals",
+    "nike",
+    "adidas",
+    "jordan",
+    "réductions",
+    "bons plans",
+  ],
   authors: [{ name: "Camino TV" }],
   creator: "Camino TV",
   openGraph: {
@@ -29,13 +38,15 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     url: "https://camino-tv.vercel.app",
     title: "Camino TV - Bons Plans Premium Sneakers",
-    description: "La plateforme de référence pour dénicher les meilleurs deals sneakers en France.",
+    description:
+      "La plateforme de référence pour dénicher les meilleurs deals sneakers en France.",
     siteName: "Camino TV",
   },
   twitter: {
     card: "summary_large_image",
     title: "Camino TV - Bons Plans Premium Sneakers",
-    description: "La plateforme de référence pour dénicher les meilleurs deals sneakers en France.",
+    description:
+      "La plateforme de référence pour dénicher les meilleurs deals sneakers en France.",
   },
 };
 
@@ -51,8 +62,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
-      <body className="font-sans antialiased bg-background text-foreground min-h-screen" suppressHydrationWarning>
+    <html
+      lang="fr"
+      className={`${geistSans.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
+    >
+      <body
+        className="font-sans antialiased bg-background text-foreground min-h-screen"
+        suppressHydrationWarning
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

@@ -1,39 +1,70 @@
-'use client';
+"use client";
 
 /**
  * Page Mes Favoris - Interface premium pour les bons plans favoris
  * Design système cohérent avec l'UI/UX existante de Camino TV
  */
 
-import { useState, useEffect } from 'react';
-import { Heart, Search, Filter, Grid3X3, List, Trash2, Share2, AlertTriangle } from 'lucide-react';
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
-import { PageHeader } from '@/components/ui/page-header';
-import { DealCard } from '@/components/demo/DealCard';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { validateSearch, favoritesSearchSchema } from '@/lib/validations/search';
-import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useFavorites } from '@/hooks/useFavorites';
-import { cn } from '@/lib/utils';
-import type { Deal } from '@/types';
+import { useState, useEffect } from "react";
+import {
+  Heart,
+  Search,
+  Filter,
+  Grid3X3,
+  List,
+  Trash2,
+  Share2,
+  AlertTriangle,
+} from "lucide-react";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+import { PageHeader } from "@/components/ui/page-header";
+import { DealCard } from "@/components/demo/DealCard";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  validateSearch,
+  favoritesSearchSchema,
+} from "@/lib/validations/search";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useFavorites } from "@/hooks/useFavorites";
+import { cn } from "@/lib/utils";
+import type { Deal } from "@/types";
 
 export default function FavoritesPage() {
-  const { favorites, isLoading: favoritesLoading, favoritesCount, isAuthenticated } = useFavorites();
-  const [searchQuery, setSearchQuery] = useState('');
+  const {
+    favorites,
+    isLoading: favoritesLoading,
+    favoritesCount,
+    isAuthenticated,
+  } = useFavorites();
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Gestion sécurisée de la recherche avec Zod
   const handleSearchChange = (value: string) => {
     const validatedQuery = validateSearch(value, favoritesSearchSchema);
     setSearchQuery(validatedQuery);
   };
-  const [sortBy, setSortBy] = useState('newest');
-  const [filterBy, setFilterBy] = useState('all');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [sortBy, setSortBy] = useState("newest");
+  const [filterBy, setFilterBy] = useState("all");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [favoriteDeals, setFavoriteDeals] = useState<Deal[]>([]);
   const [showClearDialog, setShowClearDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -49,19 +80,19 @@ export default function FavoritesPage() {
 
       setIsLoading(true);
       try {
-        const response = await fetch('/api/favorites', {
-          credentials: 'include',
+        const response = await fetch("/api/favorites", {
+          credentials: "include",
         });
 
         if (response.ok) {
           const data = await response.json();
           setFavoriteDeals(data.favorites || []);
         } else {
-          console.error('Error fetching favorites:', response.statusText);
+          console.error("Error fetching favorites:", response.statusText);
           setFavoriteDeals([]);
         }
       } catch (error) {
-        console.error('Error fetching favorites:', error);
+        console.error("Error fetching favorites:", error);
         setFavoriteDeals([]);
       } finally {
         setIsLoading(false);
@@ -75,23 +106,25 @@ export default function FavoritesPage() {
 
   // Filtrage et tri des favoris
   const processedDeals = favoriteDeals
-    .filter(deal => {
-      if (filterBy !== 'all' && deal.category !== filterBy) return false;
+    .filter((deal) => {
+      if (filterBy !== "all" && deal.category !== filterBy) return false;
       if (searchQuery) {
-        return deal.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-               deal.brand.toLowerCase().includes(searchQuery.toLowerCase());
+        return (
+          deal.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          deal.brand.toLowerCase().includes(searchQuery.toLowerCase())
+        );
       }
       return true;
     })
     .sort((a, b) => {
       switch (sortBy) {
-        case 'price-asc':
+        case "price-asc":
           return a.currentPrice - b.currentPrice;
-        case 'price-desc':
+        case "price-desc":
           return b.currentPrice - a.currentPrice;
-        case 'discount':
+        case "discount":
           return b.discountPercentage - a.discountPercentage;
-        case 'brand':
+        case "brand":
           return a.brand.localeCompare(b.brand);
         default:
           return 0;
@@ -99,17 +132,19 @@ export default function FavoritesPage() {
     });
 
   // Catégories disponibles dans les favoris
-  const availableCategories = Array.from(new Set(favoriteDeals.map(deal => deal.category)));
+  const availableCategories = Array.from(
+    new Set(favoriteDeals.map((deal) => deal.category)),
+  );
 
   // Fonction pour vider tous les favoris
   const handleClearFavorites = async () => {
     try {
       // Delete all favorites via API
-      const deletePromises = favorites.map(dealId =>
+      const deletePromises = favorites.map((dealId) =>
         fetch(`/api/favorites?dealId=${dealId}`, {
-          method: 'DELETE',
-          credentials: 'include',
-        })
+          method: "DELETE",
+          credentials: "include",
+        }),
       );
 
       await Promise.all(deletePromises);
@@ -117,7 +152,7 @@ export default function FavoritesPage() {
       setShowClearDialog(false);
       setFavoriteDeals([]);
     } catch (error) {
-      console.error('Error clearing favorites:', error);
+      console.error("Error clearing favorites:", error);
     }
   };
 
@@ -145,80 +180,83 @@ export default function FavoritesPage() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
-      
+
       <PageHeader
         badge={{
           icon: Heart,
-          text: 'Mes Favoris'
+          text: "Mes Favoris",
         }}
         title="Mes bons plans favoris"
         description="Retrouvez tous vos deals préférés dans votre espace personnel. Gérez, triez et ne ratez plus jamais les meilleures offres streetwear."
       />
-      
+
       <main className="flex-1 px-4 py-8">
         <div className="max-w-7xl mx-auto space-y-8">
-          
           {/* Actions */}
           {favoritesCount > 0 && (
             <div className="flex items-center justify-end mb-6">
               <div className="flex items-center gap-1 md:gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      if (navigator.share) {
-                        navigator.share({
-                          title: 'Mes favoris Camino TV',
-                          text: `Découvrez mes ${favoritesCount} bons plans favoris sur Camino TV`,
-                          url: window.location.href
-                        });
-                      }
-                    }}
-                    className="px-2 md:px-3"
-                  >
-                    <Share2 className="h-4 w-4 md:mr-2" />
-                    <span className="hidden md:inline">Partager</span>
-                  </Button>
-                  
-                  <Dialog open={showClearDialog} onOpenChange={setShowClearDialog}>
-                    <DialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    if (navigator.share) {
+                      navigator.share({
+                        title: "Mes favoris Camino TV",
+                        text: `Découvrez mes ${favoritesCount} bons plans favoris sur Camino TV`,
+                        url: window.location.href,
+                      });
+                    }
+                  }}
+                  className="px-2 md:px-3"
+                >
+                  <Share2 className="h-4 w-4 md:mr-2" />
+                  <span className="hidden md:inline">Partager</span>
+                </Button>
+
+                <Dialog
+                  open={showClearDialog}
+                  onOpenChange={setShowClearDialog}
+                >
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50 px-2 md:px-3"
+                    >
+                      <Trash2 className="h-4 w-4 md:mr-2" />
+                      <span className="hidden md:inline">Vider</span>
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-md">
+                    <DialogHeader>
+                      <DialogTitle className="flex items-center gap-2">
+                        <AlertTriangle className="h-5 w-5 text-red-500" />
+                        Vider tous les favoris
+                      </DialogTitle>
+                      <DialogDescription>
+                        Êtes-vous sûr de vouloir supprimer tous vos bons plans
+                        favoris ?
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter className="gap-2">
                       <Button
                         variant="outline"
-                        size="sm"
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50 px-2 md:px-3"
+                        onClick={() => setShowClearDialog(false)}
                       >
-                        <Trash2 className="h-4 w-4 md:mr-2" />
-                        <span className="hidden md:inline">Vider</span>
+                        Annuler
                       </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-md">
-                      <DialogHeader>
-                        <DialogTitle className="flex items-center gap-2">
-                          <AlertTriangle className="h-5 w-5 text-red-500" />
-                          Vider tous les favoris
-                        </DialogTitle>
-                        <DialogDescription>
-                          Êtes-vous sûr de vouloir supprimer tous vos bons plans favoris ? 
-                        </DialogDescription>
-                      </DialogHeader>
-                      <DialogFooter className="gap-2">
-                        <Button
-                          variant="outline"
-                          onClick={() => setShowClearDialog(false)}
-                        >
-                          Annuler
-                        </Button>
-                        <Button
-                          variant="destructive"
-                          onClick={handleClearFavorites}
-                          className="bg-red-600 hover:bg-red-700"
-                        >
-                          <Trash2 className="h-4 w-4 mr-2" />
-                          Vider tous les favoris
-                        </Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
+                      <Button
+                        variant="destructive"
+                        onClick={handleClearFavorites}
+                        className="bg-red-600 hover:bg-red-700"
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Vider tous les favoris
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           )}
@@ -234,14 +272,16 @@ export default function FavoritesPage() {
                   Aucun favori pour le moment
                 </h3>
                 <p className="text-muted-foreground max-w-md mx-auto">
-                  Commencez à sauvegarder vos bons plans préférés en cliquant sur le cœur 
-                  sur les cartes de produits. Ils apparaîtront ici pour un accès rapide.
+                  Commencez à sauvegarder vos bons plans préférés en cliquant
+                  sur le cœur sur les cartes de produits. Ils apparaîtront ici
+                  pour un accès rapide.
                 </p>
               </div>
-              <Button asChild className="bg-foreground hover:bg-foreground/90 text-background">
-                <a href="/deals">
-                  Découvrir les bons plans
-                </a>
+              <Button
+                asChild
+                className="bg-foreground hover:bg-foreground/90 text-background"
+              >
+                <a href="/deals">Découvrir les bons plans</a>
               </Button>
             </div>
           ) : (
@@ -260,7 +300,7 @@ export default function FavoritesPage() {
                       maxLength={100}
                     />
                   </div>
-                  
+
                   {/* Filtres et mode d'affichage - Layout optimisé desktop */}
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
                     {/* Desktop: filtres compacts */}
@@ -269,32 +309,41 @@ export default function FavoritesPage() {
                         <Filter className="h-4 w-4" />
                         <span>Filtres:</span>
                       </div>
-                      
+
                       <Select value={filterBy} onValueChange={setFilterBy}>
                         <SelectTrigger className="w-36">
                           <SelectValue placeholder="Catégorie" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="all">Toutes</SelectItem>
-                          {availableCategories.map(category => (
+                          {availableCategories.map((category) => (
                             <SelectItem key={category} value={category}>
-                              {category === 'sneakers' ? 'Sneakers' : 
-                               category === 'streetwear' ? 'Streetwear' : 
-                               category.charAt(0).toUpperCase() + category.slice(1)}
+                              {category === "sneakers"
+                                ? "Sneakers"
+                                : category === "streetwear"
+                                  ? "Streetwear"
+                                  : category.charAt(0).toUpperCase() +
+                                    category.slice(1)}
                             </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
-                      
+
                       <Select value={sortBy} onValueChange={setSortBy}>
                         <SelectTrigger className="w-36">
                           <SelectValue placeholder="Trier par" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="newest">Plus récent</SelectItem>
-                          <SelectItem value="price-asc">Prix croissant</SelectItem>
-                          <SelectItem value="price-desc">Prix décroissant</SelectItem>
-                          <SelectItem value="discount">Meilleure réduction</SelectItem>
+                          <SelectItem value="price-asc">
+                            Prix croissant
+                          </SelectItem>
+                          <SelectItem value="price-desc">
+                            Prix décroissant
+                          </SelectItem>
+                          <SelectItem value="discount">
+                            Meilleure réduction
+                          </SelectItem>
                           <SelectItem value="brand">Marque A-Z</SelectItem>
                         </SelectContent>
                       </Select>
@@ -303,18 +352,18 @@ export default function FavoritesPage() {
                     {/* Desktop: Mode d'affichage à droite */}
                     <div className="hidden sm:flex items-center border rounded-md">
                       <Button
-                        variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                        variant={viewMode === "grid" ? "default" : "ghost"}
                         size="sm"
                         className="rounded-r-none"
-                        onClick={() => setViewMode('grid')}
+                        onClick={() => setViewMode("grid")}
                       >
                         <Grid3X3 className="h-4 w-4" />
                       </Button>
                       <Button
-                        variant={viewMode === 'list' ? 'default' : 'ghost'}
+                        variant={viewMode === "list" ? "default" : "ghost"}
                         size="sm"
                         className="rounded-l-none"
-                        onClick={() => setViewMode('list')}
+                        onClick={() => setViewMode("list")}
                       >
                         <List className="h-4 w-4" />
                       </Button>
@@ -327,52 +376,63 @@ export default function FavoritesPage() {
                           <SelectValue placeholder="Toutes les catégories" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="all">Toutes les catégories</SelectItem>
-                          {availableCategories.map(category => (
+                          <SelectItem value="all">
+                            Toutes les catégories
+                          </SelectItem>
+                          {availableCategories.map((category) => (
                             <SelectItem key={category} value={category}>
-                              {category === 'sneakers' ? 'Sneakers' : 
-                               category === 'streetwear' ? 'Streetwear' : 
-                               category.charAt(0).toUpperCase() + category.slice(1)}
+                              {category === "sneakers"
+                                ? "Sneakers"
+                                : category === "streetwear"
+                                  ? "Streetwear"
+                                  : category.charAt(0).toUpperCase() +
+                                    category.slice(1)}
                             </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
-                      
+
                       <Select value={sortBy} onValueChange={setSortBy}>
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Trier par" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="newest">Plus récent</SelectItem>
-                          <SelectItem value="price-asc">Prix croissant</SelectItem>
-                          <SelectItem value="price-desc">Prix décroissant</SelectItem>
-                          <SelectItem value="discount">Meilleure réduction</SelectItem>
+                          <SelectItem value="price-asc">
+                            Prix croissant
+                          </SelectItem>
+                          <SelectItem value="price-desc">
+                            Prix décroissant
+                          </SelectItem>
+                          <SelectItem value="discount">
+                            Meilleure réduction
+                          </SelectItem>
                           <SelectItem value="brand">Marque A-Z</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Filtres actifs */}
                 <div className="flex flex-wrap items-center gap-2">
                   {searchQuery && (
                     <Badge variant="outline" className="gap-1">
                       Recherche: "{searchQuery}"
                       <button
-                        onClick={() => setSearchQuery('')}
+                        onClick={() => setSearchQuery("")}
                         className="ml-1 hover:bg-muted-foreground/20 rounded-full p-0.5"
                       >
                         ×
                       </button>
                     </Badge>
                   )}
-                  
-                  {filterBy !== 'all' && (
+
+                  {filterBy !== "all" && (
                     <Badge variant="outline" className="gap-1">
                       Catégorie: {filterBy}
                       <button
-                        onClick={() => setFilterBy('all')}
+                        onClick={() => setFilterBy("all")}
                         className="ml-1 hover:bg-muted-foreground/20 rounded-full p-0.5"
                       >
                         ×
@@ -387,7 +447,7 @@ export default function FavoritesPage() {
                 <Alert>
                   <Search className="h-4 w-4" />
                   <AlertDescription>
-                    Aucun favori ne correspond à vos critères de recherche. 
+                    Aucun favori ne correspond à vos critères de recherche.
                     Essayez de modifier vos filtres.
                   </AlertDescription>
                 </Alert>
@@ -395,44 +455,48 @@ export default function FavoritesPage() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <p className="text-sm text-muted-foreground">
-                      {processedDeals.length} résultat{processedDeals.length > 1 ? 's' : ''} 
-                      {searchQuery || filterBy !== 'all' ? ' trouvé' + (processedDeals.length > 1 ? 's' : '') : ''}
+                      {processedDeals.length} résultat
+                      {processedDeals.length > 1 ? "s" : ""}
+                      {searchQuery || filterBy !== "all"
+                        ? " trouvé" + (processedDeals.length > 1 ? "s" : "")
+                        : ""}
                     </p>
                   </div>
-                  
+
                   {/* Grille de deals - responsive et adaptative */}
-                  <div className={cn(
-                    'transition-all duration-300',
-                    // Mobile : toujours grille 1 colonne optimisée
-                    'grid grid-cols-1 gap-4',
-                    // Tablet et plus : respect du mode choisi
-                    'md:gap-6',
-                    viewMode === 'grid' 
-                      ? 'md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
-                      : 'md:grid-cols-1 md:max-w-4xl md:mx-auto'
-                  )}>
-                    {processedDeals.map(deal => (
+                  <div
+                    className={cn(
+                      "transition-all duration-300",
+                      // Mobile : toujours grille 1 colonne optimisée
+                      "grid grid-cols-1 gap-4",
+                      // Tablet et plus : respect du mode choisi
+                      "md:gap-6",
+                      viewMode === "grid"
+                        ? "md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                        : "md:grid-cols-1 md:max-w-4xl md:mx-auto",
+                    )}
+                  >
+                    {processedDeals.map((deal) => (
                       <DealCard
                         key={deal.id}
                         deal={deal}
                         className={cn(
-                          'transition-all duration-200',
+                          "transition-all duration-200",
                           // Optimisation mobile : cartes plus compactes
-                          'w-full',
+                          "w-full",
                           // Mode liste sur desktop : largeur limitée
-                          viewMode === 'list' && 'md:max-w-none'
+                          viewMode === "list" && "md:max-w-none",
                         )}
                       />
                     ))}
                   </div>
                 </div>
               )}
-
             </>
           )}
         </div>
       </main>
-      
+
       <Footer showFullContent={false} variant="minimal" size="compact" />
     </div>
   );
