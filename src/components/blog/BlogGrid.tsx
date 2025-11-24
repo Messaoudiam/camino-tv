@@ -1,24 +1,21 @@
-'use client';
+"use client";
 
 /**
  * BlogGrid - Grille d'articles de blog avec layout responsive
  * Design cohérent avec le DealGrid existant
  */
 
-import { BlogGridProps } from '@/types';
-import { BlogCard } from './BlogCard';
-import { cn } from '@/lib/utils';
+import { BlogGridProps } from "@/types";
+import { BlogCard } from "./BlogCard";
+import { cn } from "@/lib/utils";
 
 export function BlogGrid({ posts, loading = false, className }: BlogGridProps) {
   if (loading) {
     return (
-      <div className={cn('grid gap-6', className)}>
+      <div className={cn("grid gap-6", className)}>
         {/* Skeleton loading pour maintenir le layout */}
         {Array.from({ length: 6 }).map((_, i) => (
-          <div
-            key={i}
-            className="bg-muted animate-pulse rounded-xl h-96"
-          />
+          <div key={i} className="bg-muted animate-pulse rounded-xl h-96" />
         ))}
       </div>
     );
@@ -42,18 +39,20 @@ export function BlogGrid({ posts, loading = false, className }: BlogGridProps) {
             />
           </svg>
           <h3 className="text-lg font-medium mb-2">Aucun article trouvé</h3>
-          <p className="text-sm">Essayez de modifier vos filtres ou revenez plus tard.</p>
+          <p className="text-sm">
+            Essayez de modifier vos filtres ou revenez plus tard.
+          </p>
         </div>
       </div>
     );
   }
 
   // Séparer l'article featured s'il y en a un
-  const featuredPost = posts.find(post => post.isFeature);
-  const regularPosts = posts.filter(post => !post.isFeature);
+  const featuredPost = posts.find((post) => post.isFeature);
+  const regularPosts = posts.filter((post) => !post.isFeature);
 
   return (
-    <div className={cn('space-y-8', className)}>
+    <div className={cn("space-y-8", className)}>
       {/* Article à la une */}
       {featuredPost && (
         <div className="mb-8">
@@ -76,10 +75,12 @@ export function BlogGrid({ posts, loading = false, className }: BlogGridProps) {
         <div>
           {featuredPost && (
             <div className="flex items-center gap-2 mb-6">
-              <h2 className="text-lg font-bold text-foreground">Derniers articles</h2>
+              <h2 className="text-lg font-bold text-foreground">
+                Derniers articles
+              </h2>
             </div>
           )}
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {regularPosts.map((post) => (
               <BlogCard

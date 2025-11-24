@@ -1,9 +1,15 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Share2, Twitter, Facebook, Link as LinkIcon, Check } from 'lucide-react';
-import { BlogPost } from '@/types';
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Share2,
+  Twitter,
+  Facebook,
+  Link as LinkIcon,
+  Check,
+} from "lucide-react";
+import { BlogPost } from "@/types";
 
 interface BlogInteractionsProps {
   post: BlogPost;
@@ -12,10 +18,10 @@ interface BlogInteractionsProps {
 export function BlogInteractions({ post }: BlogInteractionsProps) {
   const [shareMenuOpen, setShareMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [shareUrl, setShareUrl] = useState('');
+  const [shareUrl, setShareUrl] = useState("");
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       setShareUrl(window.location.href);
     }
   }, []);
@@ -27,11 +33,11 @@ export function BlogInteractions({ post }: BlogInteractionsProps) {
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // Fallback for browsers that don't support clipboard API
-      const textArea = document.createElement('textarea');
+      const textArea = document.createElement("textarea");
       textArea.value = shareUrl;
       document.body.appendChild(textArea);
       textArea.select();
-      document.execCommand('copy');
+      document.execCommand("copy");
       document.body.removeChild(textArea);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -40,8 +46,8 @@ export function BlogInteractions({ post }: BlogInteractionsProps) {
 
   return (
     <div className="relative">
-      <Button 
-        variant="outline" 
+      <Button
+        variant="outline"
         size="sm"
         onClick={() => setShareMenuOpen(!shareMenuOpen)}
         className="hover:bg-brand-50 dark:hover:bg-brand-950/50"
@@ -49,7 +55,7 @@ export function BlogInteractions({ post }: BlogInteractionsProps) {
         <Share2 className="h-4 w-4 mr-2" />
         Partager
       </Button>
-      
+
       {shareMenuOpen && (
         <div className="absolute right-0 top-full mt-2 w-48 bg-background border border-border rounded-lg shadow-lg z-10">
           <div className="p-2 space-y-1">
@@ -82,7 +88,7 @@ export function BlogInteractions({ post }: BlogInteractionsProps) {
               ) : (
                 <LinkIcon className="h-4 w-4" />
               )}
-              {copied ? 'Copié!' : 'Copier le lien'}
+              {copied ? "Copié!" : "Copier le lien"}
             </button>
           </div>
         </div>

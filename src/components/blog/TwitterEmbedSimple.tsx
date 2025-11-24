@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { Card } from '@/components/ui/card';
-import { ExternalLink, Twitter } from 'lucide-react';
+import { useEffect } from "react";
+import { Card } from "@/components/ui/card";
+import { ExternalLink, Twitter } from "lucide-react";
 
 interface TwitterEmbedSimpleProps {
   tweetId: string;
@@ -15,14 +15,17 @@ declare global {
   }
 }
 
-export function TwitterEmbedSimple({ tweetId, className }: TwitterEmbedSimpleProps) {
+export function TwitterEmbedSimple({
+  tweetId,
+  className,
+}: TwitterEmbedSimpleProps) {
   useEffect(() => {
     // Charger le script Twitter s'il n'est pas déjà chargé
     if (!window.twttr) {
-      const script = document.createElement('script');
-      script.src = 'https://platform.twitter.com/widgets.js';
+      const script = document.createElement("script");
+      script.src = "https://platform.twitter.com/widgets.js";
       script.async = true;
-      script.charset = 'utf-8';
+      script.charset = "utf-8";
       document.body.appendChild(script);
     } else {
       // Si le script est déjà chargé, réinitialiser les widgets
@@ -34,15 +37,16 @@ export function TwitterEmbedSimple({ tweetId, className }: TwitterEmbedSimplePro
     <div className={`my-8 flex justify-center ${className}`}>
       <div className="max-w-full">
         {/* Embed Twitter officiel avec blockquote */}
-        <blockquote 
-          className="twitter-tweet" 
-          data-theme="light" 
+        <blockquote
+          className="twitter-tweet"
+          data-theme="light"
           data-width="550"
           data-conversation="none"
           data-dnt="true"
         >
           <p lang="fr" dir="ltr">
-            20 pépites qu'on a kiffé chez les créateurs FR et Belges, des sorties bien chaudes 🔥
+            20 pépites qu'on a kiffé chez les créateurs FR et Belges, des
+            sorties bien chaudes 🔥
             <br />
             THREAD 🧵
           </p>
@@ -50,14 +54,16 @@ export function TwitterEmbedSimple({ tweetId, className }: TwitterEmbedSimplePro
             — LONGUE VIE À TOUS MENNÉS ❤️ (@CaminoTV) July 23, 2025
           </a>
         </blockquote>
-        
+
         {/* Fallback élégant */}
         <noscript>
           <Card className="p-6 border border-border bg-muted/30 mt-4">
             <div className="flex items-center justify-center space-x-4">
               <Twitter className="h-8 w-8 text-muted-foreground" />
               <div className="text-center">
-                <p className="font-medium text-foreground mb-2">Thread Twitter</p>
+                <p className="font-medium text-foreground mb-2">
+                  Thread Twitter
+                </p>
                 <p className="text-sm text-muted-foreground mb-4">
                   20 pépites qu'on a kiffé chez les créateurs FR et Belges
                 </p>

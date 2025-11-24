@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Twitter, Facebook, Link as LinkIcon, Check } from 'lucide-react';
-import { BlogPost } from '@/types';
-import { useState, useEffect } from 'react';
+import { Button } from "@/components/ui/button";
+import { Twitter, Facebook, Link as LinkIcon, Check } from "lucide-react";
+import { BlogPost } from "@/types";
+import { useState, useEffect } from "react";
 
 interface ShareButtonsProps {
   post: BlogPost;
@@ -11,7 +11,7 @@ interface ShareButtonsProps {
 
 export function ShareButtons({ post }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
-  const [currentUrl, setCurrentUrl] = useState('');
+  const [currentUrl, setCurrentUrl] = useState("");
 
   // Get current URL on client side
   useEffect(() => {
@@ -20,16 +20,19 @@ export function ShareButtons({ post }: ShareButtonsProps) {
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(currentUrl || `https://camino-tv.vercel.app/blog/${post.slug}`);
+      await navigator.clipboard.writeText(
+        currentUrl || `https://camino-tv.vercel.app/blog/${post.slug}`,
+      );
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // Fallback for browsers that don't support clipboard API
-      const textArea = document.createElement('textarea');
-      textArea.value = currentUrl || `https://camino-tv.vercel.app/blog/${post.slug}`;
+      const textArea = document.createElement("textarea");
+      textArea.value =
+        currentUrl || `https://camino-tv.vercel.app/blog/${post.slug}`;
       document.body.appendChild(textArea);
       textArea.select();
-      document.execCommand('copy');
+      document.execCommand("copy");
       document.body.removeChild(textArea);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -38,16 +41,20 @@ export function ShareButtons({ post }: ShareButtonsProps) {
 
   const handleTwitterShare = () => {
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(currentUrl || `https://camino-tv.vercel.app/blog/${post.slug}`)}&via=CaminoTV`;
-    window.open(url, '_blank', 'width=550,height=420');
+    window.open(url, "_blank", "width=550,height=420");
   };
 
   const handleFacebookShare = () => {
     const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl || `https://camino-tv.vercel.app/blog/${post.slug}`)}`;
-    window.open(url, '_blank', 'width=580,height=296');
+    window.open(url, "_blank", "width=580,height=296");
   };
 
   return (
-    <div className="flex items-center gap-3" role="group" aria-label="Boutons de partage social">
+    <div
+      className="flex items-center gap-3"
+      role="group"
+      aria-label="Boutons de partage social"
+    >
       <Button
         variant="outline"
         size="sm"
@@ -58,7 +65,7 @@ export function ShareButtons({ post }: ShareButtonsProps) {
         <Twitter className="h-4 w-4" aria-hidden="true" />
         <span className="hidden sm:inline">Twitter</span>
       </Button>
-      
+
       <Button
         variant="outline"
         size="sm"
@@ -69,7 +76,7 @@ export function ShareButtons({ post }: ShareButtonsProps) {
         <Facebook className="h-4 w-4" aria-hidden="true" />
         <span className="hidden sm:inline">Facebook</span>
       </Button>
-      
+
       <Button
         variant="outline"
         size="sm"
@@ -83,7 +90,7 @@ export function ShareButtons({ post }: ShareButtonsProps) {
           <LinkIcon className="h-4 w-4" aria-hidden="true" />
         )}
         <span className="hidden sm:inline">
-          {copied ? 'Copié!' : 'Copier le lien'}
+          {copied ? "Copié!" : "Copier le lien"}
         </span>
       </Button>
     </div>

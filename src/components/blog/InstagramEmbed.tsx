@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 interface InstagramEmbedProps {
   postUrl: string;
@@ -21,8 +21,8 @@ export function InstagramEmbed({ postUrl, className }: InstagramEmbedProps) {
     const loadInstagramWidget = () => {
       // Si le script Instagram n'est pas chargé, on le charge
       if (!window.instgrm) {
-        const script = document.createElement('script');
-        script.src = '//www.instagram.com/embed.js';
+        const script = document.createElement("script");
+        script.src = "//www.instagram.com/embed.js";
         script.async = true;
         script.onload = () => {
           processEmbeds();
@@ -39,7 +39,7 @@ export function InstagramEmbed({ postUrl, className }: InstagramEmbedProps) {
         try {
           window.instgrm.Embeds.process();
         } catch (error) {
-          console.log('Erreur lors du traitement Instagram:', error);
+          console.error("InstagramEmbed: Failed to process embed", error);
           showFallback();
         }
       } else {
@@ -49,7 +49,10 @@ export function InstagramEmbed({ postUrl, className }: InstagramEmbedProps) {
             try {
               window.instgrm.Embeds.process();
             } catch (error) {
-              console.log('Erreur lors du traitement Instagram (retry):', error);
+              console.error(
+                "InstagramEmbed: Failed to process embed (retry)",
+                error,
+              );
               showFallback();
             }
           } else {

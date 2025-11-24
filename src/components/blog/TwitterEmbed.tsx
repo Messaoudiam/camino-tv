@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 interface TwitterEmbedProps {
   tweetId: string;
@@ -21,10 +21,10 @@ export function TwitterEmbed({ tweetId, className }: TwitterEmbedProps) {
     const loadTwitterWidget = () => {
       // Si le script Twitter n'est pas chargé, on le charge
       if (!window.twttr) {
-        const script = document.createElement('script');
-        script.src = 'https://platform.twitter.com/widgets.js';
+        const script = document.createElement("script");
+        script.src = "https://platform.twitter.com/widgets.js";
         script.async = true;
-        script.charset = 'utf-8';
+        script.charset = "utf-8";
         script.onload = () => {
           createTweet();
         };
@@ -38,18 +38,20 @@ export function TwitterEmbed({ tweetId, className }: TwitterEmbedProps) {
     const createTweet = () => {
       if (tweetRef.current && window.twttr && window.twttr.widgets) {
         // Nettoyer le contenu pour éviter les doublons
-        tweetRef.current.innerHTML = '';
-        
-        window.twttr.widgets.createTweet(tweetId, tweetRef.current, {
-          theme: 'light',
-          align: 'center',
-          conversation: 'none',
-          dnt: true
-        }).catch((error: any) => {
-          console.log('Erreur lors du chargement du tweet:', error);
-          // En cas d'erreur, on affiche le fallback
-          if (containerRef.current) {
-            containerRef.current.innerHTML = `
+        tweetRef.current.innerHTML = "";
+
+        window.twttr.widgets
+          .createTweet(tweetId, tweetRef.current, {
+            theme: "light",
+            align: "center",
+            conversation: "none",
+            dnt: true,
+          })
+          .catch((error: unknown) => {
+            console.error("TwitterEmbed: Failed to load tweet", error);
+            // En cas d'erreur, on affiche le fallback
+            if (containerRef.current) {
+              containerRef.current.innerHTML = `
               <div class="p-6 border rounded-lg bg-gray-50 dark:bg-gray-900">
                 <div class="text-center">
                   <p class="font-medium mb-2">Thread indisponible</p>
@@ -59,8 +61,8 @@ export function TwitterEmbed({ tweetId, className }: TwitterEmbedProps) {
                 </div>
               </div>
             `;
-          }
-        });
+            }
+          });
       }
     };
 

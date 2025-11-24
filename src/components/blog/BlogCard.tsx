@@ -1,38 +1,42 @@
-'use client';
+"use client";
 
 /**
  * BlogCard - Composant pour afficher un article de blog
  * Design cohérent avec les DealCard existantes
  */
 
-import { BlogCardProps } from '@/types';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Calendar, Clock, ArrowRight } from 'lucide-react';
-import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import { BlogCardProps } from "@/types";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Calendar, Clock, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 
-export function BlogCard({ post, variant = 'default', onClick, className }: BlogCardProps) {
-
+export function BlogCard({
+  post,
+  variant = "default",
+  onClick,
+  className,
+}: BlogCardProps) {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('fr-FR', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
+    return date.toLocaleDateString("fr-FR", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
     });
   };
 
-  if (variant === 'featured') {
+  if (variant === "featured") {
     return (
-      <Card 
-        variant="feature" 
-        size="lg" 
+      <Card
+        variant="feature"
+        size="lg"
         padding="none"
         className={cn(
-          'group cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-elevation-3 hover:scale-[1.02]',
-          className
+          "group cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-elevation-3 hover:scale-[1.02]",
+          className,
         )}
         onClick={onClick}
       >
@@ -45,7 +49,6 @@ export function BlogCard({ post, variant = 'default', onClick, className }: Blog
             className="object-cover transition-transform duration-500 group-hover:scale-110"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
-          
         </div>
 
         {/* Contenu en dessous de l'image */}
@@ -53,11 +56,11 @@ export function BlogCard({ post, variant = 'default', onClick, className }: Blog
           <h3 className="text-2xl font-bold mb-3 text-foreground group-hover:text-brand-600 transition-colors line-clamp-2">
             {post.title}
           </h3>
-          
+
           <p className="text-muted-foreground mb-4 line-clamp-3 leading-relaxed">
             {post.excerpt}
           </p>
-          
+
           {/* Métadonnées */}
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
@@ -74,13 +77,13 @@ export function BlogCard({ post, variant = 'default', onClick, className }: Blog
     );
   }
 
-  if (variant === 'compact') {
+  if (variant === "compact") {
     return (
-      <Card 
-        variant="interactive" 
-        size="sm" 
+      <Card
+        variant="interactive"
+        size="sm"
         padding="sm"
-        className={cn('group', className)}
+        className={cn("group", className)}
         onClick={onClick}
       >
         <div className="flex gap-4">
@@ -93,13 +96,12 @@ export function BlogCard({ post, variant = 'default', onClick, className }: Blog
               sizes="80px"
             />
           </div>
-          
+
           <div className="flex-1 min-w-0">
-            
             <h4 className="font-semibold text-sm line-clamp-2 group-hover:text-brand-600 transition-colors mb-1">
               {post.title}
             </h4>
-            
+
             <div className="flex items-center gap-3 text-xs text-muted-foreground">
               <span className="flex items-center gap-1">
                 <Clock className="h-3 w-3" />
@@ -114,11 +116,11 @@ export function BlogCard({ post, variant = 'default', onClick, className }: Blog
 
   // Variant par défaut
   return (
-    <Card 
-      variant="interactive" 
-      size="lg" 
+    <Card
+      variant="interactive"
+      size="lg"
       padding="none"
-      className={cn('group overflow-hidden', className)}
+      className={cn("group overflow-hidden", className)}
       onClick={onClick}
     >
       {/* Image */}
@@ -130,7 +132,6 @@ export function BlogCard({ post, variant = 'default', onClick, className }: Blog
           className="object-cover transition-transform duration-500 group-hover:scale-110"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        
       </div>
 
       {/* Contenu */}
@@ -138,7 +139,7 @@ export function BlogCard({ post, variant = 'default', onClick, className }: Blog
         <h3 className="font-bold text-lg mb-2 line-clamp-2 group-hover:text-brand-600 transition-colors">
           {post.title}
         </h3>
-        
+
         <p className="text-sm text-muted-foreground line-clamp-3 mb-4">
           {post.excerpt}
         </p>
