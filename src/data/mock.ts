@@ -3,43 +3,43 @@
  * Inspiré de l'univers sneakers/streetwear français
  */
 
-import { Deal, Brand, BlogPost, BlogAuthor } from '@/types';
+import { Deal, Brand, BlogPost, BlogAuthor } from "@/types";
 
 export const mockBrands: Brand[] = [
   {
-    id: 'nike',
-    name: 'Nike',
-    logoUrl: '/brands/nike.svg',
+    id: "nike",
+    name: "Nike",
+    logoUrl: "/brands/nike.svg",
     isPartner: true,
   },
   {
-    id: 'adidas', 
-    name: 'Adidas',
-    logoUrl: '/brands/adidas.svg',
+    id: "adidas",
+    name: "Adidas",
+    logoUrl: "/brands/adidas.svg",
     isPartner: true,
   },
   {
-    id: 'jordan',
-    name: 'Air Jordan',
-    logoUrl: '/brands/jordan.svg',
+    id: "jordan",
+    name: "Air Jordan",
+    logoUrl: "/brands/jordan.svg",
     isPartner: true,
   },
   {
-    id: 'newbalance',
-    name: 'New Balance',
-    logoUrl: '/brands/newbalance.svg',
+    id: "newbalance",
+    name: "New Balance",
+    logoUrl: "/brands/newbalance.svg",
     isPartner: false,
   },
   {
-    id: 'stussy',
-    name: 'Stussy',
-    logoUrl: '/brands/stussy.svg',
+    id: "stussy",
+    name: "Stussy",
+    logoUrl: "/brands/stussy.svg",
     isPartner: true,
   },
   {
-    id: 'decathlon',
-    name: 'Decathlon',
-    logoUrl: '/brands/decathlon.svg',
+    id: "decathlon",
+    name: "Decathlon",
+    logoUrl: "/brands/decathlon.svg",
     isPartner: true,
   },
 ];
@@ -51,11 +51,11 @@ export const mockDeals: Deal[] = [];
  * Catégories pour la navigation et les filtres
  */
 export const categories = [
-  { id: 'sneakers', name: 'Sneakers', count: 6 },
-  { id: 'streetwear', name: 'Streetwear', count: 3 },
-  { id: 'accessories', name: 'Accessoires', count: 0 },
-  { id: 'electronics', name: 'Tech', count: 0 },
-  { id: 'lifestyle', name: 'Lifestyle', count: 1 },
+  { id: "sneakers", name: "Sneakers", count: 6 },
+  { id: "streetwear", name: "Streetwear", count: 3 },
+  { id: "accessories", name: "Accessoires", count: 0 },
+  { id: "electronics", name: "Tech", count: 0 },
+  { id: "lifestyle", name: "Lifestyle", count: 1 },
 ] as const;
 
 /**
@@ -63,100 +63,100 @@ export const categories = [
  */
 export const mockAuthors: BlogAuthor[] = [
   {
-    id: 'sean',
-    name: 'Sean',
-    avatar: '/sean1.jpg',
-    role: 'Fondateur & Creator',
+    id: "sean",
+    name: "Sean",
+    avatar: "/sean1.jpg",
+    role: "Fondateur & Creator",
   },
   {
-    id: 'mike',
-    name: 'Mike',
-    avatar: '/mike.png',
-    role: 'Content Creator',
+    id: "mike",
+    name: "Mike",
+    avatar: "/mike.png",
+    role: "Content Creator",
   },
   {
-    id: 'keusmo',
-    name: 'Keusmo',
-    avatar: '/keuss.jpg',
-    role: 'Influenceur Streetwear',
+    id: "keusmo",
+    name: "Keusmo",
+    avatar: "/keuss.jpg",
+    role: "Influenceur Streetwear",
   },
   {
-    id: 'elssy',
-    name: 'Elssy',
-    avatar: '/elssy.jpeg',
-    role: 'Journaliste Mode',
+    id: "elssy",
+    name: "Elssy",
+    avatar: "/elssy.jpeg",
+    role: "Journaliste Mode",
   },
   {
-    id: 'monroe',
-    name: 'Monroe',
-    avatar: '/monroe.jpeg',
-    role: 'Expert Sneakers',
+    id: "monroe",
+    name: "Monroe",
+    avatar: "/monroe.jpeg",
+    role: "Expert Sneakers",
   },
   {
-    id: 'piway',
-    name: 'Piway',
-    avatar: '/piway.jpeg',
-    role: 'Photographe',
+    id: "piway",
+    name: "Piway",
+    avatar: "/piway.jpeg",
+    role: "Photographe",
   },
   {
-    id: 'messaoud',
-    name: 'Messaoud',
-    avatar: '/mess.png',
-    role: 'Développeur',
+    id: "messaoud",
+    name: "Messaoud",
+    avatar: "/mess.jpeg",
+    role: "Développeur",
   },
   {
-    id: 'chasseur',
-    name: 'Chasseur',
-    avatar: '/chasseur.jpg',
-    role: 'Content Creator',
+    id: "chasseur",
+    name: "Chasseur",
+    avatar: "/chasseur.jpg",
+    role: "Content Creator",
   },
   {
-    id: 'saku',
-    name: 'Saku',
-    avatar: '/saku.jpg',
-    role: 'Content Creator',
+    id: "saku",
+    name: "Saku",
+    avatar: "/saku.jpg",
+    role: "Content Creator",
   },
   {
-    id: 'souk',
-    name: 'Souk',
-    avatar: '/team/souk.jpg',
-    role: 'Styliste',
+    id: "souk",
+    name: "Souk",
+    avatar: "/team/souk.jpg",
+    role: "Styliste",
   },
   {
-    id: 'bous',
-    name: 'Bous',
-    avatar: '/bous.jpg',
-    role: 'Social Media',
+    id: "bous",
+    name: "Bous",
+    avatar: "/bous.jpg",
+    role: "Social Media",
   },
   {
-    id: 'wade',
-    name: 'Wade',
-    avatar: '/wade.jpg',
-    role: 'Social Media',
+    id: "wade",
+    name: "Wade",
+    avatar: "/wade.jpg",
+    role: "Social Media",
   },
   {
-    id: 'linda',
-    name: 'Linda',
-    avatar: '/linda.jpg',
-    role: 'Chef de Projet',
+    id: "linda",
+    name: "Linda",
+    avatar: "/linda.jpg",
+    role: "Chef de Projet",
   },
   {
-    id: 'adlane',
-    name: 'Adlane',
-    avatar: '/team/adlane.jpg',
-    role: 'Développeur',
+    id: "adlane",
+    name: "Adlane",
+    avatar: "/team/adlane.jpg",
+    role: "Développeur",
   },
   {
-    id: 'alexis',
-    name: 'Alexis',
-    avatar: '/alexis.jpg',
-    role: 'Développeur',
+    id: "alexis",
+    name: "Alexis",
+    avatar: "/alexis.jpg",
+    role: "Développeur",
   },
   {
-    id: 'greed',
-    name: 'Greed',
-    avatar: '/greed.jpg',
-    role: 'Manager',
+    id: "greed",
+    name: "Greed",
+    avatar: "/greed.jpg",
+    role: "Manager",
   },
 ];
 
@@ -165,10 +165,11 @@ export const mockAuthors: BlogAuthor[] = [
  */
 export const mockBlogPosts: BlogPost[] = [
   {
-    id: '11',
-    title: 'Communitee : Les gagnants du concours Adidas x Camino TV révélés !',
-    slug: 'communitee-gagnants-concours-adidas-camino-tv-reveles',
-    excerpt: '🏆 Découvrez les 3 créateurs lauréats du concours Communitee ! HTK, Garçons Jeunes et Donovann Bonnet ont conquis le jury avec leurs designs révolutionnaires de la veste Firebird.',
+    id: "11",
+    title: "Communitee : Les gagnants du concours Adidas x Camino TV révélés !",
+    slug: "communitee-gagnants-concours-adidas-camino-tv-reveles",
+    excerpt:
+      "🏆 Découvrez les 3 créateurs lauréats du concours Communitee ! HTK, Garçons Jeunes et Donovann Bonnet ont conquis le jury avec leurs designs révolutionnaires de la veste Firebird.",
     content: `<article>
       <header>
         <h1 class="text-3xl font-bold mt-8 mb-6 text-foreground">🏆 Communitee : Les gagnants enfin révélés !</h1>
@@ -456,19 +457,29 @@ export const mockBlogPosts: BlogPost[] = [
         </div>
       </section>
     </article>`,
-    imageUrl: '/blog/communi-tee/communitee1.jpg',
-    category: 'culture',
+    imageUrl: "/blog/communi-tee/communitee1.jpg",
+    category: "culture",
     author: mockAuthors[0], // Sean
-    publishedAt: '2025-01-30',
+    publishedAt: "2025-01-30",
     readTime: 5,
-    tags: ['communitee', 'gagnants', 'adidas', 'camino-tv', 'results', 'htk', 'garcons-jeunes', 'donovann-bonnet'],
+    tags: [
+      "communitee",
+      "gagnants",
+      "adidas",
+      "camino-tv",
+      "results",
+      "htk",
+      "garcons-jeunes",
+      "donovann-bonnet",
+    ],
     isFeature: true,
   },
   {
-    id: '10',
-    title: 'Communitee : Reimaginez la veste Firebird avec Adidas et Camino TV',
-    slug: 'communitee-concours-design-adidas-firebird-camino-tv',
-    excerpt: 'Participez au concours créatif Communitee ! Redesignez la mythique veste Firebird d\'Adidas et tentez de remporter 2000€, une collaboration officielle et un voyage en Allemagne.',
+    id: "10",
+    title: "Communitee : Reimaginez la veste Firebird avec Adidas et Camino TV",
+    slug: "communitee-concours-design-adidas-firebird-camino-tv",
+    excerpt:
+      "Participez au concours créatif Communitee ! Redesignez la mythique veste Firebird d'Adidas et tentez de remporter 2000€, une collaboration officielle et un voyage en Allemagne.",
     content: `<article>
       <header>
         <h1 class="text-3xl font-bold mt-8 mb-6 text-foreground">Communitee : L'opportunité créative de votre vie avec Adidas</h1>
@@ -666,19 +677,27 @@ export const mockBlogPosts: BlogPost[] = [
         </p>
       </section>
     </article>`,
-    imageUrl: '/blog/communi-tee/zidane.jpg',
-    category: 'culture',
+    imageUrl: "/blog/communi-tee/zidane.jpg",
+    category: "culture",
     author: mockAuthors[0], // Sean
-    publishedAt: '2025-01-31',
+    publishedAt: "2025-01-31",
     readTime: 8,
-    tags: ['adidas', 'communitee', 'concours', 'design', 'firebird', 'collaboration'],
+    tags: [
+      "adidas",
+      "communitee",
+      "concours",
+      "design",
+      "firebird",
+      "collaboration",
+    ],
     isFeature: false,
   },
   {
-    id: '7',
-    title: 'Thread : 20 créateurs français et belges à suivre absolument',
-    slug: 'thread-20-createurs-francais-belges-suivre',
-    excerpt: 'Notre sélection exclusive des pépites créatives francophones qui font vibrer la scène culturelle. De la musique au streetwear, découvrez les talents qui façonnent l\'avenir.',
+    id: "7",
+    title: "Thread : 20 créateurs français et belges à suivre absolument",
+    slug: "thread-20-createurs-francais-belges-suivre",
+    excerpt:
+      "Notre sélection exclusive des pépites créatives francophones qui font vibrer la scène culturelle. De la musique au streetwear, découvrez les talents qui façonnent l'avenir.",
     content: `<article>
       <header>
         <h1 class="text-3xl font-bold mt-8 mb-6 text-foreground">20 Créateurs FR/BE : Les pépites qui nous inspirent</h1>
@@ -704,19 +723,21 @@ export const mockBlogPosts: BlogPost[] = [
         </p>
       </section>
     </article>`,
-    imageUrl: '/blog/creators-frbe.jpeg',
-    category: 'culture',
+    imageUrl: "/blog/creators-frbe.jpeg",
+    category: "culture",
     author: mockAuthors[0], // Sean
-    publishedAt: '2024-01-16',
+    publishedAt: "2024-01-16",
     readTime: 10,
-    tags: ['créateurs', 'france', 'belgique', 'culture', 'thread'],
+    tags: ["créateurs", "france", "belgique", "culture", "thread"],
     isFeature: false,
   },
   {
-    id: '9',
-    title: 'Camino TV x Meller : La collaboration Amber qui révolutionne les lunettes',
-    slug: 'caminotv-meller-collaboration-lunettes-amber',
-    excerpt: 'Après 8 ans d\'aventure, Camino TV s\'associe à Meller pour créer les lunettes Amber, un design éclectique inspiré des années 90 qui rend la mode accessible à tous.',
+    id: "9",
+    title:
+      "Camino TV x Meller : La collaboration Amber qui révolutionne les lunettes",
+    slug: "caminotv-meller-collaboration-lunettes-amber",
+    excerpt:
+      "Après 8 ans d'aventure, Camino TV s'associe à Meller pour créer les lunettes Amber, un design éclectique inspiré des années 90 qui rend la mode accessible à tous.",
     content: `<article>
       <header>
         <h1 class="text-3xl font-bold mt-8 mb-6 text-foreground">Camino TV x Meller : La naissance des lunettes Amber</h1>
@@ -869,19 +890,28 @@ export const mockBlogPosts: BlogPost[] = [
         </p>
       </section>
     </article>`,
-    imageUrl: '/blog/mellerxcamino/meller2.webp',
-    category: 'lifestyle',
+    imageUrl: "/blog/mellerxcamino/meller2.webp",
+    category: "lifestyle",
     author: mockAuthors[0], // Sean
-    publishedAt: '2025-01-28',
+    publishedAt: "2025-01-28",
     readTime: 5,
-    tags: ['meller', 'collaboration', 'lunettes', 'amber', 'ensemble', 'années90'],
+    tags: [
+      "meller",
+      "collaboration",
+      "lunettes",
+      "amber",
+      "ensemble",
+      "années90",
+    ],
     isFeature: false,
   },
   {
-    id: '8',
-    title: 'Supraw x Uniqlo : L\'art toulousain s\'invite aux Zinzins de l\'Espace',
-    slug: 'supraw-uniqlo-collaboration-zinzins-espace-toulouse',
-    excerpt: 'L\'artiste toulousain Supraw collabore avec Uniqlo pour une collection exclusive inspirée des Zinzins de l\'Espace. Pop-up éphémère à Toulouse les 28/02/25 et 01/03/25.',
+    id: "8",
+    title:
+      "Supraw x Uniqlo : L'art toulousain s'invite aux Zinzins de l'Espace",
+    slug: "supraw-uniqlo-collaboration-zinzins-espace-toulouse",
+    excerpt:
+      "L'artiste toulousain Supraw collabore avec Uniqlo pour une collection exclusive inspirée des Zinzins de l'Espace. Pop-up éphémère à Toulouse les 28/02/25 et 01/03/25.",
     content: `<article>
       <header>
         <h1 class="text-3xl font-bold mt-8 mb-6 text-foreground">Supraw x Uniqlo : Quand l'art toulousain rencontre les Zinzins de l'Espace</h1>
@@ -1016,12 +1046,12 @@ export const mockBlogPosts: BlogPost[] = [
         </p>
       </section>
     </article>`,
-    imageUrl: '/blog/supraw.jpg',
-    category: 'streetwear',
+    imageUrl: "/blog/supraw.jpg",
+    category: "streetwear",
     author: mockAuthors[0], // Sean
-    publishedAt: '2025-01-19',
+    publishedAt: "2025-01-19",
     readTime: 6,
-    tags: ['supraw', 'uniqlo', 'toulouse', 'collaboration', 'zinzins', 'art'],
+    tags: ["supraw", "uniqlo", "toulouse", "collaboration", "zinzins", "art"],
     isFeature: false,
   },
 ];
@@ -1030,10 +1060,10 @@ export const mockBlogPosts: BlogPost[] = [
  * Catégories de blog pour la navigation
  */
 export const blogCategories = [
-  { id: 'culture', name: 'Culture', count: 5 },
-  { id: 'streetwear', name: 'Streetwear', count: 2 },
-  { id: 'musique', name: 'Musique', count: 1 },
-  { id: 'interview', name: 'Interviews', count: 1 },
-  { id: 'lifestyle', name: 'Lifestyle', count: 1 },
-  { id: 'tendances', name: 'Tendances', count: 1 },
+  { id: "culture", name: "Culture", count: 5 },
+  { id: "streetwear", name: "Streetwear", count: 2 },
+  { id: "musique", name: "Musique", count: 1 },
+  { id: "interview", name: "Interviews", count: 1 },
+  { id: "lifestyle", name: "Lifestyle", count: 1 },
+  { id: "tendances", name: "Tendances", count: 1 },
 ] as const;
