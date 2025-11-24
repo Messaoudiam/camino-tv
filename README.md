@@ -6,13 +6,14 @@ Une plateforme complète inspirée de l'univers Camino TV pour découvrir et gé
 
 ## 🚀 Démonstration Live
 
-**[Voir le projet en ligne →](https://camino-tv.vercel.app)** *(déploiement Vercel)*
+**[Voir le projet en ligne →](https://camino-tv.vercel.app)** _(déploiement Vercel)_
 
 ![Camino TV Preview](public/camino_logo.jpg)
 
 ## ✨ Fonctionnalités Principales
 
 ### 🔐 Authentification & Sécurité
+
 - **Better Auth** intégré avec Prisma adapter
 - **Email/Password** + Google OAuth (social login)
 - **Sessions sécurisées** stockées en base de données
@@ -20,12 +21,14 @@ Une plateforme complète inspirée de l'univers Camino TV pour découvrir et gé
 - **Role-based access** (USER/ADMIN) avec gestion fine
 
 ### 🎨 Interface Moderne
+
 - **Design System** complet avec Shadcn UI et Tailwind CSS v4
 - **Dark/Light Mode** avec transition fluide (next-themes)
 - **24+ composants** Shadcn UI personnalisés
 - **Responsive Design** mobile-first sur tous devices
 
 ### 🛍️ Catalogue Deals Dynamique
+
 - **API RESTful** avec endpoints CRUD complets
 - **Base de données** PostgreSQL avec Prisma ORM
 - **Grille produits** avec données en temps réel
@@ -33,12 +36,14 @@ Une plateforme complète inspirée de l'univers Camino TV pour découvrir et gé
 - **Pagination** et lazy loading optimisés
 
 ### ❤️ Système de Favoris API-First
+
 - **Integration API** avec fallback localStorage
 - **Authentification requise** pour la persistance
 - **Synchronisation** temps réel entre devices
 - **Page dédiée** /favorites avec gestion complète
 
 ### 🎛️ Dashboard Admin Complet
+
 - **KPI en temps réel** : deals, users, favorites, engagement
 - **CRUD Deals** : création, édition, suppression avec validation Zod
 - **Upload d'images** vers Supabase Storage (5MB max)
@@ -46,12 +51,14 @@ Une plateforme complète inspirée de l'univers Camino TV pour découvrir et gé
 - **Interface moderne** avec Shadcn Sidebar et tables
 
 ### 📝 Blog & Contenu
+
 - **Pages dynamiques** [slug] avec App Router
 - **Rich content** avec Twitter embeds
 - **Catégorisation** et profils équipe
 - **Gestion admin** (création/édition en cours)
 
 ### 📱 Performance & UX
+
 - **React 19** + **Next.js 15** avec Turbopack
 - **Server Components** et optimisations automatiques
 - **Bundle optimisé** avec code splitting
@@ -60,6 +67,7 @@ Une plateforme complète inspirée de l'univers Camino TV pour découvrir et gé
 ## 🛠 Stack Technique Full-Stack
 
 ### Frontend
+
 - **Next.js 15.5.2** - App Router, Server Components, Turbopack
 - **React 19.1.0** - Dernières APIs et optimisations
 - **TypeScript 5** - Configuration stricte end-to-end
@@ -69,6 +77,7 @@ Une plateforme complète inspirée de l'univers Camino TV pour découvrir et gé
 - **Lucide React** - Icons modernes SVG optimisés
 
 ### Backend & Database
+
 - **PostgreSQL** - Base de données production (Supabase)
 - **Prisma 6.16.3** - ORM type-safe avec migrations
 - **Better Auth 1.3.26** - Authentication moderne avec sessions DB
@@ -76,6 +85,7 @@ Une plateforme complète inspirée de l'univers Camino TV pour découvrir et gé
 - **Zod 4.1.5** - Validation schemas côté serveur/client
 
 ### API & Security
+
 - **Next.js Route Handlers** - API RESTful type-safe
 - **Middleware protection** - Routes admin sécurisées
 - **Role-based access** - Gestion permissions USER/ADMIN
@@ -83,6 +93,7 @@ Une plateforme complète inspirée de l'univers Camino TV pour découvrir et gé
 - **CSRF protection** - Sécurité built-in
 
 ### DevOps & Testing
+
 - **Jest 30** - Tests unitaires et intégration
 - **Testing Library** - Tests composants React
 - **ESLint 9** - Linting Next.js + TypeScript
@@ -146,6 +157,7 @@ prisma/
 ## 🎯 Points Forts Techniques
 
 ### Backend Architecture
+
 - **Type-safety end-to-end** - Prisma → API → Frontend
 - **RESTful API** - Endpoints CRUD avec Zod validation
 - **Session management** - Better Auth avec database persistence
@@ -154,6 +166,7 @@ prisma/
 - **Database migrations** - Prisma versioning avec rollback support
 
 ### Performance & Optimization
+
 - **Turbopack** - Build 700x plus rapide que Webpack
 - **Server Components** - Rendering optimisé côté serveur
 - **API Route Handlers** - Streaming et edge-ready
@@ -162,6 +175,7 @@ prisma/
 - **Code splitting** - Automatic bundle optimization
 
 ### Security & Authentication
+
 - **Better Auth** - Modern auth avec social login support
 - **Middleware protection** - Route guards automatiques
 - **CSRF protection** - Built-in security headers
@@ -170,6 +184,7 @@ prisma/
 - **XSS protection** - React automatic escaping
 
 ### Developer Experience
+
 - **Full-stack TypeScript** - Types partagés DB → UI
 - **Prisma Studio** - GUI pour gérer la database
 - **Hot reload** - Turbopack instant updates
@@ -178,6 +193,7 @@ prisma/
 - **Error handling** - Consistent API error responses
 
 ### User Experience
+
 - **Real-time updates** - API sync avec optimistic UI
 - **Persistent state** - Favoris API + localStorage fallback
 - **Admin dashboard** - Interface complète de gestion
@@ -224,6 +240,7 @@ npm run lint
 ## 📊 Métriques de Qualité
 
 ### Frontend
+
 - ✅ **Next.js 15.5.2** : App Router + React 19 + Turbopack
 - ✅ **TypeScript** : 100% typé, strict mode, 0 erreurs
 - ✅ **Shadcn UI** : 24+ composants accessibles
@@ -232,6 +249,7 @@ npm run lint
 - ✅ **Responsive** : Mobile-first design system
 
 ### Backend
+
 - ✅ **PostgreSQL + Prisma** : Base de données production-ready
 - ✅ **Better Auth** : Authentification complète + OAuth
 - ✅ **API RESTful** : 8+ endpoints avec validation Zod
@@ -240,6 +258,7 @@ npm run lint
 - ✅ **Migrations** : Database versioning avec Prisma
 
 ### Production
+
 - ✅ **Vercel** : Déployé avec CI/CD automatique
 - ✅ **Environment** : Variables sécurisées (Supabase, Auth)
 - ✅ **Performance** : Server Components + optimizations
@@ -250,17 +269,20 @@ npm run lint
 ## 🎨 Design System Tailwind + Shadcn
 
 ### Palette de Couleurs
+
 - **Brand Red** : #ef4444 (Camino TV) avec échelle 50-950
 - **CSS Variables** : Mode sombre/clair via HSL variables
 - **Semantic Colors** : Destructive, Muted, Accent avec foreground
 - **Neutral Scale** : Border, Input, Ring pour cohérence UI
 
 ### Typographie Moderne
+
 - **Geist Font Family** : Sans + Mono (Vercel optimisées)
 - **Responsive Scale** : xs (0.75rem) → 6xl (3.75rem)
 - **Line Heights** : Calculées pour lisibilité optimale
 
 ### Composants Shadcn UI
+
 - **18 UI Components** : Button, Card, Dialog, Sheet, etc.
 - **Radix Primitives** : Accessibilité et interactions natives
 - **Variants System** : class-variance-authority pour type-safety
@@ -269,44 +291,46 @@ npm run lint
 ## 🔧 Configurations Techniques
 
 ### Tailwind CSS v4 Configuration
+
 ```typescript
 // tailwind.config.ts - Configuration étendue
 const config: Config = {
-  darkMode: 'class', // next-themes integration
-  content: ['./src/**/*.{ts,tsx}'],
+  darkMode: "class", // next-themes integration
+  content: ["./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
         // Shadcn UI CSS variables
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
         // Camino TV brand palette
-        brand: { 50: '#fef2f2', 500: '#ef4444', 950: '#450a0a' }
+        brand: { 50: "#fef2f2", 500: "#ef4444", 950: "#450a0a" },
       },
       fontFamily: {
-        sans: ['var(--font-geist-sans)'],
-        mono: ['var(--font-geist-mono)']
+        sans: ["var(--font-geist-sans)"],
+        mono: ["var(--font-geist-mono)"],
       },
       animation: {
-        'fade-in': 'fade-in 0.5s ease-in-out',
-        'scale-in': 'scale-in 0.2s ease-out'
-      }
-    }
-  }
+        "fade-in": "fade-in 0.5s ease-in-out",
+        "scale-in": "scale-in 0.2s ease-out",
+      },
+    },
+  },
 };
 ```
 
 ### Hook useFavorites TypeScript
+
 ```typescript
 // src/hooks/useFavorites.ts - Gestion d'état localStorage
 export function useFavorites() {
   const [favorites, setFavorites] = useState<string[]>([]);
-  
+
   return {
-    favorites,           // string[] - IDs favoris
-    toggleFavorite,     // (id: string) => void
-    isFavorite,         // (id: string) => boolean
-    favoritesCount      // number - Total
+    favorites, // string[] - IDs favoris
+    toggleFavorite, // (id: string) => void
+    isFavorite, // (id: string) => boolean
+    favoritesCount, // number - Total
   };
 }
 ```
@@ -314,6 +338,7 @@ export function useFavorites() {
 ## 📈 État Actuel et Roadmap
 
 ### ✅ Implémenté (v2.0) - **PRODUCTION FULL-STACK**
+
 - **Backend complet** - PostgreSQL + Prisma + Better Auth
 - **API RESTful** - 8+ endpoints CRUD avec validation Zod
 - **Authentification** - Email/password + Google OAuth + sessions DB
@@ -329,6 +354,7 @@ export function useFavorites() {
 - **SEO & Performance** - Optimisé Next.js 15 + Server Components
 
 ### 🔄 Améliorations Prévues
+
 - **Tests E2E** - Playwright pour scénarios complets admin
 - **Blog Backend** - API CRUD pour création articles
 - **Search** - Full-text search PostgreSQL ou Algolia
@@ -339,6 +365,7 @@ export function useFavorites() {
 - **Rate limiting** - Protection API endpoints
 
 ### 🚀 Évolutions Fonctionnelles
+
 - **Social features** - Comments, reviews, ratings
 - **Notifications** - Push notifications pour nouveaux deals
 - **Mobile App** - React Native avec API partagée
@@ -349,11 +376,13 @@ export function useFavorites() {
 ## 👥 Équipe et Crédits
 
 **Développement** : Démonstration technique moderne
+
 - **Framework** : Next.js 15 + React 19 + TypeScript
 - **Design System** : Shadcn UI + Tailwind CSS v4
 - **Architecture** : App Router + Server Components
 
 **Inspiré par l'équipe Camino TV** :
+
 - **Sean** - Fondateur & Creator (profil intégré)
 - **Mike** - Content Creator (articles de style)
 - **Keusmo** - Influenceur Streetwear (collections)
@@ -364,6 +393,7 @@ export function useFavorites() {
 ## 📄 License et Utilisation
 
 Projet de démonstration technique utilisant des technologies open source :
+
 - **Next.js 15** - MIT License (Vercel)
 - **Shadcn UI** - MIT License (composants Radix UI)
 - **Tailwind CSS** - MIT License
@@ -376,16 +406,18 @@ Tous les droits sur la marque "Camino TV" appartiennent à leurs propriétaires 
 
 **🚀 Application Full-Stack Production-Ready - Next.js 15 + PostgreSQL + Better Auth**
 
-*Plateforme complète de deals streetwear avec backend, authentification, admin dashboard et API*
+_Plateforme complète de deals streetwear avec backend, authentification, admin dashboard et API_
 
 **✅ Live Demo** : [https://camino-tv.vercel.app](https://camino-tv.vercel.app)
 
 **🛠 Stack Complète** :
+
 - **Frontend** : Next.js 15 • React 19 • TypeScript • Shadcn UI • Tailwind v4
 - **Backend** : PostgreSQL • Prisma • Better Auth • Supabase Storage
 - **API** : RESTful endpoints • Zod validation • Role-based access
 
 **📊 Audit Technique** :
+
 - ✅ **Build** : Réussi avec 0 erreurs TypeScript
 - ✅ **Database** : Migrations Prisma + 6 models relationnels
 - ✅ **Auth** : Email/password + Google OAuth opérationnels
