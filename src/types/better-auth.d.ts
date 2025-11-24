@@ -3,17 +3,17 @@
  * Extends Better Auth types to include custom fields
  */
 
-import 'better-auth'
-import 'better-auth/react'
+import "better-auth";
+import "better-auth/react";
 
-declare module 'better-auth' {
+declare module "better-auth" {
   interface User {
-    role: 'USER' | 'ADMIN'
+    role: "USER" | "ADMIN";
   }
 }
 
-declare module 'better-auth/react' {
+declare module "better-auth/react" {
   interface User {
-    role: 'USER' | 'ADMIN'
+    role: "USER" | "ADMIN";
   }
 }

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/lib/auth-client';
+import { useState, useEffect } from "react";
+import { useAuth } from "@/lib/auth-client";
 
 export function useFavorites() {
   const [favorites, setFavorites] = useState<string[]>([]);
@@ -18,8 +18,8 @@ export function useFavorites() {
       }
 
       try {
-        const response = await fetch('/api/favorites', {
-          credentials: 'include',
+        const response = await fetch("/api/favorites", {
+          credentials: "include",
         });
 
         if (response.ok) {
@@ -27,11 +27,11 @@ export function useFavorites() {
           const favoriteIds = data.favorites.map((fav: any) => fav.id);
           setFavorites(favoriteIds);
         } else {
-          console.error('Error loading favorites:', response.statusText);
+          console.error("Error loading favorites:", response.statusText);
           setFavorites([]);
         }
       } catch (error) {
-        console.error('Error loading favorites:', error);
+        console.error("Error loading favorites:", error);
         setFavorites([]);
       } finally {
         setIsLoading(false);
@@ -43,51 +43,51 @@ export function useFavorites() {
 
   const addToFavorites = async (id: string) => {
     if (!isAuthenticated) {
-      console.warn('User must be authenticated to add favorites');
+      console.warn("User must be authenticated to add favorites");
       return;
     }
 
     try {
-      const response = await fetch('/api/favorites', {
-        method: 'POST',
+      const response = await fetch("/api/favorites", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify({ dealId: id }),
       });
 
       if (response.ok) {
-        setFavorites(prev => [...prev, id]);
+        setFavorites((prev) => [...prev, id]);
       } else {
         const error = await response.json();
-        console.error('Error adding favorite:', error);
+        console.error("Error adding favorite:", error);
       }
     } catch (error) {
-      console.error('Error adding favorite:', error);
+      console.error("Error adding favorite:", error);
     }
   };
 
   const removeFromFavorites = async (id: string) => {
     if (!isAuthenticated) {
-      console.warn('User must be authenticated to remove favorites');
+      console.warn("User must be authenticated to remove favorites");
       return;
     }
 
     try {
       const response = await fetch(`/api/favorites?dealId=${id}`, {
-        method: 'DELETE',
-        credentials: 'include',
+        method: "DELETE",
+        credentials: "include",
       });
 
       if (response.ok) {
-        setFavorites(prev => prev.filter(fav => fav !== id));
+        setFavorites((prev) => prev.filter((fav) => fav !== id));
       } else {
         const error = await response.json();
-        console.error('Error removing favorite:', error);
+        console.error("Error removing favorite:", error);
       }
     } catch (error) {
-      console.error('Error removing favorite:', error);
+      console.error("Error removing favorite:", error);
     }
   };
 

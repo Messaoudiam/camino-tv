@@ -20,12 +20,12 @@ export interface Deal {
   promoDescription?: string;
 }
 
-export type DealCategory = 
-  | 'sneakers'
-  | 'streetwear'
-  | 'accessories'
-  | 'electronics'
-  | 'lifestyle';
+export type DealCategory =
+  | "sneakers"
+  | "streetwear"
+  | "accessories"
+  | "electronics"
+  | "lifestyle";
 
 export interface Brand {
   id: string;
@@ -94,13 +94,13 @@ export interface BlogPost {
   isFeature?: boolean;
 }
 
-export type BlogCategory = 
-  | 'culture'
-  | 'streetwear'
-  | 'musique'
-  | 'interview'
-  | 'lifestyle'
-  | 'tendances';
+export type BlogCategory =
+  | "culture"
+  | "streetwear"
+  | "musique"
+  | "interview"
+  | "lifestyle"
+  | "tendances";
 
 export interface BlogAuthor {
   id: string;
@@ -114,7 +114,7 @@ export interface BlogAuthor {
  */
 export interface BlogCardProps {
   post: BlogPost;
-  variant?: 'default' | 'featured' | 'compact';
+  variant?: "default" | "featured" | "compact";
   onClick?: () => void;
   className?: string;
 }
