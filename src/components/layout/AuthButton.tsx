@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { useAuth } from '@/lib/auth-client'
-import { Button } from '@/components/ui/button'
+import { useAuth } from "@/lib/auth-client";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,9 +9,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { User, LogOut, Settings, Shield } from 'lucide-react'
-import Link from 'next/link'
+} from "@/components/ui/dropdown-menu";
+import { User, LogOut, Settings, Shield } from "lucide-react";
+import Link from "next/link";
 
 /**
  * AuthButton Component
@@ -19,12 +19,10 @@ import Link from 'next/link'
  * Shows user menu with logout if authenticated
  */
 export function AuthButton() {
-  const { user, isAuthenticated, isLoading, signOut, isAdmin } = useAuth()
+  const { user, isAuthenticated, isLoading, signOut, isAdmin } = useAuth();
 
   if (isLoading) {
-    return (
-      <div className="h-9 w-20 animate-pulse bg-muted rounded-md" />
-    )
+    return <div className="h-9 w-20 animate-pulse bg-muted rounded-md" />;
   }
 
   if (!isAuthenticated) {
@@ -37,7 +35,7 @@ export function AuthButton() {
           <Link href="/signup">S&apos;inscrire</Link>
         </Button>
       </div>
-    )
+    );
   }
 
   return (
@@ -91,5 +89,5 @@ export function AuthButton() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

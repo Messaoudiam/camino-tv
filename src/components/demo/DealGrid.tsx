@@ -3,15 +3,19 @@
  * Pas de grid classique, mais un layout en colonnes fluide
  */
 
-import { DealCard } from './DealCard';
-import { DealGridProps } from '@/types';
-import { cn } from '@/lib/utils';
+import { DealCard } from "./DealCard";
+import { DealGridProps } from "@/types";
+import { cn } from "@/lib/utils";
 
 export function DealGrid({ deals, loading = false, className }: DealGridProps) {
-  
   if (loading) {
     return (
-      <div className={cn('grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6', className)}>
+      <div
+        className={cn(
+          "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6",
+          className,
+        )}
+      >
         {/* Skeleton loaders */}
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="space-y-3">
@@ -36,20 +40,15 @@ export function DealGrid({ deals, loading = false, className }: DealGridProps) {
   }
 
   return (
-    <div className={cn(
-      // Layout plus simple et spacieux comme le vrai site
-      'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto',
-      className
-    )}>
+    <div
+      className={cn(
+        // Layout plus simple et spacieux comme le vrai site
+        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto",
+        className,
+      )}
+    >
       {deals.map((deal) => (
-        <DealCard
-          key={deal.id}
-          deal={deal}
-          onClick={() => {
-            // Analytics tracking en production
-            console.log('Deal clicked:', deal.id);
-          }}
-        />
+        <DealCard key={deal.id} deal={deal} />
       ))}
     </div>
   );

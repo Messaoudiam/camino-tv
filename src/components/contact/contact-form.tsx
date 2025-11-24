@@ -1,35 +1,56 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Separator } from '@/components/ui/separator';
-import { Send, Check, AlertCircle, Loader2 } from 'lucide-react';
-import { contactFormSchema, type ContactFormData, type ContactFormErrors, formatZodErrors } from '@/lib/validations/contact';
-import { z } from 'zod';
-
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Separator } from "@/components/ui/separator";
+import { Send, Check, AlertCircle, Loader2 } from "lucide-react";
+import {
+  contactFormSchema,
+  type ContactFormData,
+  type ContactFormErrors,
+  formatZodErrors,
+} from "@/lib/validations/contact";
+import { z } from "zod";
 
 export function ContactForm() {
   const [formData, setFormData] = useState<ContactFormData>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    subject: '',
-    category: 'general',
-    message: ''
+    firstName: "",
+    lastName: "",
+    email: "",
+    subject: "",
+    category: "general",
+    message: "",
   });
 
   const [errors, setErrors] = useState<ContactFormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<
+    "idle" | "success" | "error"
+  >("idle");
 
   // Validation sécurisée avec Zod
-  const validateField = (name: keyof ContactFormData, value: string | undefined): string | undefined => {
+  const validateField = (
+    name: keyof ContactFormData,
+    value: string | undefined,
+  ): string | undefined => {
     try {
       const fieldSchema = contactFormSchema.shape[name];
       fieldSchema.parse(value);
@@ -38,20 +59,20 @@ export function ContactForm() {
       if (error instanceof z.ZodError) {
         return error.issues[0]?.message;
       }
-      return 'Erreur de validation';
+      return "Erreur de validation";
     }
   };
 
   const handleInputChange = (name: keyof ContactFormData, value: string) => {
-    setFormData(prev => ({ ...prev, [name]: value }));
-    
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
     // Validation en temps réel
     const error = validateField(name, value);
-    setErrors(prev => ({ ...prev, [name]: error }));
-    
+    setErrors((prev) => ({ ...prev, [name]: error }));
+
     // Reset submit status si on modifie après succès
-    if (submitStatus !== 'idle') {
-      setSubmitStatus('idle');
+    if (submitStatus !== "idle") {
+      setSubmitStatus("idle");
     }
   };
 
@@ -72,54 +93,54 @@ export function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
     setIsSubmitting(true);
-    setSubmitStatus('idle');
+    setSubmitStatus("idle");
 
     try {
       // Validation finale côté client avec Zod
       const validatedData = contactFormSchema.parse(formData);
-      
+
       // Simulation d'envoi (pas de vrai backend pour l'instant)
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Ici, vous enverriez validatedData à votre API
-      console.log('Données validées:', validatedData);
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      // TODO: Envoyer validatedData à votre API
+      // Ex: await fetch('/api/contact', { method: 'POST', body: JSON.stringify(validatedData) })
+      void validatedData; // Utilisation temporaire pour éviter l'erreur TS
+
       // Succès simulé
-      setSubmitStatus('success');
-      
+      setSubmitStatus("success");
+
       // Reset du formulaire après succès
       setTimeout(() => {
         setFormData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          subject: '',
-          category: 'general',
-          message: ''
+          firstName: "",
+          lastName: "",
+          email: "",
+          subject: "",
+          category: "general",
+          message: "",
         });
-        setSubmitStatus('idle');
+        setSubmitStatus("idle");
       }, 3000);
-      
     } catch {
-      setSubmitStatus('error');
+      setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const categories = [
-    { value: 'general', label: 'Question générale' },
-    { value: 'partnership', label: 'Partenariat' },
-    { value: 'collaboration', label: 'Collaboration' },
-    { value: 'technical', label: 'Support technique' },
-    { value: 'press', label: 'Relations presse' },
-    { value: 'other', label: 'Autre' }
+    { value: "general", label: "Question générale" },
+    { value: "partnership", label: "Partenariat" },
+    { value: "collaboration", label: "Collaboration" },
+    { value: "technical", label: "Support technique" },
+    { value: "press", label: "Relations presse" },
+    { value: "other", label: "Autre" },
   ];
 
   return (
@@ -129,21 +150,23 @@ export function ContactForm() {
           Envoyez-nous un message
         </CardTitle>
         <CardDescription className="text-muted-foreground">
-          Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais.
+          Remplissez le formulaire ci-dessous et nous vous répondrons dans les
+          plus brefs délais.
         </CardDescription>
       </CardHeader>
-      
+
       <CardContent>
-        {submitStatus === 'success' && (
+        {submitStatus === "success" && (
           <Alert className="mb-6 border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/50">
             <Check className="h-4 w-4 text-green-600" />
             <AlertDescription className="text-green-700 dark:text-green-400">
-              Votre message a été envoyé avec succès ! Nous vous répondrons bientôt.
+              Votre message a été envoyé avec succès ! Nous vous répondrons
+              bientôt.
             </AlertDescription>
           </Alert>
         )}
 
-        {submitStatus === 'error' && (
+        {submitStatus === "error" && (
           <Alert variant="destructive" className="mb-6">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>
@@ -163,9 +186,13 @@ export function ContactForm() {
                 id="firstName"
                 type="text"
                 value={formData.firstName}
-                onChange={(e) => handleInputChange('firstName', e.target.value)}
+                onChange={(e) => handleInputChange("firstName", e.target.value)}
                 placeholder="Votre prénom"
-                className={errors.firstName ? 'border-red-500 focus-visible:ring-red-500' : ''}
+                className={
+                  errors.firstName
+                    ? "border-red-500 focus-visible:ring-red-500"
+                    : ""
+                }
                 disabled={isSubmitting}
                 maxLength={50}
               />
@@ -173,7 +200,7 @@ export function ContactForm() {
                 <p className="text-sm text-red-500">{errors.firstName}</p>
               )}
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="lastName" className="text-sm font-medium">
                 Nom *
@@ -182,9 +209,13 @@ export function ContactForm() {
                 id="lastName"
                 type="text"
                 value={formData.lastName}
-                onChange={(e) => handleInputChange('lastName', e.target.value)}
+                onChange={(e) => handleInputChange("lastName", e.target.value)}
                 placeholder="Votre nom"
-                className={errors.lastName ? 'border-red-500 focus-visible:ring-red-500' : ''}
+                className={
+                  errors.lastName
+                    ? "border-red-500 focus-visible:ring-red-500"
+                    : ""
+                }
                 disabled={isSubmitting}
                 maxLength={50}
               />
@@ -203,9 +234,11 @@ export function ContactForm() {
               id="email"
               type="email"
               value={formData.email}
-              onChange={(e) => handleInputChange('email', e.target.value)}
+              onChange={(e) => handleInputChange("email", e.target.value)}
               placeholder="votre.email@exemple.com"
-              className={errors.email ? 'border-red-500 focus-visible:ring-red-500' : ''}
+              className={
+                errors.email ? "border-red-500 focus-visible:ring-red-500" : ""
+              }
               disabled={isSubmitting}
               maxLength={254}
             />
@@ -221,10 +254,21 @@ export function ContactForm() {
             </Label>
             <Select
               value={formData.category}
-              onValueChange={(value) => handleInputChange('category', value as ContactFormData['category'])}
+              onValueChange={(value) =>
+                handleInputChange(
+                  "category",
+                  value as ContactFormData["category"],
+                )
+              }
               disabled={isSubmitting}
             >
-              <SelectTrigger className={errors.category ? 'border-red-500 focus-visible:ring-red-500' : ''}>
+              <SelectTrigger
+                className={
+                  errors.category
+                    ? "border-red-500 focus-visible:ring-red-500"
+                    : ""
+                }
+              >
                 <SelectValue placeholder="Sélectionnez une catégorie" />
               </SelectTrigger>
               <SelectContent>
@@ -249,9 +293,13 @@ export function ContactForm() {
               id="subject"
               type="text"
               value={formData.subject}
-              onChange={(e) => handleInputChange('subject', e.target.value)}
+              onChange={(e) => handleInputChange("subject", e.target.value)}
               placeholder="Résumez brièvement votre demande"
-              className={errors.subject ? 'border-red-500 focus-visible:ring-red-500' : ''}
+              className={
+                errors.subject
+                  ? "border-red-500 focus-visible:ring-red-500"
+                  : ""
+              }
               disabled={isSubmitting}
               maxLength={100}
             />
@@ -268,10 +316,14 @@ export function ContactForm() {
             <Textarea
               id="message"
               value={formData.message}
-              onChange={(e) => handleInputChange('message', e.target.value)}
+              onChange={(e) => handleInputChange("message", e.target.value)}
               placeholder="Décrivez votre demande en détail..."
               rows={6}
-              className={errors.message ? 'border-red-500 focus-visible:ring-red-500' : ''}
+              className={
+                errors.message
+                  ? "border-red-500 focus-visible:ring-red-500"
+                  : ""
+              }
               disabled={isSubmitting}
               maxLength={2000}
             />
@@ -291,14 +343,14 @@ export function ContactForm() {
           <Button
             type="submit"
             className="w-full bg-brand-500 hover:bg-brand-600 text-white"
-            disabled={isSubmitting || submitStatus === 'success'}
+            disabled={isSubmitting || submitStatus === "success"}
           >
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Envoi en cours...
               </>
-            ) : submitStatus === 'success' ? (
+            ) : submitStatus === "success" ? (
               <>
                 <Check className="mr-2 h-4 w-4" />
                 Message envoyé !
@@ -312,7 +364,8 @@ export function ContactForm() {
           </Button>
 
           <p className="text-xs text-muted-foreground text-center">
-            * Champs obligatoires. Vos données sont protégées et ne seront jamais partagées.
+            * Champs obligatoires. Vos données sont protégées et ne seront
+            jamais partagées.
           </p>
         </form>
       </CardContent>

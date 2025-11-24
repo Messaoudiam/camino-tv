@@ -1,52 +1,49 @@
-'use client';
+"use client";
 
 /**
  * Footer réutilisable et cohérent pour toutes les pages
  * Design system unifié avec variants pour différents contexts
  */
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '@/lib/utils';
+import Image from "next/image";
+import Link from "next/link";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
-const footerVariants = cva(
-  "border-t bg-background/95 backdrop-blur-sm",
-  {
-    variants: {
-      variant: {
-        full: "bg-muted/30 border-border/50",
-        minimal: "bg-muted/20 border-border/30",
-        clean: "bg-background border-border",
-      },
-      size: {
-        default: "py-12",
-        compact: "py-6",
-        spacious: "py-16",
-      },
+const footerVariants = cva("border-t bg-background/95 backdrop-blur-sm", {
+  variants: {
+    variant: {
+      full: "bg-muted/30 border-border/50",
+      minimal: "bg-muted/20 border-border/30",
+      clean: "bg-background border-border",
     },
-    defaultVariants: {
-      variant: "full",
-      size: "default",
+    size: {
+      default: "py-12",
+      compact: "py-6",
+      spacious: "py-16",
     },
-  }
-)
+  },
+  defaultVariants: {
+    variant: "full",
+    size: "default",
+  },
+});
 
-export interface FooterProps 
+export interface FooterProps
   extends React.ComponentProps<"footer">,
     VariantProps<typeof footerVariants> {
   showFullContent?: boolean;
 }
 
-export function Footer({ 
-  className, 
-  variant, 
-  size, 
+export function Footer({
+  className,
+  variant,
+  size,
   showFullContent = true,
-  ...props 
+  ...props
 }: FooterProps) {
   return (
-    <footer 
+    <footer
       className={cn(footerVariants({ variant, size, className }))}
       {...props}
     >
@@ -64,65 +61,70 @@ export function Footer({
                   className="h-10 w-auto mb-4 transition-transform hover:scale-105"
                 />
                 <p className="text-muted-foreground mb-4 max-w-md font-sans">
-                  La plateforme de référence pour dénicher les meilleurs bons plans sneakers en France. 
-                  Découvrez des offres exclusives sur vos marques préférées.
+                  La plateforme de référence pour dénicher les meilleurs bons
+                  plans sneakers en France. Découvrez des offres exclusives sur
+                  vos marques préférées.
                 </p>
               </div>
-              
+
               <div className="grid grid-cols-2 md:grid-cols-2 gap-8 md:col-span-2">
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-foreground mb-4 font-sans">Navigation</h4>
+                  <h4 className="font-semibold text-foreground mb-4 font-sans">
+                    Navigation
+                  </h4>
                   <nav className="space-y-2 text-sm">
-                    <Link 
-                      href="/" 
+                    <Link
+                      href="/"
                       className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
                     >
                       Accueil
                     </Link>
-                    <Link 
-                      href="/deals" 
+                    <Link
+                      href="/deals"
                       className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
                     >
                       Bons plans
                     </Link>
-                    <Link 
-                      href="/favorites" 
+                    <Link
+                      href="/favorites"
                       className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
                     >
                       Favoris
                     </Link>
-                    <Link 
-                      href="/blog" 
+                    <Link
+                      href="/blog"
                       className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
                     >
                       Blog
                     </Link>
-                    <Link 
-                      href="/team" 
+                    <Link
+                      href="/team"
                       className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
                     >
                       Équipe
                     </Link>
                   </nav>
                 </div>
-                
+
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-foreground mb-4 font-sans">Légal</h4>
+                  <h4 className="font-semibold text-foreground mb-4 font-sans">
+                    Légal
+                  </h4>
                   <nav className="space-y-2 text-sm">
-                    <Link 
-                      href="/legal/cgu" 
+                    <Link
+                      href="/legal/cgu"
                       className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
                     >
                       CGU
                     </Link>
-                    <Link 
-                      href="/legal" 
+                    <Link
+                      href="/legal"
                       className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
                     >
                       Mentions légales
                     </Link>
-                    <a 
-                      href="https://github.com/Messaoudiam/camino-tv" 
+                    <a
+                      href="https://github.com/Messaoudiam/camino-tv"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="block text-muted-foreground hover:text-foreground transition-colors font-sans"
@@ -133,10 +135,16 @@ export function Footer({
                 </div>
               </div>
             </div>
-            
+
             <div className="border-t border-border pt-8 text-center text-sm text-muted-foreground">
               <p className="font-sans">
-                © 2025 Camino TV - Fait avec ❤️ par <a href="https://codingmessaoud.com" className="text-brand-500 hover:text-brand-600 transition-colors font-sans cursor-pointer">Messaoudiam</a>
+                © 2025 Camino TV - Fait avec ❤️ par{" "}
+                <a
+                  href="https://codingmessaoud.com"
+                  className="text-brand-500 hover:text-brand-600 transition-colors font-sans cursor-pointer"
+                >
+                  Messaoudiam
+                </a>
               </p>
             </div>
           </>
@@ -144,20 +152,20 @@ export function Footer({
           /* Footer minimal */
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
             <div className="flex gap-4">
-              <Link 
-                href="/legal/cgu" 
+              <Link
+                href="/legal/cgu"
                 className="hover:text-foreground transition-colors font-sans"
               >
                 CGU
               </Link>
-              <Link 
-                href="/legal" 
+              <Link
+                href="/legal"
                 className="hover:text-foreground transition-colors font-sans"
               >
                 Mentions légales
               </Link>
-              <a 
-                href="#" 
+              <a
+                href="#"
                 className="hover:text-foreground transition-colors font-sans"
               >
                 Contact
@@ -165,7 +173,13 @@ export function Footer({
             </div>
             <div className="text-center">
               <p className="font-sans">
-              © 2025 Camino TV - Fait avec ❤️ par <a href="https://codingmessaoud.com" className="text-brand-500 hover:text-brand-600 transition-colors font-sans cursor-pointer">Messaoudiam</a>
+                © 2025 Camino TV - Fait avec ❤️ par{" "}
+                <a
+                  href="https://codingmessaoud.com"
+                  className="text-brand-500 hover:text-brand-600 transition-colors font-sans cursor-pointer"
+                >
+                  Messaoudiam
+                </a>
               </p>
             </div>
           </div>
