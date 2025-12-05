@@ -12,22 +12,10 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // Validate with server-side schema (includes XSS protection)
-    const validatedData = serverContactFormSchema.parse(body);
+    // Throws ZodError if validation fails
+    serverContactFormSchema.parse(body);
 
-    // Log the contact request (in production, you would:
-    // 1. Store in database
-    // 2. Send email notification
-    // 3. Integrate with CRM, etc.)
-    console.log("Contact form submission:", {
-      name: `${validatedData.firstName} ${validatedData.lastName}`,
-      email: validatedData.email,
-      category: validatedData.category,
-      subject: validatedData.subject,
-      messageLength: validatedData.message.length,
-      timestamp: new Date().toISOString(),
-    });
-
-    // TODO: In production, implement one of these:
+    // TODO: In production, implement one of these with the validated data:
     // - Send email via Resend/SendGrid/Mailgun
     // - Store in database (prisma.contactMessage.create)
     // - Send to Slack/Discord webhook
