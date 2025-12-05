@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireAuth } from "@/lib/auth-helpers";
 import { z } from "zod";
+import { Prisma } from "@prisma/client";
 
 /**
  * Favorites API Routes
@@ -162,8 +163,12 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({
       message: "Retiré des favoris avec succès",
     });
-  } catch (error: any) {
-    if (error.code === "P2025") {
+  } catch (error) {
+    // Handle favorite not found (Prisma P2025 error)
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
       return NextResponse.json({ error: "Favori non trouvé" }, { status: 404 });
     }
 

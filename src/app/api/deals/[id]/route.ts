@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth-helpers";
 import { z } from "zod";
+import { Prisma } from "@prisma/client";
 
 /**
  * Single Deal API Routes
@@ -99,6 +100,14 @@ export async function PUT(
       );
     }
 
+    // Handle deal not found (Prisma P2025 error)
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
+      return NextResponse.json({ error: "Deal non trouvé" }, { status: 404 });
+    }
+
     console.error("Error updating deal:", error);
     return NextResponse.json(
       { error: "Erreur lors de la mise à jour du deal" },
@@ -138,6 +147,14 @@ export async function DELETE(
       deal,
     });
   } catch (error) {
+    // Handle deal not found (Prisma P2025 error)
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
+      return NextResponse.json({ error: "Deal non trouvé" }, { status: 404 });
+    }
+
     console.error("Error deleting deal:", error);
     return NextResponse.json(
       { error: "Erreur lors de la suppression du deal" },
