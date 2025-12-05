@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { auth } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth-helpers";
 import { z } from "zod";
+import { Prisma } from "@prisma/client";
 
 /**
  * Single User API Routes
@@ -22,11 +23,13 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    // Check authentication
-    const session = await auth.api.getSession({ headers: request.headers });
-
-    if (!session || (session.user as { role?: string }).role !== "ADMIN") {
-      return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+    // CRITICAL SECURITY: Multi-layered auth check (not relying on middleware alone)
+    const authResult = await requireAdmin(request.headers);
+    if (authResult.error) {
+      return NextResponse.json(
+        { error: authResult.error },
+        { status: authResult.status },
+      );
     }
 
     // Validate request body
@@ -55,6 +58,17 @@ export async function PUT(
       );
     }
 
+    // Handle user not found (Prisma P2025 error)
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
+      return NextResponse.json(
+        { error: "Utilisateur non trouvé" },
+        { status: 404 },
+      );
+    }
+
     console.error("Error updating user:", error);
     return NextResponse.json(
       { error: "Erreur lors de la mise à jour de l'utilisateur" },
@@ -72,16 +86,18 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    // Check authentication
-    const session = await auth.api.getSession({ headers: request.headers });
-
-    if (!session || (session.user as { role?: string }).role !== "ADMIN") {
-      return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+    // CRITICAL SECURITY: Multi-layered auth check (not relying on middleware alone)
+    const authResult = await requireAdmin(request.headers);
+    if (authResult.error) {
+      return NextResponse.json(
+        { error: authResult.error },
+        { status: authResult.status },
+      );
     }
 
     // Prevent self-deletion
     const { id } = await params;
-    if (id === session.user.id) {
+    if (id === authResult.session.user.id) {
       return NextResponse.json(
         { error: "Vous ne pouvez pas supprimer votre propre compte" },
         { status: 400 },
@@ -97,6 +113,17 @@ export async function DELETE(
       message: "Utilisateur supprimé avec succès",
     });
   } catch (error) {
+    // Handle user not found (Prisma P2025 error)
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
+      return NextResponse.json(
+        { error: "Utilisateur non trouvé" },
+        { status: 404 },
+      );
+    }
+
     console.error("Error deleting user:", error);
     return NextResponse.json(
       { error: "Erreur lors de la suppression de l'utilisateur" },

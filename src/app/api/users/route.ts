@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { auth } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth-helpers";
 
 /**
  * Users API Routes
@@ -13,11 +13,13 @@ import { auth } from "@/lib/auth";
  */
 export async function GET(request: NextRequest) {
   try {
-    // Check authentication
-    const session = await auth.api.getSession({ headers: request.headers });
-
-    if (!session || (session.user as { role?: string }).role !== "ADMIN") {
-      return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+    // CRITICAL SECURITY: Multi-layered auth check (not relying on middleware alone)
+    const authResult = await requireAdmin(request.headers);
+    if (authResult.error) {
+      return NextResponse.json(
+        { error: authResult.error },
+        { status: authResult.status },
+      );
     }
 
     const users = await prisma.user.findMany({
