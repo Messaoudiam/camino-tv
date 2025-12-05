@@ -472,7 +472,7 @@ export const mockBlogPosts: BlogPost[] = [
       "garcons-jeunes",
       "donovann-bonnet",
     ],
-    isFeature: true,
+    isFeatured: true,
   },
   {
     id: "10",
@@ -690,7 +690,7 @@ export const mockBlogPosts: BlogPost[] = [
       "firebird",
       "collaboration",
     ],
-    isFeature: false,
+    isFeatured: false,
   },
   {
     id: "7",
@@ -729,7 +729,7 @@ export const mockBlogPosts: BlogPost[] = [
     publishedAt: "2024-01-16",
     readTime: 10,
     tags: ["créateurs", "france", "belgique", "culture", "thread"],
-    isFeature: false,
+    isFeatured: false,
   },
   {
     id: "9",
@@ -903,7 +903,7 @@ export const mockBlogPosts: BlogPost[] = [
       "ensemble",
       "années90",
     ],
-    isFeature: false,
+    isFeatured: false,
   },
   {
     id: "8",
@@ -1052,7 +1052,7 @@ export const mockBlogPosts: BlogPost[] = [
     publishedAt: "2025-01-19",
     readTime: 6,
     tags: ["supraw", "uniqlo", "toulouse", "collaboration", "zinzins", "art"],
-    isFeature: false,
+    isFeatured: false,
   },
 ];
 

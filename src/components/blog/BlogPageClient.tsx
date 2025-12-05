@@ -43,7 +43,7 @@ function transformPost(dbPost: any): BlogPost {
     publishedAt: dbPost.publishedAt,
     readTime: dbPost.readTime,
     tags: dbPost.tags || [],
-    isFeature: dbPost.isFeatured,
+    isFeatured: dbPost.isFeatured,
     author: {
       id: dbPost.authorId || dbPost.id,
       name: dbPost.authorName,

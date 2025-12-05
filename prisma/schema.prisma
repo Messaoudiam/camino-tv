@@ -108,7 +108,7 @@ model Deal {
   promoCode          String?
   promoDescription   String?
   isActive           Boolean      @default(true)
-  deletedAt          DateTime?
+  deletedAt          DateTime?    // Non utilisé - conservé pour compatibilité DB
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
 

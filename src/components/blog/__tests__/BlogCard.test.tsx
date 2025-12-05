@@ -40,7 +40,7 @@ const mockPost: BlogPost = {
   publishedAt: "2025-01-15T10:00:00.000Z",
   readTime: 5,
   tags: ["test", "blog", "article", "demo"],
-  isFeature: false,
+  isFeatured: false,
 };
 
 describe("BlogCard", () => {

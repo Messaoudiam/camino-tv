@@ -91,7 +91,7 @@ export interface BlogPost {
   publishedAt: string;
   readTime: number;
   tags: string[];
-  isFeature?: boolean;
+  isFeatured?: boolean;
 }
 
 export type BlogCategory =

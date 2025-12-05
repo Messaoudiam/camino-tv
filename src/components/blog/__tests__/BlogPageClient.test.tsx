@@ -6,6 +6,65 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BlogPageClient } from "../BlogPageClient";
 
+// Mock API posts data (matches the API response format)
+const mockApiPosts = [
+  {
+    id: "1",
+    title: "Article Culture Test",
+    slug: "article-culture-test",
+    excerpt: "Excerpt for culture article",
+    content: "Full content...",
+    imageUrl: "/image1.jpg",
+    category: "culture",
+    authorName: "Sean",
+    authorImage: "/sean.jpg",
+    authorRole: "Fondateur",
+    publishedAt: "2025-01-15T10:00:00.000Z",
+    readTime: 5,
+    tags: ["culture", "test"],
+    isFeatured: true,
+  },
+  {
+    id: "2",
+    title: "Article Streetwear Test",
+    slug: "article-streetwear-test",
+    excerpt: "Excerpt for streetwear article",
+    content: "Full content...",
+    imageUrl: "/image2.jpg",
+    category: "streetwear",
+    authorName: "Mike",
+    authorImage: "/mike.jpg",
+    authorRole: "Writer",
+    publishedAt: "2025-01-14T10:00:00.000Z",
+    readTime: 3,
+    tags: ["streetwear", "mode"],
+    isFeatured: false,
+  },
+  {
+    id: "3",
+    title: "Article Musique Test",
+    slug: "article-musique-test",
+    excerpt: "Excerpt for musique article",
+    content: "Full content...",
+    imageUrl: "/image3.jpg",
+    category: "musique",
+    authorName: "Sean",
+    authorImage: "/sean.jpg",
+    authorRole: "Fondateur",
+    publishedAt: "2025-01-13T10:00:00.000Z",
+    readTime: 7,
+    tags: ["musique", "rap"],
+    isFeatured: false,
+  },
+];
+
+// Mock global fetch to return API posts
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    json: () => Promise.resolve({ posts: mockApiPosts }),
+  } as Response)
+);
+
 // Mock next/image
 jest.mock("next/image", () => ({
   __esModule: true,
@@ -31,62 +90,8 @@ jest.mock("@/components/layout/Footer", () => ({
   Footer: () => <footer data-testid="footer">Footer</footer>,
 }));
 
-// Mock data
+// Mock blogCategories from @/data/mock (only categories needed, posts come from API)
 jest.mock("@/data/mock", () => ({
-  mockBlogPosts: [
-    {
-      id: "1",
-      title: "Article Culture Test",
-      slug: "article-culture-test",
-      excerpt: "Excerpt for culture article",
-      content: "Full content...",
-      imageUrl: "/image1.jpg",
-      category: "culture",
-      author: {
-        id: "sean",
-        name: "Sean",
-        avatar: "/sean.jpg",
-        role: "Fondateur",
-      },
-      publishedAt: "2025-01-15T10:00:00.000Z",
-      readTime: 5,
-      tags: ["culture", "test"],
-      isFeature: true,
-    },
-    {
-      id: "2",
-      title: "Article Streetwear Test",
-      slug: "article-streetwear-test",
-      excerpt: "Excerpt for streetwear article",
-      content: "Full content...",
-      imageUrl: "/image2.jpg",
-      category: "streetwear",
-      author: { id: "mike", name: "Mike", avatar: "/mike.jpg", role: "Writer" },
-      publishedAt: "2025-01-14T10:00:00.000Z",
-      readTime: 3,
-      tags: ["streetwear", "mode"],
-      isFeature: false,
-    },
-    {
-      id: "3",
-      title: "Article Musique Test",
-      slug: "article-musique-test",
-      excerpt: "Excerpt for musique article",
-      content: "Full content...",
-      imageUrl: "/image3.jpg",
-      category: "musique",
-      author: {
-        id: "sean",
-        name: "Sean",
-        avatar: "/sean.jpg",
-        role: "Fondateur",
-      },
-      publishedAt: "2025-01-13T10:00:00.000Z",
-      readTime: 7,
-      tags: ["musique", "rap"],
-      isFeature: false,
-    },
-  ],
   blogCategories: [
     { id: "culture", name: "Culture", count: 1 },
     { id: "streetwear", name: "Streetwear", count: 1 },
@@ -94,10 +99,6 @@ jest.mock("@/data/mock", () => ({
     { id: "interview", name: "Interview", count: 0 },
     { id: "lifestyle", name: "Lifestyle", count: 0 },
     { id: "tendances", name: "Tendances", count: 0 },
-  ],
-  mockAuthors: [
-    { id: "sean", name: "Sean", avatar: "/sean.jpg", role: "Fondateur" },
-    { id: "mike", name: "Mike", avatar: "/mike.jpg", role: "Writer" },
   ],
 }));
 
@@ -108,6 +109,14 @@ const mockJsonLd = {
 };
 
 describe("BlogPageClient", () => {
+  beforeEach(() => {
+    // Reset fetch mock before each test
+    (global.fetch as jest.Mock).mockClear();
+    (global.fetch as jest.Mock).mockResolvedValue({
+      json: () => Promise.resolve({ posts: mockApiPosts }),
+    });
+  });
+
   describe("Initial Render", () => {
     it("renders header and footer", () => {
       render(<BlogPageClient jsonLd={mockJsonLd} />);
@@ -138,16 +147,20 @@ describe("BlogPageClient", () => {
       expect(screen.getAllByText("Musique").length).toBeGreaterThanOrEqual(1);
     });
 
-    it("renders all blog posts", () => {
+    it("renders all blog posts", async () => {
       render(<BlogPageClient jsonLd={mockJsonLd} />);
-      expect(screen.getByText("Article Culture Test")).toBeInTheDocument();
-      expect(screen.getByText("Article Streetwear Test")).toBeInTheDocument();
-      expect(screen.getByText("Article Musique Test")).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText("Article Culture Test")).toBeInTheDocument();
+        expect(screen.getByText("Article Streetwear Test")).toBeInTheDocument();
+        expect(screen.getByText("Article Musique Test")).toBeInTheDocument();
+      });
     });
 
-    it("displays article count", () => {
+    it("displays article count", async () => {
       render(<BlogPageClient jsonLd={mockJsonLd} />);
-      expect(screen.getByText("3 articles")).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText("3 articles")).toBeInTheDocument();
+      });
     });
   });
 

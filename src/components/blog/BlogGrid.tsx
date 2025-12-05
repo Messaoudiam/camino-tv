@@ -48,8 +48,8 @@ export function BlogGrid({ posts, loading = false, className }: BlogGridProps) {
   }
 
   // Séparer l'article featured s'il y en a un
-  const featuredPost = posts.find((post) => post.isFeature);
-  const regularPosts = posts.filter((post) => !post.isFeature);
+  const featuredPost = posts.find((post) => post.isFeatured);
+  const regularPosts = posts.filter((post) => !post.isFeatured);
 
   return (
     <div className={cn("space-y-8", className)}>

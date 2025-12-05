@@ -61,7 +61,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: new Date(post.publishedAt),
     changeFrequency: "monthly" as const,
-    priority: post.isFeature ? 0.9 : 0.8,
+    priority: post.isFeatured ? 0.9 : 0.8,
   }));
 
   return [...staticPages, ...blogPosts];

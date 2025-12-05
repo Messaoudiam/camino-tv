@@ -38,7 +38,7 @@ function transformPost(dbPost: any): BlogPost {
     publishedAt: dbPost.publishedAt.toISOString(),
     readTime: dbPost.readTime,
     tags: dbPost.tags || [],
-    isFeature: dbPost.isFeatured,
+    isFeatured: dbPost.isFeatured,
     author: {
       id: dbPost.authorId || dbPost.id,
       name: dbPost.authorName,
@@ -260,7 +260,7 @@ export default async function BlogPostPage({ params }: Props) {
               <Badge className={categoryColors[post.category]}>
                 {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
               </Badge>
-              {post.isFeature && (
+              {post.isFeatured && (
                 <Badge variant="default" className="bg-brand-500 text-white">
                   À la une
                 </Badge>

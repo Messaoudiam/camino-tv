@@ -22,7 +22,7 @@ jest.mock("next/image", () => ({
   },
 }));
 
-const createMockPost = (id: string, isFeature: boolean = false): BlogPost => ({
+const createMockPost = (id: string, isFeatured: boolean = false): BlogPost => ({
   id,
   title: `Test Article ${id}`,
   slug: `test-article-${id}`,
@@ -39,7 +39,7 @@ const createMockPost = (id: string, isFeature: boolean = false): BlogPost => ({
   publishedAt: "2025-01-15T10:00:00.000Z",
   readTime: 5,
   tags: ["test", "blog"],
-  isFeature,
+  isFeatured,
 });
 
 describe("BlogGrid", () => {

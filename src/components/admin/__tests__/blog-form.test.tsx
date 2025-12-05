@@ -167,7 +167,10 @@ describe("BlogForm", () => {
       );
 
       const image = screen.getAllByRole("img")[0];
-      expect(image).toHaveAttribute("src", initialData.imageUrl);
+      // next/image transforms URLs, so check the URL is contained in the src
+      expect(image.getAttribute("src")).toContain(
+        encodeURIComponent(initialData.imageUrl)
+      );
     });
 
     it("does not auto-generate slug in edit mode", async () => {

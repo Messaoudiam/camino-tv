@@ -158,17 +158,40 @@ describe("GET /api/blog", () => {
     );
   });
 
-  it("includes unpublished posts with all=true parameter", async () => {
+  it("includes unpublished posts with all=true parameter when admin authenticated", async () => {
+    // Mock admin authentication for all=true to work
+    mockRequireAdmin.mockResolvedValue({
+      session: { user: { id: "admin-1", role: "ADMIN" } },
+      error: null,
+    });
     mockFindMany.mockResolvedValue(mockPosts);
     mockCount.mockResolvedValue(2);
 
     const request = new NextRequest("http://localhost:3000/api/blog?all=true");
     await GET(request);
 
-    // When all=true, isPublished should not be in the where clause
+    // When all=true and admin authenticated, isPublished should not be in the where clause
     expect(mockFindMany).toHaveBeenCalled();
     const callArgs = mockFindMany.mock.calls[0][0];
     expect(callArgs.where).not.toHaveProperty("isPublished");
+  });
+
+  it("ignores all=true parameter when not admin authenticated", async () => {
+    // Mock non-admin authentication
+    mockRequireAdmin.mockResolvedValue({
+      error: "Non autorisé",
+      status: 403,
+    });
+    mockFindMany.mockResolvedValue(mockPosts);
+    mockCount.mockResolvedValue(2);
+
+    const request = new NextRequest("http://localhost:3000/api/blog?all=true");
+    await GET(request);
+
+    // When all=true but not admin, isPublished should still be in the where clause
+    expect(mockFindMany).toHaveBeenCalled();
+    const callArgs = mockFindMany.mock.calls[0][0];
+    expect(callArgs.where).toHaveProperty("isPublished", true);
   });
 
   it("returns 500 on database error", async () => {
