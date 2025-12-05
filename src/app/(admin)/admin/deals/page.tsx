@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Card,
   CardContent,
@@ -52,13 +52,13 @@ export default function DealsPage() {
   const { toast } = useToast();
 
   // Fetch deals
-  const fetchDeals = async () => {
+  const fetchDeals = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch("/api/deals?all=true");
       const data = await response.json();
       setDeals(data.deals || []);
-    } catch (error) {
+    } catch {
       toast({
         title: "Erreur",
         description: "Impossible de charger les deals",
@@ -67,11 +67,11 @@ export default function DealsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
 
   useEffect(() => {
     fetchDeals();
-  }, []);
+  }, [fetchDeals]);
 
   // Create deal
   const handleCreate = async (data: any) => {

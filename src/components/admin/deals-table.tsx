@@ -12,6 +12,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -77,10 +78,11 @@ export function DealsTable({ deals, onEdit, onDelete }: DealsTableProps) {
       header: "Image",
       cell: ({ row }) => (
         <div className="w-16 h-16 relative rounded overflow-hidden bg-muted">
-          <img
+          <Image
             src={row.original.imageUrl}
             alt={row.original.title}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
           />
         </div>
       ),

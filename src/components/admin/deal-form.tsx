@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -270,10 +271,11 @@ export function DealForm({
             {uploadedImage ? (
               <div className="relative">
                 <div className="relative aspect-video w-full max-w-md overflow-hidden rounded-lg border">
-                  <img
+                  <Image
                     src={uploadedImage}
                     alt="Aperçu"
-                    className="h-full w-full object-cover"
+                    fill
+                    className="object-cover"
                   />
                 </div>
                 <Button

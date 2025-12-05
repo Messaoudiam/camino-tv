@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import {
   Card,
   CardContent,
@@ -55,13 +56,13 @@ export default function UsersPage() {
   const { toast } = useToast();
 
   // Fetch users
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch("/api/users");
       const data = await response.json();
       setUsers(data.users);
-    } catch (error) {
+    } catch {
       toast({
         title: "Erreur",
         description: "Impossible de charger les utilisateurs",
@@ -70,11 +71,11 @@ export default function UsersPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [fetchUsers]);
 
   // Toggle user role
   const handleToggleRole = async (userId: string, currentRole: string) => {
@@ -180,10 +181,12 @@ export default function UsersPage() {
                       <TableCell>
                         <div className="flex items-center gap-3">
                           {user.image ? (
-                            <img
+                            <Image
                               src={user.image}
                               alt={user.name || user.email}
-                              className="h-10 w-10 rounded-full"
+                              width={40}
+                              height={40}
+                              className="h-10 w-10 rounded-full object-cover"
                             />
                           ) : (
                             <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">

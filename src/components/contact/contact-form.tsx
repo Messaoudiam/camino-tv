@@ -105,14 +105,18 @@ export function ContactForm() {
       // Validation finale côté client avec Zod
       const validatedData = contactFormSchema.parse(formData);
 
-      // Simulation d'envoi (pas de vrai backend pour l'instant)
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Envoi à l'API
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(validatedData),
+      });
 
-      // TODO: Envoyer validatedData à votre API
-      // Ex: await fetch('/api/contact', { method: 'POST', body: JSON.stringify(validatedData) })
-      void validatedData; // Utilisation temporaire pour éviter l'erreur TS
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Erreur lors de l'envoi");
+      }
 
-      // Succès simulé
       setSubmitStatus("success");
 
       // Reset du formulaire après succès

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -362,10 +363,11 @@ export function BlogForm({
             {uploadedImage ? (
               <div className="relative">
                 <div className="relative aspect-video w-full max-w-md overflow-hidden rounded-lg border">
-                  <img
+                  <Image
                     src={uploadedImage}
                     alt="Aperçu"
-                    className="h-full w-full object-cover"
+                    fill
+                    className="object-cover"
                   />
                 </div>
                 <Button
@@ -450,9 +452,11 @@ export function BlogForm({
               </Label>
               {authorImage ? (
                 <div className="flex items-center gap-4">
-                  <img
+                  <Image
                     src={authorImage}
                     alt="Avatar"
+                    width={48}
+                    height={48}
                     className="h-12 w-12 rounded-full object-cover"
                   />
                   <Button

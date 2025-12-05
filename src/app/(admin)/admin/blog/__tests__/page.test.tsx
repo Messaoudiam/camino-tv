@@ -2,7 +2,7 @@
  * Tests for Admin Blog Page
  */
 
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import BlogPage from "../page";
 
