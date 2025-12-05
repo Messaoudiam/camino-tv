@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { blurPlaceholders } from "@/lib/image-utils";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageHeader } from "@/components/ui/page-header";
@@ -534,6 +535,8 @@ function TeamMemberCard({
             className="object-cover object-center transition-all duration-300 group-hover:scale-105 rounded-t-xl"
             priority={index < 3}
             loading={index >= 3 ? "lazy" : "eager"}
+            placeholder="blur"
+            blurDataURL={blurPlaceholders.team}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 

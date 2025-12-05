@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { blurPlaceholders } from "@/lib/image-utils";
 
 export function BlogCard({
   post,
@@ -48,6 +49,8 @@ export function BlogCard({
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-110"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            placeholder="blur"
+            blurDataURL={blurPlaceholders.blog}
           />
         </div>
 
@@ -94,6 +97,8 @@ export function BlogCard({
               fill
               className="object-cover transition-transform duration-300 group-hover:scale-110"
               sizes="80px"
+              placeholder="blur"
+              blurDataURL={blurPlaceholders.blog}
             />
           </div>
 
@@ -131,6 +136,8 @@ export function BlogCard({
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-110"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          placeholder="blur"
+          blurDataURL={blurPlaceholders.blog}
         />
       </div>
 

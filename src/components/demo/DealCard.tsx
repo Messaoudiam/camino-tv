@@ -38,6 +38,7 @@ import {
 import { DealCardProps } from "@/types";
 import { cn } from "@/lib/utils";
 import { useFavorites } from "@/hooks/useFavorites";
+import { blurPlaceholders } from "@/lib/image-utils";
 
 export const DealCard = memo(function DealCard({
   deal,
@@ -118,6 +119,8 @@ export const DealCard = memo(function DealCard({
               fill
               className="object-cover transition-all duration-500 group-hover:scale-110"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              placeholder="blur"
+              blurDataURL={blurPlaceholders.product}
             />
 
             {/* Badges améliorés */}
@@ -251,6 +254,8 @@ export const DealCard = memo(function DealCard({
                         alt={deal.title}
                         fill
                         className="object-cover"
+                        placeholder="blur"
+                        blurDataURL={blurPlaceholders.product}
                       />
                     </div>
 
