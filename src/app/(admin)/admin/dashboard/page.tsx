@@ -3,6 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Package, Users, Heart, TrendingUp } from "lucide-react";
 import { prisma } from "@/lib/db";
 
+// Force dynamic rendering to avoid DB calls during build
+export const dynamic = "force-dynamic";
+
 /**
  * Admin Dashboard Page
  * Overview with KPI cards showing key metrics
