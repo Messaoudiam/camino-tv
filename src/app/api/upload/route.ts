@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth-helpers";
 import { supabaseAdmin } from "@/lib/supabase";
+import path from "path";
 
 /**
  * POST /api/upload
@@ -46,10 +47,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate unique filename
+    // Generate unique filename with path traversal protection
     const timestamp = Date.now();
-    const originalName = file.name.replace(/\s/g, "-");
-    const filename = `deals/${timestamp}-${originalName}`;
+    // SECURITY: Use path.basename to prevent path traversal attacks (e.g., "../../../secret.txt")
+    const safeName = path.basename(file.name).replace(/\s/g, "-");
+    // Additional sanitization: only allow alphanumeric, dash, underscore, and dot
+    const sanitizedName = safeName.replace(/[^a-zA-Z0-9\-_.]/g, "");
+    const filename = `deals/${timestamp}-${sanitizedName}`;
 
     // Convert file to buffer
     const arrayBuffer = await file.arrayBuffer();

@@ -37,19 +37,40 @@ const dealSchema = z.object({
 /**
  * GET /api/deals
  * Public endpoint - returns all active deals
- * Supports query params: category, limit, offset, all (for admin)
+ * Supports query params: category, limit, offset, all (for admin - requires auth)
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get("category");
-    const limit = parseInt(searchParams.get("limit") || "50");
+    const limit = Math.min(parseInt(searchParams.get("limit") || "50"), 100); // SECURITY: Max 100 items
     const offset = parseInt(searchParams.get("offset") || "0");
-    const all = searchParams.get("all") === "true"; // Admin: include inactive deals
+    const allParam = searchParams.get("all") === "true";
+
+    // SECURITY: ?all=true requires admin authentication to see inactive deals
+    let showAll = false;
+    if (allParam) {
+      const authResult = await requireAdmin(request.headers);
+      if (!authResult.error) {
+        showAll = true;
+      }
+      // If not admin, silently ignore ?all=true and show only active deals
+    }
+
+    // SECURITY: Validate category against allowed enum values
+    const validCategories = [
+      "sneakers",
+      "streetwear",
+      "accessories",
+      "electronics",
+      "lifestyle",
+    ];
+    const validCategory =
+      category && validCategories.includes(category) ? category : null;
 
     const whereClause = {
-      ...(!all && { isActive: true }),
-      ...(category && { category: category as any }),
+      ...(!showAll && { isActive: true }),
+      ...(validCategory && { category: validCategory as any }),
     };
 
     const deals = await prisma.deal.findMany({

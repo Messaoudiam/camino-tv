@@ -52,21 +52,43 @@ const blogPostSchema = z.object({
 /**
  * GET /api/blog
  * Public endpoint - returns all published blog posts
- * Supports query params: category, limit, offset, featured
+ * Supports query params: category, limit, offset, featured, all (admin only - requires auth)
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get("category");
-    const limit = parseInt(searchParams.get("limit") || "20");
+    const limit = Math.min(parseInt(searchParams.get("limit") || "20"), 100); // SECURITY: Max 100 items
     const offset = parseInt(searchParams.get("offset") || "0");
     const featured = searchParams.get("featured") === "true";
-    const all = searchParams.get("all") === "true"; // For admin: include unpublished
+    const allParam = searchParams.get("all") === "true";
+
+    // SECURITY: ?all=true requires admin authentication to see unpublished posts
+    let showAll = false;
+    if (allParam) {
+      const authResult = await requireAdmin(request.headers);
+      if (!authResult.error) {
+        showAll = true;
+      }
+      // If not admin, silently ignore ?all=true and show only published posts
+    }
+
+    // SECURITY: Validate category against allowed enum values
+    const validCategories = [
+      "culture",
+      "streetwear",
+      "musique",
+      "interview",
+      "lifestyle",
+      "tendances",
+    ];
+    const validCategory =
+      category && validCategories.includes(category) ? category : null;
 
     const posts = await prisma.blogPost.findMany({
       where: {
-        ...(all ? {} : { isPublished: true }),
-        ...(category && { category: category as any }),
+        ...(showAll ? {} : { isPublished: true }),
+        ...(validCategory && { category: validCategory as any }),
         ...(featured && { isFeatured: true }),
       },
       orderBy: {
@@ -87,8 +109,8 @@ export async function GET(request: NextRequest) {
 
     const total = await prisma.blogPost.count({
       where: {
-        ...(all ? {} : { isPublished: true }),
-        ...(category && { category: category as any }),
+        ...(showAll ? {} : { isPublished: true }),
+        ...(validCategory && { category: validCategory as any }),
         ...(featured && { isFeatured: true }),
       },
     });
