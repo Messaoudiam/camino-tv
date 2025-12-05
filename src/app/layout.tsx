@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { getDefaultMetadata } from "@/lib/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,40 +18,9 @@ const geistMono = Geist_Mono({
   weight: ["400", "500", "600"],
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://camino-tv.vercel.app"),
-  title: "Camino TV - We The Mouvement",
-  description:
-    "Découvrez les meilleurs deals sneakers en temps réel. Nike, Adidas, Jordan et bien plus encore. Plus de 100k passionnés nous font confiance.",
-  keywords: [
-    "sneakers",
-    "deals",
-    "nike",
-    "adidas",
-    "jordan",
-    "réductions",
-    "bons plans",
-  ],
-  authors: [{ name: "Camino TV" }],
-  creator: "Camino TV",
-  openGraph: {
-    type: "website",
-    locale: "fr_FR",
-    url: "https://camino-tv.vercel.app",
-    title: "Camino TV - Bons Plans Premium Sneakers",
-    description:
-      "La plateforme de référence pour dénicher les meilleurs deals sneakers en France.",
-    siteName: "Camino TV",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Camino TV - Bons Plans Premium Sneakers",
-    description:
-      "La plateforme de référence pour dénicher les meilleurs deals sneakers en France.",
-  },
-};
+export const metadata: Metadata = getDefaultMetadata();
 
-export const viewport = {
+export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
