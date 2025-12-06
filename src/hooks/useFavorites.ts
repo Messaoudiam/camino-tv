@@ -1,105 +1,63 @@
 "use client";
 
-import { useState, useEffect } from "react";
+/**
+ * Hook useFavorites - Refactoré avec TanStack Query
+ *
+ * Avantages :
+ * - Cache partagé entre composants
+ * - Optimistic updates pour une UX fluide
+ * - Pas de re-fetch inutiles
+ * - Gestion automatique du loading/error state
+ */
+
 import { useAuth } from "@/lib/auth-client";
+import {
+  useFavoritesQuery,
+  useAddFavorite,
+  useRemoveFavorite,
+} from "@/lib/queries";
 
 export function useFavorites() {
-  const [favorites, setFavorites] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const { isAuthenticated } = useAuth();
 
-  // Load favorites from API on mount
-  useEffect(() => {
-    const loadFavorites = async () => {
-      if (!isAuthenticated) {
-        setFavorites([]);
-        setIsLoading(false);
-        return;
-      }
+  // Query pour récupérer les favoris
+  const {
+    data: favoritesData,
+    isLoading,
+  } = useFavoritesQuery(isAuthenticated);
 
-      try {
-        const response = await fetch("/api/favorites", {
-          credentials: "include",
-        });
+  // Mutations avec optimistic updates
+  const addMutation = useAddFavorite();
+  const removeMutation = useRemoveFavorite();
 
-        if (response.ok) {
-          const data = await response.json();
-          const favoriteIds = data.favorites.map((fav: any) => fav.id);
-          setFavorites(favoriteIds);
-        } else {
-          console.error("Error loading favorites:", response.statusText);
-          setFavorites([]);
-        }
-      } catch (error) {
-        console.error("Error loading favorites:", error);
-        setFavorites([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // Extraire les IDs des favoris
+  const favorites = favoritesData?.favorites.map((f) => f.dealId) ?? [];
 
-    loadFavorites();
-  }, [isAuthenticated]);
-
-  const addToFavorites = async (id: string) => {
+  const addToFavorites = async (dealId: string) => {
     if (!isAuthenticated) {
       console.warn("User must be authenticated to add favorites");
       return;
     }
-
-    try {
-      const response = await fetch("/api/favorites", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ dealId: id }),
-      });
-
-      if (response.ok) {
-        setFavorites((prev) => [...prev, id]);
-      } else {
-        const error = await response.json();
-        console.error("Error adding favorite:", error);
-      }
-    } catch (error) {
-      console.error("Error adding favorite:", error);
-    }
+    addMutation.mutate(dealId);
   };
 
-  const removeFromFavorites = async (id: string) => {
+  const removeFromFavorites = async (dealId: string) => {
     if (!isAuthenticated) {
       console.warn("User must be authenticated to remove favorites");
       return;
     }
-
-    try {
-      const response = await fetch(`/api/favorites?dealId=${id}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-
-      if (response.ok) {
-        setFavorites((prev) => prev.filter((fav) => fav !== id));
-      } else {
-        const error = await response.json();
-        console.error("Error removing favorite:", error);
-      }
-    } catch (error) {
-      console.error("Error removing favorite:", error);
-    }
+    removeMutation.mutate(dealId);
   };
 
-  const toggleFavorite = async (id: string) => {
-    if (favorites.includes(id)) {
-      await removeFromFavorites(id);
+  const toggleFavorite = async (dealId: string) => {
+    if (favorites.includes(dealId)) {
+      await removeFromFavorites(dealId);
     } else {
-      await addToFavorites(id);
+      await addToFavorites(dealId);
     }
   };
 
-  const isFavorite = (id: string) => favorites.includes(id);
+  const isFavorite = (dealId: string) => favorites.includes(dealId);
 
   return {
     favorites,
@@ -110,5 +68,8 @@ export function useFavorites() {
     isFavorite,
     favoritesCount: favorites.length,
     isAuthenticated,
+    // États de mutation pour l'UI
+    isAdding: addMutation.isPending,
+    isRemoving: removeMutation.isPending,
   };
 }

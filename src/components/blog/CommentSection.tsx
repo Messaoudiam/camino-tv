@@ -1,5 +1,14 @@
 "use client";
 
+/**
+ * Section Commentaires - Refactoré avec TanStack Query
+ *
+ * Avantages :
+ * - Optimistic updates pour une UX fluide
+ * - Cache automatique
+ * - Gestion d'erreur centralisée
+ */
+
 import { useState, useEffect } from "react";
 import { useAuth } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
@@ -28,6 +37,7 @@ import {
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
+import { useComments, useCreateComment, useDeleteComment } from "@/lib/queries";
 
 interface CommentUser {
   id: string;
@@ -49,95 +59,60 @@ interface CommentSectionProps {
 
 export function CommentSection({ blogPostId }: CommentSectionProps) {
   const { user, isAuthenticated, isLoading: authLoading, isAdmin } = useAuth();
-  const [comments, setComments] = useState<Comment[]>([]);
+
+  // TanStack Query - Data fetching simplifié
+  const { data: comments = [], isLoading } = useComments(blogPostId);
+  const createMutation = useCreateComment(blogPostId);
+  const deleteMutation = useDeleteComment(blogPostId);
+
+  // États locaux pour le formulaire
   const [newComment, setNewComment] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   // Hydration fix
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Fetch comments
-  useEffect(() => {
-    async function fetchComments() {
-      try {
-        const response = await fetch(`/api/comments?blogPostId=${blogPostId}`);
-        if (response.ok) {
-          const data = await response.json();
-          setComments(data);
-        }
-      } catch (err) {
-        console.error("Error fetching comments:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchComments();
-  }, [blogPostId]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newComment.trim() || isSubmitting) return;
+    if (!newComment.trim() || createMutation.isPending) return;
 
-    setIsSubmitting(true);
     setError(null);
 
-    try {
-      const response = await fetch("/api/comments", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          content: newComment.trim(),
-          blogPostId,
-        }),
-      });
-
-      if (response.ok) {
-        const comment = await response.json();
-        setComments((prev) => [comment, ...prev]);
-        setNewComment("");
-      } else {
-        const data = await response.json();
-        setError(data.error || "Erreur lors de l'ajout du commentaire");
+    createMutation.mutate(
+      { content: newComment.trim(), blogPostId },
+      {
+        onSuccess: () => {
+          setNewComment("");
+        },
+        onError: (err) => {
+          setError(err.message || "Erreur lors de l'ajout du commentaire");
+        },
       }
-    } catch {
-      setError("Erreur de connexion");
-    } finally {
-      setIsSubmitting(false);
-    }
+    );
   };
-
-  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const handleDelete = async (commentId: string) => {
     setDeletingId(commentId);
-    try {
-      const response = await fetch(`/api/comments/${commentId}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        setComments((prev) => prev.filter((c) => c.id !== commentId));
-      } else {
-        const data = await response.json();
-        setError(data.error || "Erreur lors de la suppression");
-      }
-    } catch {
-      setError("Erreur de connexion");
-    } finally {
-      setDeletingId(null);
-    }
+    deleteMutation.mutate(commentId, {
+      onSettled: () => {
+        setDeletingId(null);
+      },
+      onError: (err) => {
+        setError(err.message || "Erreur lors de la suppression");
+      },
+    });
   };
 
   const canDelete = (comment: Comment) => {
     if (!user) return false;
     return comment.user.id === user.id || isAdmin;
   };
+
+  const isSubmitting = createMutation.isPending;
 
   const formatDate = (dateString: string) => {
     return formatDistanceToNow(new Date(dateString), {

@@ -1,11 +1,12 @@
 /**
  * Section deals PREMIUM - Shadcn ultra-moderne
  * UX épurée avec Tabs, Slider, Select - focus utilisateur
+ *
+ * Refactoré avec TanStack Query pour le data fetching
  */
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Filter, Grid3X3, Search } from "lucide-react";
-import { useFavorites } from "@/hooks/useFavorites";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -20,54 +21,33 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { DealGrid } from "@/components/demo/DealGrid";
-import { Deal, DealCategory } from "@/types";
+import { DealCategory } from "@/types";
 import { categories } from "@/data/mock";
 import { cn } from "@/lib/utils";
 import { validateSearch, productSearchSchema } from "@/lib/validations/search";
+import { useDeals } from "@/lib/queries";
 
 interface DealsSectionProps {
   className?: string;
 }
 
 export function DealsSection({ className }: DealsSectionProps) {
-  const [deals, setDeals] = useState<Deal[]>([]);
-  const [loading, setLoading] = useState(true);
+  // TanStack Query - Data fetching simplifié
+  const { data, isLoading: loading } = useDeals();
+  const deals = data?.deals ?? [];
+
+  // États locaux pour les filtres (UI state)
   const [activeTab, setActiveTab] = useState<string>("all");
   const [priceRange, setPriceRange] = useState<number[]>([500]);
   const [sortBy, setSortBy] = useState<string>("newest");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [minDiscount, setMinDiscount] = useState<number[]>([0]);
 
   // Gestion sécurisée de la recherche avec Zod
   const handleSearchChange = (value: string) => {
     const validatedQuery = validateSearch(value, productSearchSchema);
     setSearchQuery(validatedQuery);
   };
-  const [minDiscount, setMinDiscount] = useState<number[]>([0]);
-  useFavorites();
-
-  // Fetch deals from API
-  useEffect(() => {
-    const fetchDeals = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch("/api/deals");
-        if (response.ok) {
-          const data = await response.json();
-          setDeals(data.deals || []);
-        } else {
-          console.error("Error fetching deals:", response.statusText);
-          setDeals([]);
-        }
-      } catch (error) {
-        console.error("Error fetching deals:", error);
-        setDeals([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDeals();
-  }, []);
 
   // Calculer dynamiquement le nombre de deals par catégorie
   const getDealCountByCategory = (categoryId: DealCategory) => {

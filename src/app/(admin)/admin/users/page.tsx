@@ -1,6 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+/**
+ * Users Management Page
+ * User administration and role management
+ *
+ * Refactoré avec TanStack Query
+ */
+
 import Image from "next/image";
 import {
   Card,
@@ -31,81 +37,51 @@ import {
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
+import { useUsers, useUpdateUser, useDeleteUser } from "@/lib/queries";
 
-type User = {
+type UserType = {
   id: string;
   name: string | null;
   email: string;
   emailVerified: boolean;
   image: string | null;
   role: "USER" | "ADMIN";
-  createdAt: Date;
+  createdAt: string;
   _count: {
     favorites: number;
     sessions: number;
   };
 };
 
-/**
- * Users Management Page
- * User administration and role management
- */
 export default function UsersPage() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
+  // TanStack Query
+  const { data: users = [], isLoading: loading } = useUsers();
+  const updateMutation = useUpdateUser();
+  const deleteMutation = useDeleteUser();
   const { toast } = useToast();
-
-  // Fetch users
-  const fetchUsers = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await fetch("/api/users");
-      const data = await response.json();
-      setUsers(data.users);
-    } catch {
-      toast({
-        title: "Erreur",
-        description: "Impossible de charger les utilisateurs",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, [toast]);
-
-  useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
 
   // Toggle user role
   const handleToggleRole = async (userId: string, currentRole: string) => {
     const newRole = currentRole === "ADMIN" ? "USER" : "ADMIN";
 
-    try {
-      const response = await fetch(`/api/users/${userId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ role: newRole }),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Erreur lors de la modification");
+    updateMutation.mutate(
+      { id: userId, role: newRole as "USER" | "ADMIN" },
+      {
+        onSuccess: () => {
+          toast({
+            title: "Succès",
+            description: `Rôle modifié en ${newRole}`,
+          });
+        },
+        onError: (error) => {
+          toast({
+            title: "Erreur",
+            description: error.message,
+            variant: "destructive",
+          });
+        },
       }
-
-      toast({
-        title: "Succès",
-        description: `Rôle modifié en ${newRole}`,
-      });
-
-      fetchUsers();
-    } catch (error: any) {
-      toast({
-        title: "Erreur",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
+    );
   };
 
   // Delete user
@@ -113,29 +89,21 @@ export default function UsersPage() {
     if (!confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?"))
       return;
 
-    try {
-      const response = await fetch(`/api/users/${userId}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Erreur lors de la suppression");
-      }
-
-      toast({
-        title: "Succès",
-        description: "Utilisateur supprimé avec succès",
-      });
-
-      fetchUsers();
-    } catch (error: any) {
-      toast({
-        title: "Erreur",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
+    deleteMutation.mutate(userId, {
+      onSuccess: () => {
+        toast({
+          title: "Succès",
+          description: "Utilisateur supprimé avec succès",
+        });
+      },
+      onError: (error) => {
+        toast({
+          title: "Erreur",
+          description: error.message,
+          variant: "destructive",
+        });
+      },
+    });
   };
 
   return (
@@ -176,7 +144,7 @@ export default function UsersPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {users.map((user) => (
+                  {users.map((user: UserType) => (
                     <TableRow key={user.id}>
                       <TableCell>
                         <div className="flex items-center gap-3">

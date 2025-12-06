@@ -2,10 +2,11 @@
 
 /**
  * Composant client pour la page blog avec interactivité
- * Fetches data from /api/blog (database)
+ *
+ * Refactoré avec TanStack Query pour le data fetching
  */
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageHeader } from "@/components/ui/page-header";
@@ -24,61 +25,26 @@ import {
   Loader2,
 } from "lucide-react";
 import { blogCategories } from "@/data/mock";
-import { BlogCategory, BlogPost } from "@/types";
+import { BlogCategory } from "@/types";
+import { useBlogPosts } from "@/lib/queries";
 
 interface BlogPageClientProps {
-  jsonLd: any;
-}
-
-// Transform DB post format to frontend BlogPost format
-function transformPost(dbPost: any): BlogPost {
-  return {
-    id: dbPost.id,
-    title: dbPost.title,
-    slug: dbPost.slug,
-    excerpt: dbPost.excerpt,
-    content: dbPost.content,
-    imageUrl: dbPost.imageUrl,
-    category: dbPost.category,
-    publishedAt: dbPost.publishedAt,
-    readTime: dbPost.readTime,
-    tags: dbPost.tags || [],
-    isFeatured: dbPost.isFeatured,
-    author: {
-      id: dbPost.authorId || dbPost.id,
-      name: dbPost.authorName,
-      avatar: dbPost.authorImage,
-      role: dbPost.authorRole,
-    },
-  };
+  jsonLd: unknown;
 }
 
 export function BlogPageClient({ jsonLd }: BlogPageClientProps) {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
+  // TanStack Query - Data fetching simplifié
+  const { data, isLoading: loading } = useBlogPosts();
+
+  // Mémoisation des posts pour éviter les re-renders inutiles
+  const posts = useMemo(() => data?.posts ?? [], [data?.posts]);
+
+  // États locaux pour les filtres (UI state)
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<
     BlogCategory | "all"
   >("all");
   const [selectedAuthor, setSelectedAuthor] = useState<string | "all">("all");
-
-  // Fetch blog posts from API
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        setLoading(true);
-        const response = await fetch("/api/blog");
-        const data = await response.json();
-        const transformedPosts = (data.posts || []).map(transformPost);
-        setPosts(transformedPosts);
-      } catch (error) {
-        console.error("Error fetching blog posts:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchPosts();
-  }, []);
 
   // Gestion sécurisée de la recherche avec Zod
   const handleSearchChange = (value: string) => {

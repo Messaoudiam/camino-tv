@@ -1,6 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+/**
+ * Blog Management Page
+ * Full CRUD with Prisma BlogPost model
+ *
+ * Refactoré avec TanStack Query
+ */
+
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -42,6 +49,13 @@ import { fr } from "date-fns/locale";
 import Link from "next/link";
 import { BlogForm } from "@/components/admin/blog-form";
 import Image from "next/image";
+import {
+  useBlogPostsAdmin,
+  useCreateBlogPost,
+  useUpdateBlogPost,
+  useDeleteBlogPost,
+} from "@/lib/queries";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface BlogPost {
   id: string;
@@ -65,19 +79,20 @@ interface BlogPost {
   updatedAt: string;
 }
 
-/**
- * Blog Management Page
- * Full CRUD with Prisma BlogPost model
- */
 export default function BlogPage() {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // TanStack Query
+  const { data: posts = [], isLoading, refetch } = useBlogPostsAdmin();
+  const createMutation = useCreateBlogPost();
+  const updateMutation = useUpdateBlogPost();
+  const deleteMutation = useDeleteBlogPost();
+  const queryClient = useQueryClient();
+
+  // UI State
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [formMode, setFormMode] = useState<"create" | "edit">("create");
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [postToDelete, setPostToDelete] = useState<BlogPost | null>(null);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   const categoryColors: Record<string, string> = {
     culture: "bg-purple-500/10 text-purple-600 border-purple-200",
@@ -87,24 +102,6 @@ export default function BlogPage() {
     lifestyle: "bg-pink-500/10 text-pink-600 border-pink-200",
     tendances: "bg-red-500/10 text-red-600 border-red-200",
   };
-
-  const fetchPosts = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch("/api/blog?all=true");
-      if (!response.ok) throw new Error("Failed to fetch posts");
-      const data = await response.json();
-      setPosts(data.posts || []);
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchPosts();
-  }, [fetchPosts]);
 
   const handleCreate = () => {
     setSelectedPost(null);
@@ -126,54 +123,39 @@ export default function BlogPage() {
   const handleDeleteConfirm = async () => {
     if (!postToDelete) return;
 
-    setIsDeleting(true);
-    try {
-      const response = await fetch(`/api/blog/${postToDelete.id}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Erreur lors de la suppression");
-      }
-
-      await fetchPosts();
-    } catch (error: any) {
-      alert(error.message || "Erreur lors de la suppression");
-    } finally {
-      setIsDeleting(false);
-      setDeleteDialogOpen(false);
-      setPostToDelete(null);
-    }
+    deleteMutation.mutate(postToDelete.id, {
+      onSuccess: () => {
+        setDeleteDialogOpen(false);
+        setPostToDelete(null);
+      },
+      onError: (error) => {
+        alert(error.message || "Erreur lors de la suppression");
+      },
+    });
   };
 
   const handleFormSubmit = async (data: any) => {
-    try {
-      const url =
-        formMode === "create" ? "/api/blog" : `/api/blog/${selectedPost?.id}`;
-      const method = formMode === "create" ? "POST" : "PUT";
+    const mutation = formMode === "create" ? createMutation : updateMutation;
+    const mutationData = formMode === "edit" && selectedPost
+      ? { id: selectedPost.id, ...data }
+      : data;
 
-      const response = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+    return new Promise<void>((resolve, reject) => {
+      mutation.mutate(mutationData, {
+        onSuccess: () => {
+          setIsFormOpen(false);
+          resolve();
+        },
+        onError: (error) => {
+          reject(error);
+        },
       });
+    });
+  };
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(
-          error.error ||
-            error.details?.[0]?.message ||
-            "Erreur lors de la sauvegarde",
-        );
-      }
-
-      setIsFormOpen(false);
-      await fetchPosts();
-    } catch (error: any) {
-      alert(error.message || "Erreur lors de la sauvegarde");
-      throw error;
-    }
+  const handleRefresh = () => {
+    queryClient.invalidateQueries({ queryKey: ["blog"] });
+    refetch();
   };
 
   return (
@@ -186,7 +168,7 @@ export default function BlogPage() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={fetchPosts} disabled={isLoading}>
+          <Button variant="outline" onClick={handleRefresh} disabled={isLoading}>
             <RefreshCw
               className={`mr-2 h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
             />
@@ -358,13 +340,17 @@ export default function BlogPage() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>Annuler</AlertDialogCancel>
+            <AlertDialogCancel disabled={deleteMutation.isPending}>
+              Annuler
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDeleteConfirm}
-              disabled={isDeleting}
+              disabled={deleteMutation.isPending}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {isDeleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {deleteMutation.isPending && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
               Dépublier
             </AlertDialogAction>
           </AlertDialogFooter>

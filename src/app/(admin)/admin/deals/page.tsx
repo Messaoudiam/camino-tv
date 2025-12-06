@@ -1,6 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+/**
+ * Deals Management Page
+ * CRUD interface for managing deals
+ *
+ * Refactoré avec TanStack Query
+ */
+
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -13,8 +20,15 @@ import { Plus, Loader2 } from "lucide-react";
 import { DealsTable } from "@/components/admin/deals-table";
 import { DealForm } from "@/components/admin/deal-form";
 import { useToast } from "@/hooks/use-toast";
+import {
+  useDeals,
+  useCreateDeal,
+  useUpdateDeal,
+  useDeleteDeal,
+} from "@/lib/queries";
 
-type Deal = {
+// Type pour les deals admin (inclut isActive et _count comme retourné par l'API)
+type AdminDeal = {
   id: string;
   title: string;
   brand: string;
@@ -40,133 +54,90 @@ type Deal = {
   };
 };
 
-/**
- * Deals Management Page
- * CRUD interface for managing deals
- */
 export default function DealsPage() {
-  const [deals, setDeals] = useState<Deal[]>([]);
-  const [loading, setLoading] = useState(true);
+  // TanStack Query
+  const { data, isLoading: loading } = useDeals({ all: true });
+  // L'API retourne des deals avec isActive et _count
+  const deals = (data?.deals ?? []) as unknown as AdminDeal[];
+
+  const createMutation = useCreateDeal();
+  const updateMutation = useUpdateDeal();
+  const deleteMutation = useDeleteDeal();
+
+  // UI State
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [editingDeal, setEditingDeal] = useState<Deal | null>(null);
+  const [editingDeal, setEditingDeal] = useState<AdminDeal | null>(null);
   const { toast } = useToast();
 
-  // Fetch deals
-  const fetchDeals = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await fetch("/api/deals?all=true");
-      const data = await response.json();
-      setDeals(data.deals || []);
-    } catch {
-      toast({
-        title: "Erreur",
-        description: "Impossible de charger les deals",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, [toast]);
-
-  useEffect(() => {
-    fetchDeals();
-  }, [fetchDeals]);
-
   // Create deal
-  const handleCreate = async (data: any) => {
-    try {
-      const response = await fetch("/api/deals", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Erreur lors de la création");
-      }
-
-      toast({
-        title: "Succès",
-        description: "Le deal a été créé avec succès",
-      });
-
-      setDialogOpen(false);
-      fetchDeals();
-    } catch (error: any) {
-      toast({
-        title: "Erreur",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
+  const handleCreate = async (formData: any) => {
+    createMutation.mutate(formData, {
+      onSuccess: () => {
+        toast({
+          title: "Succès",
+          description: "Le deal a été créé avec succès",
+        });
+        setDialogOpen(false);
+      },
+      onError: (error) => {
+        toast({
+          title: "Erreur",
+          description: error.message,
+          variant: "destructive",
+        });
+      },
+    });
   };
 
   // Update deal
-  const handleUpdate = async (data: any) => {
+  const handleUpdate = async (formData: any) => {
     if (!editingDeal) return;
 
-    try {
-      const response = await fetch(`/api/deals/${editingDeal.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Erreur lors de la modification");
+    updateMutation.mutate(
+      { id: editingDeal.id, ...formData },
+      {
+        onSuccess: () => {
+          toast({
+            title: "Succès",
+            description: "Le deal a été modifié avec succès",
+          });
+          setDialogOpen(false);
+          setEditingDeal(null);
+        },
+        onError: (error) => {
+          toast({
+            title: "Erreur",
+            description: error.message,
+            variant: "destructive",
+          });
+        },
       }
-
-      toast({
-        title: "Succès",
-        description: "Le deal a été modifié avec succès",
-      });
-
-      setDialogOpen(false);
-      setEditingDeal(null);
-      fetchDeals();
-    } catch (error: any) {
-      toast({
-        title: "Erreur",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
+    );
   };
 
   // Delete deal
   const handleDelete = async (dealId: string) => {
     if (!confirm("Êtes-vous sûr de vouloir supprimer ce deal ?")) return;
 
-    try {
-      const response = await fetch(`/api/deals/${dealId}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Erreur lors de la suppression");
-      }
-
-      toast({
-        title: "Succès",
-        description: "Le deal a été supprimé avec succès",
-      });
-
-      fetchDeals();
-    } catch (error: any) {
-      toast({
-        title: "Erreur",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
+    deleteMutation.mutate(dealId, {
+      onSuccess: () => {
+        toast({
+          title: "Succès",
+          description: "Le deal a été supprimé avec succès",
+        });
+      },
+      onError: (error) => {
+        toast({
+          title: "Erreur",
+          description: error.message,
+          variant: "destructive",
+        });
+      },
+    });
   };
 
   // Open edit dialog
-  const handleEdit = (deal: Deal) => {
+  const handleEdit = (deal: AdminDeal) => {
     setEditingDeal(deal);
     setDialogOpen(true);
   };

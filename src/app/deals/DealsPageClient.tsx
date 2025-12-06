@@ -2,37 +2,21 @@
 
 /**
  * Page Deals - Composant client pour les interactions
+ *
+ * Refactoré avec TanStack Query - partage le cache avec DealsSection
  */
 
-import { useState, useEffect } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageHeader } from "@/components/ui/page-header";
 import { DealsSection } from "@/components/sections/DealsSection";
 import { Zap, Package } from "lucide-react";
-import type { Deal } from "@/types";
+import { useDeals } from "@/lib/queries";
 
 export default function DealsPageClient() {
-  const [deals, setDeals] = useState<Deal[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchDeals = async () => {
-      try {
-        const response = await fetch("/api/deals");
-        if (response.ok) {
-          const data = await response.json();
-          setDeals(data.deals || []);
-        }
-      } catch (error) {
-        console.error("Error fetching deals:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDeals();
-  }, []);
+  // TanStack Query - Même cache que DealsSection (pas de double fetch!)
+  const { data, isLoading: loading } = useDeals();
+  const deals = data?.deals ?? [];
 
   const dealsCount = deals.length;
   const hasDiscounts = deals.some((deal) => deal.discountPercentage > 0);
