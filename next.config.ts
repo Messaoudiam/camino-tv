@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV === "development";
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -53,7 +55,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob: https: *.cdninstagram.com *.fbcdn.net *.supabase.co",
               "font-src 'self' data:",
-              "connect-src 'self' https: wss: *.instagram.com *.supabase.co *.vercel-insights.com",
+              `connect-src 'self' https: wss: ${isDev ? "http://localhost:* ws://localhost:*" : ""} *.instagram.com *.supabase.co *.vercel-insights.com`,
               "frame-src 'self' https: *.instagram.com www.instagram.com",
               "object-src 'none'",
               "base-uri 'self'",

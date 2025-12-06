@@ -149,5 +149,11 @@ export const auth = betterAuth({
     },
   },
 
-  trustedOrigins: [process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"],
+  trustedOrigins: [
+    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+    // Allow local development on different ports
+    ...(process.env.NODE_ENV === "development"
+      ? ["http://localhost:3001", "http://localhost:3002", "http://127.0.0.1:3000", "http://127.0.0.1:3001"]
+      : []),
+  ],
 });
