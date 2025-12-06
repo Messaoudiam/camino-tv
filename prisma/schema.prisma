@@ -1,6 +1,3 @@
-// Prisma Schema for Camino TV
-// Next.js 15 + Better Auth + PostgreSQL
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,33 +8,23 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-// ============================================
-// Authentication Models (Better Auth)
-// ============================================
-
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String    @unique
-  emailVerified Boolean   @default(false)
+  email         String     @unique
+  emailVerified Boolean    @default(false)
   image         String?
-  role          UserRole  @default(USER)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
-  // Relations
-  sessions  Session[]
-  accounts  Account[]
-  favorites Favorite[]
-  blogPosts BlogPost[]
+  role          UserRole   @default(USER)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  accounts      Account[]
+  blogPosts     BlogPost[]
+  comments      Comment[]
+  favorites     Favorite[]
+  sessions      Session[]
 
   @@index([email])
   @@map("users")
-}
-
-enum UserRole {
-  USER
-  ADMIN
 }
 
 model Session {
@@ -49,8 +36,7 @@ model Session {
   userAgent String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([token])
@@ -62,15 +48,14 @@ model Account {
   userId       String
   accountId    String
   providerId   String
-  accessToken  String?   @db.Text
-  refreshToken String?   @db.Text
-  idToken      String?   @db.Text
+  accessToken  String?
+  refreshToken String?
+  idToken      String?
   expiresAt    DateTime?
   password     String?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([providerId, accountId])
   @@index([userId])
@@ -89,10 +74,6 @@ model Verification {
   @@map("verifications")
 }
 
-// ============================================
-// Business Models
-// ============================================
-
 model Deal {
   id                 String       @id @default(cuid())
   title              String
@@ -108,11 +89,10 @@ model Deal {
   promoCode          String?
   promoDescription   String?
   isActive           Boolean      @default(true)
-  deletedAt          DateTime?    // Non utilisé - conservé pour compatibilité DB
+  deletedAt          DateTime?
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
-
-  favorites Favorite[]
+  favorites          Favorite[]
 
   @@index([category, isActive])
   @@index([createdAt])
@@ -121,21 +101,12 @@ model Deal {
   @@map("deals")
 }
 
-enum DealCategory {
-  sneakers
-  streetwear
-  accessories
-  electronics
-  lifestyle
-}
-
 model Favorite {
   userId    String
   dealId    String
   createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  deal Deal @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  deal      Deal     @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, dealId])
   @@index([userId])
@@ -148,17 +119,13 @@ model BlogPost {
   title       String
   slug        String       @unique
   excerpt     String
-  content     String       @db.Text
+  content     String
   imageUrl    String
   category    BlogCategory
-
-  // Author - relation optionnelle (fallback sur authorName si pas de user)
   authorId    String?
-  author      User?        @relation(fields: [authorId], references: [id], onDelete: SetNull)
   authorName  String
   authorImage String
   authorRole  String
-
   publishedAt DateTime
   readTime    Int
   views       Int          @default(0)
@@ -167,12 +134,43 @@ model BlogPost {
   isPublished Boolean      @default(true)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  author      User?        @relation(fields: [authorId], references: [id])
+  comments    Comment[]
 
   @@index([slug])
   @@index([category, publishedAt])
   @@index([isPublished])
   @@index([authorId])
   @@map("blog_posts")
+}
+
+model Comment {
+  id         String   @id @default(cuid())
+  content    String
+  userId     String
+  blogPostId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  blogPost   BlogPost @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+
+  @@index([blogPostId])
+  @@index([userId])
+  @@index([createdAt])
+  @@map("comments")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum DealCategory {
+  sneakers
+  streetwear
+  accessories
+  electronics
+  lifestyle
 }
 
 enum BlogCategory {

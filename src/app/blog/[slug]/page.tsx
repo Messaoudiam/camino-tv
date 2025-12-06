@@ -20,6 +20,7 @@ import { prisma } from "@/lib/db";
 import { TwitterEmbed } from "@/components/blog/TwitterEmbed";
 import { BlogInteractions } from "@/components/blog/BlogInteractions";
 import { ShareButtons } from "@/components/blog/ShareButtons";
+import { CommentSection } from "@/components/blog/CommentSection";
 import { BlogPost, BlogCategory } from "@/types";
 
 // Force dynamic rendering to avoid build-time database connection
@@ -302,22 +303,14 @@ export default async function BlogPostPage({ params }: Props) {
             />
           </div>
 
-          {/* Contenu de l'article - HTML sémantique direct */}
-          <div
-            className="leading-relaxed text-foreground space-y-6"
-            style={{
-              fontSize: "clamp(1rem, 0.8rem + 0.4vw, 1.125rem)",
-              lineHeight: "clamp(1.6, 1.5 + 0.2vw, 1.8)",
-            }}
-          >
+          {/* Contenu de l'article - avec Tailwind Typography */}
+          <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:text-foreground prose-p:text-foreground/90 prose-strong:text-foreground prose-a:text-brand-600 hover:prose-a:text-brand-500 prose-li:text-foreground/90 prose-h2:mt-10 prose-h2:mb-4 prose-h3:mt-8 prose-h3:mb-3 prose-p:mb-4 prose-ul:my-4 prose-ol:my-4 prose-li:my-1">
             {/* Contenu principal - HTML sémantique */}
-            <div className="max-w-none">
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: post.content,
-                }}
-              />
-            </div>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: post.content,
+              }}
+            />
 
             {/* Twitter Embed pour l'article Thread */}
             {post.slug === "thread-20-createurs-francais-belges-suivre" && (
@@ -373,6 +366,9 @@ export default async function BlogPostPage({ params }: Props) {
               <ShareButtons post={post} />
             </div>
           </div>
+
+          {/* Section commentaires */}
+          <CommentSection blogPostId={dbPost.id} />
         </div>
       </article>
 
