@@ -75,7 +75,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: post.isFeatured ? 0.9 : 0.8,
     }));
-  } catch (error) {
+  } catch {
     // En cas d'erreur DB (build sans connexion), retourner un sitemap vide pour les posts
     console.error("Sitemap: Could not fetch blog posts from database");
   }
@@ -101,7 +101,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly" as const,
       priority: deal.isNew || deal.isLimited ? 0.8 : 0.7,
     }));
-  } catch (error) {
+  } catch {
     console.error("Sitemap: Could not fetch deals from database");
   }
 
