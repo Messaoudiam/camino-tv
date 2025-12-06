@@ -17,6 +17,8 @@ import {
   Bookmark,
   BookOpen,
   Mail,
+  LogIn,
+  UserPlus,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
@@ -40,10 +42,12 @@ import {
 import { HeaderProps } from "@/types";
 import { cn } from "@/lib/utils";
 import { AuthButton } from "./AuthButton";
+import { useAuth } from "@/lib/auth-client";
 
 export function Header({ className }: HeaderProps) {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const { user, isAuthenticated, isLoading, signOut, isAdmin } = useAuth();
 
   // États utilisés
   const [isSearchFocused] = useState(false);
@@ -294,6 +298,79 @@ export function Header({ className }: HeaderProps) {
                           <TrendingUp className="h-4 w-4" />
                           <span>Meilleures offres</span>
                         </Link>
+                      </div>
+                    </div>
+
+                    {/* Séparateur */}
+                    <div className="border-t border-border"></div>
+
+                    {/* Connexion / Inscription ou Profil utilisateur */}
+                    <div className="space-y-3">
+                      <h4 className="text-sm font-medium text-muted-foreground px-3">
+                        Mon compte
+                      </h4>
+                      <div className="space-y-2 px-3">
+                        {!mounted || isLoading ? (
+                          <div className="h-10 w-full animate-pulse bg-muted rounded-md" />
+                        ) : isAuthenticated ? (
+                          <>
+                            {/* Infos utilisateur */}
+                            <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg mb-3">
+                              <div className="h-10 w-10 rounded-full bg-brand-100 dark:bg-brand-900/30 flex items-center justify-center">
+                                <Users className="h-5 w-5 text-brand-600 dark:text-brand-400" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium truncate">
+                                  {user?.name || "Utilisateur"}
+                                </p>
+                                <p className="text-xs text-muted-foreground truncate">
+                                  {user?.email}
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* Lien Admin si admin */}
+                            {isAdmin && (
+                              <Link href="/admin/dashboard" className="block">
+                                <Button
+                                  variant="outline"
+                                  className="w-full justify-start gap-2 border-brand-200 dark:border-brand-800"
+                                >
+                                  <Zap className="h-4 w-4 text-brand-600" />
+                                  Administration
+                                </Button>
+                              </Link>
+                            )}
+
+                            {/* Bouton déconnexion */}
+                            <Button
+                              variant="outline"
+                              className="w-full justify-start gap-2 text-destructive hover:text-destructive hover:bg-destructive/10"
+                              onClick={() => signOut()}
+                            >
+                              <LogIn className="h-4 w-4" />
+                              Déconnexion
+                            </Button>
+                          </>
+                        ) : (
+                          <>
+                            <Link href="/login" className="block">
+                              <Button
+                                variant="outline"
+                                className="w-full justify-start gap-2"
+                              >
+                                <LogIn className="h-4 w-4" />
+                                Connexion
+                              </Button>
+                            </Link>
+                            <Link href="/signup" className="block">
+                              <Button className="w-full justify-start gap-2 bg-brand-600 hover:bg-brand-700">
+                                <UserPlus className="h-4 w-4" />
+                                Inscription
+                              </Button>
+                            </Link>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>

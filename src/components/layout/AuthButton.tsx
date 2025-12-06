@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useAuth } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,9 +20,16 @@ import Link from "next/link";
  * Shows user menu with logout if authenticated
  */
 export function AuthButton() {
+  const [mounted, setMounted] = useState(false);
   const { user, isAuthenticated, isLoading, signOut, isAdmin } = useAuth();
 
-  if (isLoading) {
+  // Hydration fix - always render skeleton on server
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Always show skeleton on server and during initial client render
+  if (!mounted || isLoading) {
     return <div className="h-9 w-20 animate-pulse bg-muted rounded-md" />;
   }
 
