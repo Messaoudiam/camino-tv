@@ -23,8 +23,9 @@ import { ShareButtons } from "@/components/blog/ShareButtons";
 import { CommentSection } from "@/components/blog/CommentSection";
 import { BlogPost, BlogCategory } from "@/types";
 
-// Force dynamic rendering to avoid build-time database connection
-export const dynamic = "force-dynamic";
+// ISR: Régénère la page toutes les heures (3600 secondes)
+// Améliore la performance et la résilience aux timeouts DB
+export const revalidate = 3600;
 
 // Transform DB post to frontend format
 function transformPost(dbPost: any): BlogPost {

@@ -2,8 +2,9 @@ import { Metadata } from "next";
 import { BlogPageClient } from "@/components/blog/BlogPageClient";
 import { prisma } from "@/lib/db";
 
-// Force dynamic rendering to avoid build-time database connection
-export const dynamic = "force-dynamic";
+// ISR: Régénère la page toutes les heures (3600 secondes)
+// Améliore la performance et la résilience aux timeouts DB
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Blog Camino TV | Actualité Streetwear & Culture",
