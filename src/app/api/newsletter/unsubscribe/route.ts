@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     if (!validation.success) {
       return NextResponse.json(
         { error: validation.error.issues[0].message },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -37,14 +37,14 @@ export async function POST(request: NextRequest) {
     if (!subscriber) {
       return NextResponse.json(
         { error: "Cette adresse email n'est pas inscrite à la newsletter" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     if (subscriber.status === "UNSUBSCRIBED") {
       return NextResponse.json(
         { message: "Vous êtes déjà désinscrit de la newsletter" },
-        { status: 200 }
+        { status: 200 },
       );
     }
 
@@ -56,13 +56,13 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       { message: "Vous avez été désinscrit de la newsletter avec succès" },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Error unsubscribing from newsletter:", error);
     return NextResponse.json(
       { error: "Une erreur est survenue lors de la désinscription" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
     if (!emailParam) {
       return NextResponse.json(
         { error: "L'adresse email est requise" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -88,7 +88,7 @@ export async function GET(request: NextRequest) {
     if (!validation.success) {
       return NextResponse.json(
         { error: validation.error.issues[0].message },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -102,14 +102,14 @@ export async function GET(request: NextRequest) {
     if (!subscriber) {
       return NextResponse.json(
         { error: "Cette adresse email n'est pas inscrite à la newsletter" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     if (subscriber.status === "UNSUBSCRIBED") {
       return NextResponse.json(
         { message: "Vous êtes déjà désinscrit de la newsletter" },
-        { status: 200 }
+        { status: 200 },
       );
     }
 
@@ -121,13 +121,13 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(
       { message: "Vous avez été désinscrit de la newsletter avec succès" },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Error unsubscribing from newsletter:", error);
     return NextResponse.json(
       { error: "Une erreur est survenue lors de la désinscription" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

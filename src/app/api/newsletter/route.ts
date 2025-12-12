@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     if (!validation.success) {
       return NextResponse.json(
         { error: validation.error.issues[0].message },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
       if (existingSubscriber.status === "ACTIVE") {
         return NextResponse.json(
           { error: "Cette adresse email est déjà inscrite à la newsletter" },
-          { status: 409 }
+          { status: 409 },
         );
       }
 
@@ -65,15 +65,19 @@ export async function POST(request: NextRequest) {
         // Send confirmation email
         const emailResult = await sendConfirmationEmail(email, newToken);
         if (!emailResult.success) {
-          console.error("Failed to resend confirmation email:", emailResult.error);
+          console.error(
+            "Failed to resend confirmation email:",
+            emailResult.error,
+          );
         }
 
         return NextResponse.json(
           {
-            message: "Un email de confirmation vous a été renvoyé. Vérifiez votre boîte de réception.",
+            message:
+              "Un email de confirmation vous a été renvoyé. Vérifiez votre boîte de réception.",
             requiresConfirmation: true,
           },
-          { status: 200 }
+          { status: 200 },
         );
       }
 
@@ -96,10 +100,11 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json(
         {
-          message: "Un email de confirmation vous a été envoyé. Vérifiez votre boîte de réception.",
+          message:
+            "Un email de confirmation vous a été envoyé. Vérifiez votre boîte de réception.",
           requiresConfirmation: true,
         },
-        { status: 200 }
+        { status: 200 },
       );
     }
 
@@ -122,7 +127,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        message: "Un email de confirmation vous a été envoyé. Vérifiez votre boîte de réception.",
+        message:
+          "Un email de confirmation vous a été envoyé. Vérifiez votre boîte de réception.",
         requiresConfirmation: true,
         subscriber: {
           id: subscriber.id,
@@ -130,13 +136,13 @@ export async function POST(request: NextRequest) {
           subscribedAt: subscriber.subscribedAt,
         },
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.error("Error subscribing to newsletter:", error);
     return NextResponse.json(
       { error: "Une erreur est survenue lors de l'inscription" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

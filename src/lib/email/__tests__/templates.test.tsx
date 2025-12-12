@@ -5,11 +5,7 @@
 
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import {
-  ConfirmationEmail,
-  WelcomeEmail,
-  NewsletterEmail,
-} from "../templates";
+import { ConfirmationEmail, WelcomeEmail, NewsletterEmail } from "../templates";
 
 // Helper to render email templates to HTML string
 function renderEmail(component: React.ReactElement): string {
@@ -18,7 +14,8 @@ function renderEmail(component: React.ReactElement): string {
 
 describe("Email Templates", () => {
   describe("ConfirmationEmail", () => {
-    const confirmUrl = "https://camino-tv.vercel.app/api/newsletter/confirm?token=abc123";
+    const confirmUrl =
+      "https://camino-tv.vercel.app/api/newsletter/confirm?token=abc123";
 
     it("renders without crashing", () => {
       const html = renderEmail(<ConfirmationEmail confirmUrl={confirmUrl} />);
@@ -55,34 +52,45 @@ describe("Email Templates", () => {
   });
 
   describe("WelcomeEmail", () => {
-    const unsubscribeUrl = "https://camino-tv.vercel.app/unsubscribe?email=test@example.com";
+    const unsubscribeUrl =
+      "https://camino-tv.vercel.app/unsubscribe?email=test@example.com";
 
     it("renders without crashing", () => {
-      const html = renderEmail(<WelcomeEmail unsubscribeUrl={unsubscribeUrl} />);
+      const html = renderEmail(
+        <WelcomeEmail unsubscribeUrl={unsubscribeUrl} />,
+      );
       expect(html).toBeTruthy();
       expect(typeof html).toBe("string");
     });
 
     it("includes welcome message", () => {
-      const html = renderEmail(<WelcomeEmail unsubscribeUrl={unsubscribeUrl} />);
+      const html = renderEmail(
+        <WelcomeEmail unsubscribeUrl={unsubscribeUrl} />,
+      );
       expect(html).toContain("Bienvenue");
     });
 
     it("includes list of benefits", () => {
-      const html = renderEmail(<WelcomeEmail unsubscribeUrl={unsubscribeUrl} />);
+      const html = renderEmail(
+        <WelcomeEmail unsubscribeUrl={unsubscribeUrl} />,
+      );
       expect(html).toContain("meilleurs deals sneakers");
       expect(html).toContain("offres exclusives");
       expect(html).toContain("codes promo");
     });
 
     it("includes CTA button to view deals", () => {
-      const html = renderEmail(<WelcomeEmail unsubscribeUrl={unsubscribeUrl} />);
+      const html = renderEmail(
+        <WelcomeEmail unsubscribeUrl={unsubscribeUrl} />,
+      );
       expect(html).toContain("Voir les deals du moment");
       expect(html).toContain("camino-tv.vercel.app/deals");
     });
 
     it("includes unsubscribe link", () => {
-      const html = renderEmail(<WelcomeEmail unsubscribeUrl={unsubscribeUrl} />);
+      const html = renderEmail(
+        <WelcomeEmail unsubscribeUrl={unsubscribeUrl} />,
+      );
       expect(html).toContain(unsubscribeUrl);
       expect(html).toContain("desinscrire");
     });
@@ -91,11 +99,16 @@ describe("Email Templates", () => {
   describe("NewsletterEmail", () => {
     const subject = "Les meilleurs deals de la semaine";
     const content = "<p>Découvrez nos <strong>offres exclusives</strong>!</p>";
-    const unsubscribeUrl = "https://camino-tv.vercel.app/unsubscribe?email=test@example.com";
+    const unsubscribeUrl =
+      "https://camino-tv.vercel.app/unsubscribe?email=test@example.com";
 
     it("renders without crashing", () => {
       const html = renderEmail(
-        <NewsletterEmail subject={subject} content={content} unsubscribeUrl={unsubscribeUrl} />
+        <NewsletterEmail
+          subject={subject}
+          content={content}
+          unsubscribeUrl={unsubscribeUrl}
+        />,
       );
       expect(html).toBeTruthy();
       expect(typeof html).toBe("string");
@@ -103,14 +116,22 @@ describe("Email Templates", () => {
 
     it("includes the subject as heading", () => {
       const html = renderEmail(
-        <NewsletterEmail subject={subject} content={content} unsubscribeUrl={unsubscribeUrl} />
+        <NewsletterEmail
+          subject={subject}
+          content={content}
+          unsubscribeUrl={unsubscribeUrl}
+        />,
       );
       expect(html).toContain(subject);
     });
 
     it("renders HTML content", () => {
       const html = renderEmail(
-        <NewsletterEmail subject={subject} content={content} unsubscribeUrl={unsubscribeUrl} />
+        <NewsletterEmail
+          subject={subject}
+          content={content}
+          unsubscribeUrl={unsubscribeUrl}
+        />,
       );
       // Content should be included (dangerouslySetInnerHTML)
       expect(html).toContain("offres exclusives");
@@ -118,7 +139,11 @@ describe("Email Templates", () => {
 
     it("includes unsubscribe link", () => {
       const html = renderEmail(
-        <NewsletterEmail subject={subject} content={content} unsubscribeUrl={unsubscribeUrl} />
+        <NewsletterEmail
+          subject={subject}
+          content={content}
+          unsubscribeUrl={unsubscribeUrl}
+        />,
       );
       expect(html).toContain(unsubscribeUrl);
       expect(html).toContain("desinscrire");
@@ -126,7 +151,11 @@ describe("Email Templates", () => {
 
     it("includes brand footer", () => {
       const html = renderEmail(
-        <NewsletterEmail subject={subject} content={content} unsubscribeUrl={unsubscribeUrl} />
+        <NewsletterEmail
+          subject={subject}
+          content={content}
+          unsubscribeUrl={unsubscribeUrl}
+        />,
       );
       expect(html).toContain("Camino TV");
       expect(html).toContain("meilleurs deals sneakers");
@@ -136,7 +165,7 @@ describe("Email Templates", () => {
   describe("Email Layout", () => {
     it("includes proper HTML structure", () => {
       const html = renderEmail(
-        <ConfirmationEmail confirmUrl="https://example.com" />
+        <ConfirmationEmail confirmUrl="https://example.com" />,
       );
 
       expect(html).toContain("<html");
@@ -147,7 +176,7 @@ describe("Email Templates", () => {
 
     it("includes viewport meta tag", () => {
       const html = renderEmail(
-        <ConfirmationEmail confirmUrl="https://example.com" />
+        <ConfirmationEmail confirmUrl="https://example.com" />,
       );
 
       expect(html).toContain("viewport");
@@ -156,7 +185,7 @@ describe("Email Templates", () => {
 
     it("uses brand color", () => {
       const html = renderEmail(
-        <ConfirmationEmail confirmUrl="https://example.com" />
+        <ConfirmationEmail confirmUrl="https://example.com" />,
       );
 
       // Brand color is #dc2626 (red-600)
@@ -165,7 +194,7 @@ describe("Email Templates", () => {
 
     it("includes email-safe table layout", () => {
       const html = renderEmail(
-        <ConfirmationEmail confirmUrl="https://example.com" />
+        <ConfirmationEmail confirmUrl="https://example.com" />,
       );
 
       expect(html).toContain("<table");

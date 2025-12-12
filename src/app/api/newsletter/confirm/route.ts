@@ -15,7 +15,10 @@ export async function GET(request: NextRequest) {
     if (!token) {
       // Redirect to error page
       return NextResponse.redirect(
-        new URL("/newsletter/confirmation?status=error&reason=missing_token", SITE_URL)
+        new URL(
+          "/newsletter/confirmation?status=error&reason=missing_token",
+          SITE_URL,
+        ),
       );
     }
 
@@ -27,14 +30,17 @@ export async function GET(request: NextRequest) {
     if (!subscriber) {
       // Token not found or already used
       return NextResponse.redirect(
-        new URL("/newsletter/confirmation?status=error&reason=invalid_token", SITE_URL)
+        new URL(
+          "/newsletter/confirmation?status=error&reason=invalid_token",
+          SITE_URL,
+        ),
       );
     }
 
     // Check if already confirmed
     if (subscriber.status === "ACTIVE") {
       return NextResponse.redirect(
-        new URL("/newsletter/confirmation?status=already_confirmed", SITE_URL)
+        new URL("/newsletter/confirmation?status=already_confirmed", SITE_URL),
       );
     }
 
@@ -57,12 +63,15 @@ export async function GET(request: NextRequest) {
 
     // Redirect to success page
     return NextResponse.redirect(
-      new URL("/newsletter/confirmation?status=success", SITE_URL)
+      new URL("/newsletter/confirmation?status=success", SITE_URL),
     );
   } catch (error) {
     console.error("Error confirming newsletter subscription:", error);
     return NextResponse.redirect(
-      new URL("/newsletter/confirmation?status=error&reason=server_error", SITE_URL)
+      new URL(
+        "/newsletter/confirmation?status=error&reason=server_error",
+        SITE_URL,
+      ),
     );
   }
 }

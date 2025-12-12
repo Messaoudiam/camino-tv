@@ -7,7 +7,7 @@ import { render } from "@react-email/components";
  */
 export async function sendConfirmationEmail(
   email: string,
-  token: string
+  token: string,
 ): Promise<{ success: boolean; error?: string }> {
   if (!isEmailEnabled() || !resend) {
     console.warn("Email is disabled. Skipping confirmation email.");
@@ -45,7 +45,7 @@ export async function sendConfirmationEmail(
  * Send welcome email after confirmation
  */
 export async function sendWelcomeEmail(
-  email: string
+  email: string,
 ): Promise<{ success: boolean; error?: string }> {
   if (!isEmailEnabled() || !resend) {
     console.warn("Email is disabled. Skipping welcome email.");
@@ -85,7 +85,7 @@ export async function sendWelcomeEmail(
 export async function sendNewsletterToSubscriber(
   email: string,
   subject: string,
-  content: string
+  content: string,
 ): Promise<{ success: boolean; error?: string }> {
   if (!isEmailEnabled() || !resend) {
     return { success: false, error: "Email service not configured" };
@@ -95,7 +95,7 @@ export async function sendNewsletterToSubscriber(
 
   try {
     const html = await render(
-      NewsletterEmail({ subject, content, unsubscribeUrl })
+      NewsletterEmail({ subject, content, unsubscribeUrl }),
     );
 
     const { error } = await resend.emails.send({

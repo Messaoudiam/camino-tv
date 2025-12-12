@@ -36,7 +36,7 @@ describe("POST /api/newsletter/unsubscribe", () => {
           method: "POST",
           body: JSON.stringify({}),
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
 
       const response = await POST(request);
@@ -53,7 +53,7 @@ describe("POST /api/newsletter/unsubscribe", () => {
           method: "POST",
           body: JSON.stringify({ email: "invalid-email" }),
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
 
       const response = await POST(request);
@@ -74,7 +74,7 @@ describe("POST /api/newsletter/unsubscribe", () => {
           method: "POST",
           body: JSON.stringify({ email: validEmail }),
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
 
       const response = await POST(request);
@@ -82,7 +82,7 @@ describe("POST /api/newsletter/unsubscribe", () => {
 
       expect(response.status).toBe(404);
       expect(data.error).toBe(
-        "Cette adresse email n'est pas inscrite à la newsletter"
+        "Cette adresse email n'est pas inscrite à la newsletter",
       );
     });
 
@@ -99,7 +99,7 @@ describe("POST /api/newsletter/unsubscribe", () => {
           method: "POST",
           body: JSON.stringify({ email: validEmail }),
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
 
       const response = await POST(request);
@@ -128,7 +128,7 @@ describe("POST /api/newsletter/unsubscribe", () => {
           method: "POST",
           body: JSON.stringify({ email: validEmail }),
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
 
       const response = await POST(request);
@@ -136,7 +136,7 @@ describe("POST /api/newsletter/unsubscribe", () => {
 
       expect(response.status).toBe(200);
       expect(data.message).toBe(
-        "Vous avez été désinscrit de la newsletter avec succès"
+        "Vous avez été désinscrit de la newsletter avec succès",
       );
       expect(mockUpdate).toHaveBeenCalledWith({
         where: { email: validEmail },
@@ -162,7 +162,7 @@ describe("POST /api/newsletter/unsubscribe", () => {
           method: "POST",
           body: JSON.stringify({ email: "TEST@EXAMPLE.COM" }),
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
 
       await POST(request);
@@ -183,7 +183,7 @@ describe("POST /api/newsletter/unsubscribe", () => {
           method: "POST",
           body: JSON.stringify({ email: validEmail }),
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
 
       const response = await POST(request);
@@ -191,7 +191,7 @@ describe("POST /api/newsletter/unsubscribe", () => {
 
       expect(response.status).toBe(500);
       expect(data.error).toBe(
-        "Une erreur est survenue lors de la désinscription"
+        "Une erreur est survenue lors de la désinscription",
       );
     });
   });
@@ -207,7 +207,7 @@ describe("GET /api/newsletter/unsubscribe", () => {
   describe("Validation", () => {
     it("returns 400 when email param is missing", async () => {
       const request = new NextRequest(
-        "http://localhost:3000/api/newsletter/unsubscribe"
+        "http://localhost:3000/api/newsletter/unsubscribe",
       );
 
       const response = await GET(request);
@@ -219,7 +219,7 @@ describe("GET /api/newsletter/unsubscribe", () => {
 
     it("returns 400 when email format is invalid", async () => {
       const request = new NextRequest(
-        "http://localhost:3000/api/newsletter/unsubscribe?email=invalid"
+        "http://localhost:3000/api/newsletter/unsubscribe?email=invalid",
       );
 
       const response = await GET(request);
@@ -235,7 +235,7 @@ describe("GET /api/newsletter/unsubscribe", () => {
       mockFindUnique.mockResolvedValue(null);
 
       const request = new NextRequest(
-        `http://localhost:3000/api/newsletter/unsubscribe?email=${validEmail}`
+        `http://localhost:3000/api/newsletter/unsubscribe?email=${validEmail}`,
       );
 
       const response = await GET(request);
@@ -243,7 +243,7 @@ describe("GET /api/newsletter/unsubscribe", () => {
 
       expect(response.status).toBe(404);
       expect(data.error).toBe(
-        "Cette adresse email n'est pas inscrite à la newsletter"
+        "Cette adresse email n'est pas inscrite à la newsletter",
       );
     });
 
@@ -260,7 +260,7 @@ describe("GET /api/newsletter/unsubscribe", () => {
       });
 
       const request = new NextRequest(
-        `http://localhost:3000/api/newsletter/unsubscribe?email=${validEmail}`
+        `http://localhost:3000/api/newsletter/unsubscribe?email=${validEmail}`,
       );
 
       const response = await GET(request);
@@ -268,7 +268,7 @@ describe("GET /api/newsletter/unsubscribe", () => {
 
       expect(response.status).toBe(200);
       expect(data.message).toBe(
-        "Vous avez été désinscrit de la newsletter avec succès"
+        "Vous avez été désinscrit de la newsletter avec succès",
       );
     });
 
@@ -286,7 +286,7 @@ describe("GET /api/newsletter/unsubscribe", () => {
       });
 
       const request = new NextRequest(
-        `http://localhost:3000/api/newsletter/unsubscribe?email=${encodedEmail}`
+        `http://localhost:3000/api/newsletter/unsubscribe?email=${encodedEmail}`,
       );
 
       const response = await GET(request);

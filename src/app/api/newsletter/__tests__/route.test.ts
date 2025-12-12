@@ -76,11 +76,14 @@ describe("POST /api/newsletter", () => {
       ];
 
       for (const email of invalidEmails) {
-        const request = new NextRequest("http://localhost:3000/api/newsletter", {
-          method: "POST",
-          body: JSON.stringify({ email }),
-          headers: { "Content-Type": "application/json" },
-        });
+        const request = new NextRequest(
+          "http://localhost:3000/api/newsletter",
+          {
+            method: "POST",
+            body: JSON.stringify({ email }),
+            headers: { "Content-Type": "application/json" },
+          },
+        );
 
         const response = await POST(request);
         const data = await response.json();
@@ -108,11 +111,14 @@ describe("POST /api/newsletter", () => {
           subscribedAt: new Date(),
         });
 
-        const request = new NextRequest("http://localhost:3000/api/newsletter", {
-          method: "POST",
-          body: JSON.stringify({ email }),
-          headers: { "Content-Type": "application/json" },
-        });
+        const request = new NextRequest(
+          "http://localhost:3000/api/newsletter",
+          {
+            method: "POST",
+            body: JSON.stringify({ email }),
+            headers: { "Content-Type": "application/json" },
+          },
+        );
 
         const response = await POST(request);
         expect(response.status).toBe(201);
@@ -217,7 +223,9 @@ describe("POST /api/newsletter", () => {
       const data = await response.json();
 
       expect(response.status).toBe(409);
-      expect(data.error).toBe("Cette adresse email est déjà inscrite à la newsletter");
+      expect(data.error).toBe(
+        "Cette adresse email est déjà inscrite à la newsletter",
+      );
     });
 
     it("does not create duplicate when email exists (case insensitive)", async () => {
