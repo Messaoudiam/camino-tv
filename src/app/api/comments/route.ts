@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
     if (!blogPostId) {
       return NextResponse.json(
         { error: "blogPostId is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -34,10 +34,7 @@ export async function GET(request: NextRequest) {
     });
 
     if (!blogPost) {
-      return NextResponse.json(
-        { error: "Article not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Article not found" }, { status: 404 });
     }
 
     // Get comments with user info
@@ -61,7 +58,7 @@ export async function GET(request: NextRequest) {
     console.error("Error fetching comments:", error);
     return NextResponse.json(
       { error: "Failed to fetch comments" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -78,7 +75,7 @@ export async function POST(request: NextRequest) {
     if (!session?.user) {
       return NextResponse.json(
         { error: "Vous devez être connecté pour commenter" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -89,7 +86,7 @@ export async function POST(request: NextRequest) {
     if (!validation.success) {
       return NextResponse.json(
         { error: validation.error.issues[0].message },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -101,10 +98,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (!blogPost) {
-      return NextResponse.json(
-        { error: "Article not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Article not found" }, { status: 404 });
     }
 
     // Create comment
@@ -131,7 +125,7 @@ export async function POST(request: NextRequest) {
     console.error("Error creating comment:", error);
     return NextResponse.json(
       { error: "Failed to create comment" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

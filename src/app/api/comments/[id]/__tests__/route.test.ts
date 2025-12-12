@@ -74,11 +74,15 @@ describe("DELETE /api/comments/[id]", () => {
     mockGetSession.mockResolvedValue(null);
 
     const request = createRequest("comment-1");
-    const response = await DELETE(request, { params: createParams("comment-1") });
+    const response = await DELETE(request, {
+      params: createParams("comment-1"),
+    });
     const data = await response.json();
 
     expect(response.status).toBe(401);
-    expect(data.error).toBe("Vous devez être connecté pour supprimer un commentaire");
+    expect(data.error).toBe(
+      "Vous devez être connecté pour supprimer un commentaire",
+    );
   });
 
   it("returns 404 when comment does not exist", async () => {
@@ -86,7 +90,9 @@ describe("DELETE /api/comments/[id]", () => {
     mockFindUnique.mockResolvedValue(null);
 
     const request = createRequest("non-existent");
-    const response = await DELETE(request, { params: createParams("non-existent") });
+    const response = await DELETE(request, {
+      params: createParams("non-existent"),
+    });
     const data = await response.json();
 
     expect(response.status).toBe(404);
@@ -107,11 +113,15 @@ describe("DELETE /api/comments/[id]", () => {
     mockFindUnique.mockResolvedValue(mockComment);
 
     const request = createRequest("comment-1");
-    const response = await DELETE(request, { params: createParams("comment-1") });
+    const response = await DELETE(request, {
+      params: createParams("comment-1"),
+    });
     const data = await response.json();
 
     expect(response.status).toBe(403);
-    expect(data.error).toBe("Vous n'êtes pas autorisé à supprimer ce commentaire");
+    expect(data.error).toBe(
+      "Vous n'êtes pas autorisé à supprimer ce commentaire",
+    );
   });
 
   it("allows owner to delete their own comment", async () => {
@@ -120,7 +130,9 @@ describe("DELETE /api/comments/[id]", () => {
     mockDelete.mockResolvedValue(mockComment);
 
     const request = createRequest("comment-1");
-    const response = await DELETE(request, { params: createParams("comment-1") });
+    const response = await DELETE(request, {
+      params: createParams("comment-1"),
+    });
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -136,7 +148,9 @@ describe("DELETE /api/comments/[id]", () => {
     mockDelete.mockResolvedValue(mockComment);
 
     const request = createRequest("comment-1");
-    const response = await DELETE(request, { params: createParams("comment-1") });
+    const response = await DELETE(request, {
+      params: createParams("comment-1"),
+    });
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -151,7 +165,9 @@ describe("DELETE /api/comments/[id]", () => {
     mockFindUnique.mockRejectedValue(new Error("Database error"));
 
     const request = createRequest("comment-1");
-    const response = await DELETE(request, { params: createParams("comment-1") });
+    const response = await DELETE(request, {
+      params: createParams("comment-1"),
+    });
     const data = await response.json();
 
     expect(response.status).toBe(500);
@@ -164,7 +180,9 @@ describe("DELETE /api/comments/[id]", () => {
     mockDelete.mockRejectedValue(new Error("Database error"));
 
     const request = createRequest("comment-1");
-    const response = await DELETE(request, { params: createParams("comment-1") });
+    const response = await DELETE(request, {
+      params: createParams("comment-1"),
+    });
     const data = await response.json();
 
     expect(response.status).toBe(500);
@@ -196,7 +214,9 @@ describe("DELETE /api/comments/[id]", () => {
     mockDelete.mockResolvedValue(commentByOtherUser);
 
     const request = createRequest("comment-1");
-    const response = await DELETE(request, { params: createParams("comment-1") });
+    const response = await DELETE(request, {
+      params: createParams("comment-1"),
+    });
 
     expect(response.status).toBe(200);
   });
@@ -212,7 +232,9 @@ describe("DELETE /api/comments/[id]", () => {
     mockDelete.mockResolvedValue(commentOnDifferentPost);
 
     const request = createRequest("comment-1");
-    const response = await DELETE(request, { params: createParams("comment-1") });
+    const response = await DELETE(request, {
+      params: createParams("comment-1"),
+    });
 
     // Should still work as long as user owns the comment
     expect(response.status).toBe(200);

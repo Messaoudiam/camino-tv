@@ -245,7 +245,9 @@ describe("POST /api/comments", () => {
     const data = await response.json();
 
     expect(response.status).toBe(400);
-    expect(data.error).toBe("Le commentaire est trop long (max 2000 caractères)");
+    expect(data.error).toBe(
+      "Le commentaire est trop long (max 2000 caractères)",
+    );
   });
 
   it("returns 400 when blogPostId is missing", async () => {
@@ -344,7 +346,10 @@ describe("POST /api/comments", () => {
 
     const request = new NextRequest("http://localhost:3000/api/comments", {
       method: "POST",
-      body: JSON.stringify({ content: "Commentaire admin", blogPostId: "post-1" }),
+      body: JSON.stringify({
+        content: "Commentaire admin",
+        blogPostId: "post-1",
+      }),
       headers: { "Content-Type": "application/json" },
     });
 

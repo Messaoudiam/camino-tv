@@ -20,7 +20,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     if (!session?.user) {
       return NextResponse.json(
         { error: "Vous devez être connecté pour supprimer un commentaire" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -32,7 +32,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     if (!comment) {
       return NextResponse.json(
         { error: "Commentaire non trouvé" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -43,7 +43,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     if (!isOwner && !isAdmin) {
       return NextResponse.json(
         { error: "Vous n'êtes pas autorisé à supprimer ce commentaire" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -57,7 +57,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     console.error("Error deleting comment:", error);
     return NextResponse.json(
       { error: "Failed to delete comment" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
