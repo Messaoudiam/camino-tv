@@ -5,6 +5,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BlogPageClient } from "../BlogPageClient";
+import { withQueryClient } from "@/test-utils/query-wrapper";
 
 // Mock API posts data (matches the API response format)
 const mockApiPosts = [
@@ -113,31 +114,32 @@ describe("BlogPageClient", () => {
     // Reset fetch mock before each test
     (global.fetch as jest.Mock).mockClear();
     (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
       json: () => Promise.resolve({ posts: mockApiPosts }),
     });
   });
 
   describe("Initial Render", () => {
     it("renders header and footer", () => {
-      render(<BlogPageClient jsonLd={mockJsonLd} />);
+      render(withQueryClient(<BlogPageClient jsonLd={mockJsonLd} />));
       expect(screen.getByTestId("header")).toBeInTheDocument();
       expect(screen.getByTestId("footer")).toBeInTheDocument();
     });
 
     it("renders page header with title", () => {
-      render(<BlogPageClient jsonLd={mockJsonLd} />);
+      render(withQueryClient(<BlogPageClient jsonLd={mockJsonLd} />));
       expect(screen.getByText("Culture & Streetwear")).toBeInTheDocument();
     });
 
     it("renders search input", () => {
-      render(<BlogPageClient jsonLd={mockJsonLd} />);
+      render(withQueryClient(<BlogPageClient jsonLd={mockJsonLd} />));
       expect(
         screen.getByPlaceholderText("Rechercher un article..."),
       ).toBeInTheDocument();
     });
 
     it("renders category filter buttons", () => {
-      render(<BlogPageClient jsonLd={mockJsonLd} />);
+      render(withQueryClient(<BlogPageClient jsonLd={mockJsonLd} />));
       expect(screen.getByText("Toutes")).toBeInTheDocument();
       // Multiple elements with same text (filter button + sidebar)
       expect(screen.getAllByText("Culture").length).toBeGreaterThanOrEqual(1);
@@ -148,7 +150,7 @@ describe("BlogPageClient", () => {
     });
 
     it("renders all blog posts", async () => {
-      render(<BlogPageClient jsonLd={mockJsonLd} />);
+      render(withQueryClient(<BlogPageClient jsonLd={mockJsonLd} />));
       await waitFor(() => {
         expect(screen.getByText("Article Culture Test")).toBeInTheDocument();
         expect(screen.getByText("Article Streetwear Test")).toBeInTheDocument();
@@ -157,7 +159,7 @@ describe("BlogPageClient", () => {
     });
 
     it("displays article count", async () => {
-      render(<BlogPageClient jsonLd={mockJsonLd} />);
+      render(withQueryClient(<BlogPageClient jsonLd={mockJsonLd} />));
       await waitFor(() => {
         expect(screen.getByText("3 articles")).toBeInTheDocument();
       });
@@ -166,12 +168,12 @@ describe("BlogPageClient", () => {
 
   describe("Sidebar", () => {
     it("renders statistics card", () => {
-      render(<BlogPageClient jsonLd={mockJsonLd} />);
+      render(withQueryClient(<BlogPageClient jsonLd={mockJsonLd} />));
       expect(screen.getByText("Statistiques")).toBeInTheDocument();
     });
 
     it("renders categories card", () => {
-      render(<BlogPageClient jsonLd={mockJsonLd} />);
+      render(withQueryClient(<BlogPageClient jsonLd={mockJsonLd} />));
       // Multiple elements with "Catégories" text possible
       expect(screen.getAllByText("Catégories").length).toBeGreaterThanOrEqual(
         1,
@@ -182,7 +184,7 @@ describe("BlogPageClient", () => {
   describe("Search Functionality", () => {
     it("filters posts by title search", async () => {
       const user = userEvent.setup();
-      render(<BlogPageClient jsonLd={mockJsonLd} />);
+      render(withQueryClient(<BlogPageClient jsonLd={mockJsonLd} />));
 
       const searchInput = screen.getByPlaceholderText(
         "Rechercher un article...",
@@ -202,7 +204,7 @@ describe("BlogPageClient", () => {
 
     it("filters posts by tag search", async () => {
       const user = userEvent.setup();
-      render(<BlogPageClient jsonLd={mockJsonLd} />);
+      render(withQueryClient(<BlogPageClient jsonLd={mockJsonLd} />));
 
       const searchInput = screen.getByPlaceholderText(
         "Rechercher un article...",
@@ -219,7 +221,7 @@ describe("BlogPageClient", () => {
 
     it("shows no results message when search has no matches", async () => {
       const user = userEvent.setup();
-      render(<BlogPageClient jsonLd={mockJsonLd} />);
+      render(withQueryClient(<BlogPageClient jsonLd={mockJsonLd} />));
 
       const searchInput = screen.getByPlaceholderText(
         "Rechercher un article...",
@@ -233,7 +235,7 @@ describe("BlogPageClient", () => {
 
     it("updates article count when filtering", async () => {
       const user = userEvent.setup();
-      render(<BlogPageClient jsonLd={mockJsonLd} />);
+      render(withQueryClient(<BlogPageClient jsonLd={mockJsonLd} />));
 
       const searchInput = screen.getByPlaceholderText(
         "Rechercher un article...",
@@ -249,7 +251,7 @@ describe("BlogPageClient", () => {
   describe("Category Filter", () => {
     it("filters posts by category", async () => {
       const user = userEvent.setup();
-      render(<BlogPageClient jsonLd={mockJsonLd} />);
+      render(withQueryClient(<BlogPageClient jsonLd={mockJsonLd} />));
 
       const streetwearButton = screen.getAllByText("Streetwear")[0];
       await user.click(streetwearButton);
@@ -267,7 +269,7 @@ describe("BlogPageClient", () => {
 
     it("shows all posts when 'Toutes' is selected", async () => {
       const user = userEvent.setup();
-      render(<BlogPageClient jsonLd={mockJsonLd} />);
+      render(withQueryClient(<BlogPageClient jsonLd={mockJsonLd} />));
 
       // First filter by category
       const streetwearButton = screen.getAllByText("Streetwear")[0];
@@ -286,7 +288,7 @@ describe("BlogPageClient", () => {
 
     it("updates button styles when category is selected", async () => {
       const user = userEvent.setup();
-      render(<BlogPageClient jsonLd={mockJsonLd} />);
+      render(withQueryClient(<BlogPageClient jsonLd={mockJsonLd} />));
 
       const streetwearButton = screen.getAllByText("Streetwear")[0];
       await user.click(streetwearButton);
@@ -299,7 +301,7 @@ describe("BlogPageClient", () => {
   describe("Combined Filters", () => {
     it("applies both search and category filters", async () => {
       const user = userEvent.setup();
-      render(<BlogPageClient jsonLd={mockJsonLd} />);
+      render(withQueryClient(<BlogPageClient jsonLd={mockJsonLd} />));
 
       // Select culture category
       const cultureButton = screen.getAllByText("Culture")[0];
@@ -323,7 +325,7 @@ describe("BlogPageClient", () => {
   describe("Reset Filters", () => {
     it("resets all filters when button is clicked", async () => {
       const user = userEvent.setup();
-      render(<BlogPageClient jsonLd={mockJsonLd} />);
+      render(withQueryClient(<BlogPageClient jsonLd={mockJsonLd} />));
 
       // Apply search filter to get no results
       const searchInput = screen.getByPlaceholderText(
@@ -349,7 +351,7 @@ describe("BlogPageClient", () => {
 
   describe("JSON-LD Schema", () => {
     it("renders JSON-LD script tag", () => {
-      const { container } = render(<BlogPageClient jsonLd={mockJsonLd} />);
+      const { container } = render(withQueryClient(<BlogPageClient jsonLd={mockJsonLd} />));
       const script = container.querySelector(
         'script[type="application/ld+json"]',
       );

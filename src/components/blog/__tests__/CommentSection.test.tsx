@@ -2,9 +2,10 @@
  * Tests for CommentSection Component
  */
 
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CommentSection } from "../CommentSection";
+import { withQueryClient } from "@/test-utils/query-wrapper";
 
 // Mock useAuth hook
 const mockUseAuth = jest.fn();
@@ -86,7 +87,7 @@ describe("CommentSection", () => {
         isLoading: true,
       });
 
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       // Should show skeleton loading state
       expect(screen.getByText("Commentaires")).toBeInTheDocument();
@@ -97,7 +98,7 @@ describe("CommentSection", () => {
       mockUseAuth.mockReturnValue(mockUnauthenticated);
       mockFetch.mockImplementation(() => new Promise(() => {})); // Never resolves
 
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       // Should show skeleton loading
       await waitFor(() => {
@@ -116,7 +117,7 @@ describe("CommentSection", () => {
     });
 
     it("shows login prompt instead of comment form", async () => {
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(
@@ -128,7 +129,7 @@ describe("CommentSection", () => {
     });
 
     it("displays existing comments", async () => {
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(screen.getByText("Super article !")).toBeInTheDocument();
@@ -137,7 +138,7 @@ describe("CommentSection", () => {
     });
 
     it("displays comment count", async () => {
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(screen.getByText("Commentaires (2)")).toBeInTheDocument();
@@ -145,7 +146,7 @@ describe("CommentSection", () => {
     });
 
     it("shows user names", async () => {
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(screen.getByText("Jean Dupont")).toBeInTheDocument();
@@ -154,7 +155,7 @@ describe("CommentSection", () => {
     });
 
     it("shows admin badge for admin comments", async () => {
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(screen.getAllByText("Admin").length).toBeGreaterThan(0);
@@ -162,7 +163,7 @@ describe("CommentSection", () => {
     });
 
     it("does not show delete buttons", async () => {
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(screen.getByText("Super article !")).toBeInTheDocument();
@@ -183,7 +184,7 @@ describe("CommentSection", () => {
     });
 
     it("shows comment form", async () => {
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(
@@ -195,7 +196,7 @@ describe("CommentSection", () => {
     });
 
     it("shows user name in comment form", async () => {
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(screen.getByText(/Commentez en tant que/)).toBeInTheDocument();
@@ -204,7 +205,7 @@ describe("CommentSection", () => {
     });
 
     it("disables submit button when textarea is empty", async () => {
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         const submitButton = screen.getByText("Publier");
@@ -214,7 +215,7 @@ describe("CommentSection", () => {
 
     it("enables submit button when textarea has content", async () => {
       const user = userEvent.setup();
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(screen.getByPlaceholderText("Partagez votre avis sur cet article...")).toBeInTheDocument();
@@ -229,7 +230,7 @@ describe("CommentSection", () => {
 
     it("shows character count", async () => {
       const user = userEvent.setup();
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(screen.getByText("0/2000 caractères")).toBeInTheDocument();
@@ -260,7 +261,7 @@ describe("CommentSection", () => {
           json: async () => newComment,
         });
 
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(screen.getByPlaceholderText("Partagez votre avis sur cet article...")).toBeInTheDocument();
@@ -298,7 +299,7 @@ describe("CommentSection", () => {
           json: async () => newComment,
         });
 
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(screen.getByPlaceholderText("Partagez votre avis sur cet article...")).toBeInTheDocument();
@@ -326,7 +327,7 @@ describe("CommentSection", () => {
           json: async () => ({ error: "Erreur de test" }),
         });
 
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(screen.getByPlaceholderText("Partagez votre avis sur cet article...")).toBeInTheDocument();
@@ -342,7 +343,7 @@ describe("CommentSection", () => {
     });
 
     it("shows delete button only for own comments", async () => {
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(screen.getByText("Super article !")).toBeInTheDocument();
@@ -365,7 +366,7 @@ describe("CommentSection", () => {
     });
 
     it("shows admin badge in comment form", async () => {
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         // Admin badge next to the user's name in the form
@@ -387,7 +388,7 @@ describe("CommentSection", () => {
           json: async () => ({}),
         });
 
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(screen.getByText("Super article !")).toBeInTheDocument();
@@ -411,7 +412,7 @@ describe("CommentSection", () => {
     });
 
     it("shows empty state message when no comments", async () => {
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(
@@ -421,7 +422,7 @@ describe("CommentSection", () => {
     });
 
     it("shows comment count as 0", async () => {
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(screen.getByText("Commentaires (0)")).toBeInTheDocument();
@@ -442,7 +443,7 @@ describe("CommentSection", () => {
         json: async () => mockComments,
       });
 
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(screen.getByText("Super article !")).toBeInTheDocument();
@@ -471,7 +472,7 @@ describe("CommentSection", () => {
         json: async () => mockComments,
       });
 
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(screen.getByText("Super article !")).toBeInTheDocument();
@@ -507,7 +508,7 @@ describe("CommentSection", () => {
           json: async () => ({ message: "Commentaire supprimé" }),
         });
 
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(screen.getByText("Super article !")).toBeInTheDocument();
@@ -539,7 +540,7 @@ describe("CommentSection", () => {
       mockUseAuth.mockReturnValue(mockUnauthenticated);
       mockFetch.mockRejectedValue(new Error("Network error"));
 
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       // Should show empty state or handle error gracefully
       await waitFor(() => {
@@ -558,7 +559,7 @@ describe("CommentSection", () => {
         })
         .mockRejectedValueOnce(new Error("Network error"));
 
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         expect(screen.getByPlaceholderText("Partagez votre avis sur cet article...")).toBeInTheDocument();
@@ -568,8 +569,9 @@ describe("CommentSection", () => {
       await user.type(textarea, "Test");
       await user.click(screen.getByText("Publier"));
 
+      // The error message from the network error is displayed
       await waitFor(() => {
-        expect(screen.getByText("Erreur de connexion")).toBeInTheDocument();
+        expect(screen.getByText("Network error")).toBeInTheDocument();
       });
     });
   });
@@ -584,7 +586,7 @@ describe("CommentSection", () => {
     });
 
     it("has accessible form elements", async () => {
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         const textarea = screen.getByPlaceholderText("Partagez votre avis sur cet article...");
@@ -593,7 +595,7 @@ describe("CommentSection", () => {
     });
 
     it("has accessible submit button", async () => {
-      render(<CommentSection blogPostId={mockBlogPostId} />);
+      render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
         const button = screen.getByText("Publier");
