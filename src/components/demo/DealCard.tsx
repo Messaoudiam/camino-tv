@@ -39,6 +39,7 @@ import { DealCardProps } from "@/types";
 import { cn } from "@/lib/utils";
 import { useFavorites } from "@/hooks/useFavorites";
 import { blurPlaceholders } from "@/lib/image-utils";
+import { DealTemperature } from "@/components/deals/DealTemperature";
 
 export const DealCard = memo(function DealCard({
   deal,
@@ -123,15 +124,25 @@ export const DealCard = memo(function DealCard({
               blurDataURL={blurPlaceholders.product}
             />
 
-            {/* Badges améliorés */}
-            <div className="absolute top-3 left-3 flex flex-col gap-2">
-              {isRecentlyNew() && (
+            {/* Température (vote Hot/Cold) */}
+            <div className="absolute top-3 left-3 z-10">
+              <DealTemperature
+                dealId={deal.id}
+                initialTemperature={deal.temperature}
+                size="sm"
+                className="bg-background/95 backdrop-blur-sm shadow-lg"
+              />
+            </div>
+
+            {/* Badge Nouveau */}
+            {isRecentlyNew() && (
+              <div className="absolute top-14 left-3">
                 <Badge className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white text-xs font-bold shadow-lg border border-green-400">
                   <TrendingUp className="h-3 w-3 mr-1" />
                   NOUVEAU
                 </Badge>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* Badge réduction avec indication code promo */}
             <div className="absolute top-3 right-3 flex flex-col gap-1 items-end">

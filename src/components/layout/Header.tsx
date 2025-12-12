@@ -26,12 +26,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
   Sheet,
   SheetContent,
   SheetDescription,
@@ -73,7 +67,6 @@ export function Header({ className }: HeaderProps) {
   }, []);
 
   return (
-    <TooltipProvider>
       <header
         className={cn(
           "sticky top-0 z-50 w-full bg-background/95 backdrop-blur-sm border-b border-border transition-all duration-300",
@@ -98,26 +91,20 @@ export function Header({ className }: HeaderProps) {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex h-16 items-center justify-between gap-4">
             {/* Logo */}
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  href="/"
-                  className="flex items-center group cursor-pointer"
-                >
-                  <Image
-                    src="/camino_logo.jpg"
-                    alt="Camino TV"
-                    width={100}
-                    height={32}
-                    className="h-8 w-auto transition-transform duration-200 group-hover:scale-105"
-                    priority
-                  />
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="bottom">
-                <p>Retour à l'accueil</p>
-              </TooltipContent>
-            </Tooltip>
+            <Link
+              href="/"
+              className="flex items-center group cursor-pointer"
+              title="Retour à l'accueil"
+            >
+              <Image
+                src="/camino_logo.jpg"
+                alt="Camino TV"
+                width={100}
+                height={32}
+                className="h-8 w-auto transition-transform duration-200 group-hover:scale-105"
+                priority
+              />
+            </Link>
 
             {/* Actions utilisateur PREMIUM */}
             <div className="flex items-center gap-3">
@@ -165,37 +152,25 @@ export function Header({ className }: HeaderProps) {
               </div>
 
               {/* Toggle dark mode mobile */}
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() =>
-                      setTheme(theme === "dark" ? "light" : "dark")
-                    }
-                    className="md:hidden relative group p-2 cursor-pointer hover:bg-transparent"
-                  >
-                    <div className="relative">
-                      {!mounted || !resolvedTheme ? (
-                        <div className="h-7 w-7" />
-                      ) : resolvedTheme === "dark" ? (
-                        <Sun className="h-7 w-7 transition-transform group-hover:rotate-180" />
-                      ) : (
-                        <Moon className="h-7 w-7 transition-transform group-hover:-rotate-12" />
-                      )}
-                    </div>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>
-                    {!mounted || !resolvedTheme
-                      ? "Changer de thème"
-                      : resolvedTheme === "dark"
-                        ? "Mode clair"
-                        : "Mode sombre"}
-                  </p>
-                </TooltipContent>
-              </Tooltip>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() =>
+                  setTheme(theme === "dark" ? "light" : "dark")
+                }
+                className="md:hidden relative group p-2 cursor-pointer hover:bg-transparent"
+                title={!mounted || !resolvedTheme ? "Changer de thème" : resolvedTheme === "dark" ? "Mode clair" : "Mode sombre"}
+              >
+                <div className="relative">
+                  {!mounted || !resolvedTheme ? (
+                    <div className="h-7 w-7" />
+                  ) : resolvedTheme === "dark" ? (
+                    <Sun className="h-7 w-7 transition-transform group-hover:rotate-180" />
+                  ) : (
+                    <Moon className="h-7 w-7 transition-transform group-hover:-rotate-12" />
+                  )}
+                </div>
+              </Button>
 
               {/* Navigation mobile optimisée */}
               <Sheet>
@@ -378,41 +353,28 @@ export function Header({ className }: HeaderProps) {
               </Sheet>
 
               {/* Toggle dark mode avec animation */}
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() =>
-                      setTheme(theme === "dark" ? "light" : "dark")
-                    }
-                    className="hidden sm:flex relative group cursor-pointer hover:bg-transparent"
-                  >
-                    <div className="relative">
-                      {!mounted || !resolvedTheme ? (
-                        <div className="h-4 w-4" />
-                      ) : resolvedTheme === "dark" ? (
-                        <Sun className="h-4 w-4 transition-transform group-hover:rotate-180" />
-                      ) : (
-                        <Moon className="h-4 w-4 transition-transform group-hover:-rotate-12" />
-                      )}
-                    </div>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>
-                    {!mounted || !resolvedTheme
-                      ? "Changer de thème"
-                      : resolvedTheme === "dark"
-                        ? "Mode clair"
-                        : "Mode sombre"}
-                  </p>
-                </TooltipContent>
-              </Tooltip>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() =>
+                  setTheme(theme === "dark" ? "light" : "dark")
+                }
+                className="hidden sm:flex relative group cursor-pointer hover:bg-transparent"
+                title={!mounted || !resolvedTheme ? "Changer de thème" : resolvedTheme === "dark" ? "Mode clair" : "Mode sombre"}
+              >
+                <div className="relative">
+                  {!mounted || !resolvedTheme ? (
+                    <div className="h-4 w-4" />
+                  ) : resolvedTheme === "dark" ? (
+                    <Sun className="h-4 w-4 transition-transform group-hover:rotate-180" />
+                  ) : (
+                    <Moon className="h-4 w-4 transition-transform group-hover:-rotate-12" />
+                  )}
+                </div>
+              </Button>
             </div>
           </div>
         </div>
       </header>
-    </TooltipProvider>
   );
 }

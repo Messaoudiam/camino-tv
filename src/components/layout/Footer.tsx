@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
+import { NewsletterForm } from "@/components/newsletter/newsletter-form";
 
 const footerVariants = cva("border-t bg-background/95 backdrop-blur-sm", {
   variants: {
@@ -65,6 +66,17 @@ export function Footer({
                   plans sneakers en France. Découvrez des offres exclusives sur
                   vos marques préférées.
                 </p>
+
+                {/* Newsletter */}
+                <div className="mt-6">
+                  <h4 className="font-semibold text-foreground mb-3 font-sans">
+                    Newsletter
+                  </h4>
+                  <p className="text-sm text-muted-foreground mb-3 font-sans">
+                    Recevez les meilleurs deals directement dans votre boîte mail.
+                  </p>
+                  <NewsletterForm />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-2 gap-8 md:col-span-2">
