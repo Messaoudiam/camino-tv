@@ -7,6 +7,7 @@ import {
   Package,
   FileText,
   Users,
+  Mail,
   Settings,
   LogOut,
   ChevronDown,
@@ -52,6 +53,11 @@ const menuItems = [
     title: "Blog",
     icon: FileText,
     href: "/admin/blog",
+  },
+  {
+    title: "Newsletter",
+    icon: Mail,
+    href: "/admin/newsletter",
   },
   {
     title: "Utilisateurs",
