@@ -34,7 +34,7 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
             retry: 0,
           },
         },
-      })
+      }),
   );
 
   return (
@@ -42,7 +42,10 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
       {children}
       {/* DevTools uniquement en développement */}
       {process.env.NODE_ENV === "development" && (
-        <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
+        <ReactQueryDevtools
+          initialIsOpen={false}
+          buttonPosition="bottom-left"
+        />
       )}
     </QueryClientProvider>
   );

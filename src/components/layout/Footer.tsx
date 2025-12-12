@@ -31,8 +31,7 @@ const footerVariants = cva("border-t bg-background/95 backdrop-blur-sm", {
 });
 
 export interface FooterProps
-  extends React.ComponentProps<"footer">,
-    VariantProps<typeof footerVariants> {
+  extends React.ComponentProps<"footer">, VariantProps<typeof footerVariants> {
   showFullContent?: boolean;
 }
 
@@ -73,7 +72,8 @@ export function Footer({
                     Newsletter
                   </h4>
                   <p className="text-sm text-muted-foreground mb-3 font-sans">
-                    Recevez les meilleurs deals directement dans votre boîte mail.
+                    Recevez les meilleurs deals directement dans votre boîte
+                    mail.
                   </p>
                   <NewsletterForm />
                 </div>

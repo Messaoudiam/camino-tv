@@ -169,7 +169,7 @@ describe("BlogForm", () => {
       const image = screen.getAllByRole("img")[0];
       // next/image transforms URLs, so check the URL is contained in the src
       expect(image.getAttribute("src")).toContain(
-        encodeURIComponent(initialData.imageUrl)
+        encodeURIComponent(initialData.imageUrl),
       );
     });
 
