@@ -61,7 +61,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     console.error("Error getting vote:", error);
     return NextResponse.json(
       { error: "Erreur lors de la récupération du vote" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     if (authResult.error) {
       return NextResponse.json(
         { error: authResult.error },
-        { status: authResult.status }
+        { status: authResult.status },
       );
     }
 
@@ -162,15 +162,12 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: "Valeur de vote invalide (doit être 1 ou -1)" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     console.error("Error voting:", error);
-    return NextResponse.json(
-      { error: "Erreur lors du vote" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Erreur lors du vote" }, { status: 500 });
   }
 }
 
@@ -186,7 +183,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     if (authResult.error) {
       return NextResponse.json(
         { error: authResult.error },
-        { status: authResult.status }
+        { status: authResult.status },
       );
     }
 
@@ -205,7 +202,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     if (!existingVote) {
       return NextResponse.json(
         { error: "Aucun vote à supprimer" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -237,7 +234,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     console.error("Error removing vote:", error);
     return NextResponse.json(
       { error: "Erreur lors de la suppression du vote" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

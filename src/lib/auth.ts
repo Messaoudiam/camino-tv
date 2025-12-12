@@ -172,9 +172,10 @@ export const auth = betterAuth({
 
               if (dbUser?.newsletterOptIn) {
                 // Check if already subscribed
-                const existingSubscriber = await prisma.newsletterSubscriber.findUnique({
-                  where: { email: dbUser.email },
-                });
+                const existingSubscriber =
+                  await prisma.newsletterSubscriber.findUnique({
+                    where: { email: dbUser.email },
+                  });
 
                 if (!existingSubscriber) {
                   // Create active subscriber (email already verified via account)
@@ -214,7 +215,12 @@ export const auth = betterAuth({
     process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
     // Allow local development on different ports
     ...(process.env.NODE_ENV === "development"
-      ? ["http://localhost:3001", "http://localhost:3002", "http://127.0.0.1:3000", "http://127.0.0.1:3001"]
+      ? [
+          "http://localhost:3001",
+          "http://localhost:3002",
+          "http://127.0.0.1:3000",
+          "http://127.0.0.1:3001",
+        ]
       : []),
   ],
 });

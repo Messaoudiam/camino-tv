@@ -10,9 +10,10 @@
 export function getStaticBlurPlaceholder(color: string = "#e5e5e5"): string {
   // SVG minimaliste avec la couleur dominante
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8"><rect fill="${color}" width="8" height="8"/></svg>`;
-  const base64 = typeof window === "undefined"
-    ? Buffer.from(svg).toString("base64")
-    : btoa(svg);
+  const base64 =
+    typeof window === "undefined"
+      ? Buffer.from(svg).toString("base64")
+      : btoa(svg);
   return `data:image/svg+xml;base64,${base64}`;
 }
 
@@ -21,10 +22,12 @@ export function getStaticBlurPlaceholder(color: string = "#e5e5e5"): string {
  */
 export const blurPlaceholders = {
   // Pour les deals/produits - gris neutre
-  product: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiPjxyZWN0IGZpbGw9IiNlNWU1ZTUiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiLz48L3N2Zz4=",
+  product:
+    "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiPjxyZWN0IGZpbGw9IiNlNWU1ZTUiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiLz48L3N2Zz4=",
 
   // Pour les avatars - teinte chair/gris
-  avatar: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiPjxyZWN0IGZpbGw9IiNkNGQ0ZDQiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiLz48L3N2Zz4=",
+  avatar:
+    "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiPjxyZWN0IGZpbGw9IiNkNGQ0ZDQiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiLz48L3N2Zz4=",
 
   // Pour les articles de blog - teinte chaude
   blog: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiPjxyZWN0IGZpbGw9IiNmNWY1ZjQiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiLz48L3N2Zz4=",
@@ -33,13 +36,16 @@ export const blurPlaceholders = {
   team: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiPjxyZWN0IGZpbGw9IiNmYWZhZmEiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiLz48L3N2Zz4=",
 
   // Pour les marques (sneakers, streetwear)
-  brand: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiPjxyZWN0IGZpbGw9IiNmMGYwZjAiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiLz48L3N2Zz4=",
+  brand:
+    "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiPjxyZWN0IGZpbGw9IiNmMGYwZjAiIHdpZHRoPSI4IiBoZWlnaHQ9IjgiLz48L3N2Zz4=",
 } as const;
 
 /**
  * Obtient le placeholder approprié selon le type de contenu
  */
-export function getBlurPlaceholder(type: keyof typeof blurPlaceholders = "product"): string {
+export function getBlurPlaceholder(
+  type: keyof typeof blurPlaceholders = "product",
+): string {
   return blurPlaceholders[type];
 }
 

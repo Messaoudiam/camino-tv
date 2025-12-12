@@ -26,7 +26,7 @@ export function getSupabase(): SupabaseClient {
   if (!supabaseInstance) {
     if (!supabaseUrl || !supabaseAnonKey) {
       throw new Error(
-        "Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY"
+        "Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY",
       );
     }
     supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);
@@ -42,7 +42,7 @@ export function getSupabaseAdmin(): SupabaseClient {
   if (!supabaseAdminInstance) {
     if (!supabaseUrl || !supabaseServiceKey) {
       throw new Error(
-        "Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY"
+        "Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY",
       );
     }
     supabaseAdminInstance = createClient(supabaseUrl, supabaseServiceKey, {

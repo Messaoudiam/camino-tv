@@ -24,9 +24,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        message: "Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.",
+        message:
+          "Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.",
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -38,14 +39,14 @@ export async function POST(request: NextRequest) {
             message: issue.message,
           })),
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     console.error("Contact form error:", error);
     return NextResponse.json(
       { error: "Erreur lors de l'envoi du message. Veuillez réessayer." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
