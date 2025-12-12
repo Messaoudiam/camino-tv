@@ -19,6 +19,7 @@ import {
   Mail,
   LogIn,
   UserPlus,
+  MessageSquare,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
@@ -306,6 +307,17 @@ export function Header({ className }: HeaderProps) {
                               </p>
                             </div>
                           </div>
+
+                          {/* Lien Mes messages */}
+                          <Link href="/messages" className="block">
+                            <Button
+                              variant="outline"
+                              className="w-full justify-start gap-2"
+                            >
+                              <MessageSquare className="h-4 w-4" />
+                              Mes messages
+                            </Button>
+                          </Link>
 
                           {/* Lien Admin si admin */}
                           {isAdmin && (
