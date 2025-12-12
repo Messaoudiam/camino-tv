@@ -356,7 +356,6 @@ Components installed to `src/components/ui/` with TypeScript + New York style.
 ### Vercel Setup
 
 1. **Environment Variables** (add in Vercel dashboard):
-
    - `DATABASE_URL` - Supabase connection string
    - `DIRECT_URL` - Supabase direct connection
    - `BETTER_AUTH_SECRET` - Random 32+ char string
