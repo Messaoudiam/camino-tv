@@ -80,7 +80,7 @@ export default function UsersPage() {
             variant: "destructive",
           });
         },
-      }
+      },
     );
   };
 

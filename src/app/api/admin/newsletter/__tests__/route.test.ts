@@ -61,7 +61,7 @@ describe("GET /api/admin/newsletter", () => {
       });
 
       const request = new NextRequest(
-        "http://localhost:3000/api/admin/newsletter"
+        "http://localhost:3000/api/admin/newsletter",
       );
 
       const response = await GET(request);
@@ -78,7 +78,7 @@ describe("GET /api/admin/newsletter", () => {
       });
 
       const request = new NextRequest(
-        "http://localhost:3000/api/admin/newsletter"
+        "http://localhost:3000/api/admin/newsletter",
       );
 
       const response = await GET(request);
@@ -103,7 +103,7 @@ describe("GET /api/admin/newsletter", () => {
         .mockResolvedValueOnce(1); // unsubscribed
 
       const request = new NextRequest(
-        "http://localhost:3000/api/admin/newsletter"
+        "http://localhost:3000/api/admin/newsletter",
       );
 
       const response = await GET(request);
@@ -128,7 +128,7 @@ describe("GET /api/admin/newsletter", () => {
         .mockResolvedValueOnce(1); // unsubscribed
 
       const request = new NextRequest(
-        "http://localhost:3000/api/admin/newsletter?status=ACTIVE"
+        "http://localhost:3000/api/admin/newsletter?status=ACTIVE",
       );
 
       const response = await GET(request);
@@ -139,7 +139,7 @@ describe("GET /api/admin/newsletter", () => {
       expect(mockFindMany).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { status: "ACTIVE" },
-        })
+        }),
       );
     });
 
@@ -152,7 +152,7 @@ describe("GET /api/admin/newsletter", () => {
         .mockResolvedValueOnce(1); // unsubscribed
 
       const request = new NextRequest(
-        "http://localhost:3000/api/admin/newsletter?status=UNSUBSCRIBED"
+        "http://localhost:3000/api/admin/newsletter?status=UNSUBSCRIBED",
       );
 
       const response = await GET(request);
@@ -163,7 +163,7 @@ describe("GET /api/admin/newsletter", () => {
       expect(mockFindMany).toHaveBeenCalledWith(
         expect.objectContaining({
           where: { status: "UNSUBSCRIBED" },
-        })
+        }),
       );
     });
 
@@ -176,7 +176,7 @@ describe("GET /api/admin/newsletter", () => {
         .mockResolvedValueOnce(1); // unsubscribed
 
       const request = new NextRequest(
-        "http://localhost:3000/api/admin/newsletter?format=csv"
+        "http://localhost:3000/api/admin/newsletter?format=csv",
       );
 
       const response = await GET(request);
@@ -184,7 +184,7 @@ describe("GET /api/admin/newsletter", () => {
       expect(response.status).toBe(200);
       expect(response.headers.get("Content-Type")).toBe("text/csv");
       expect(response.headers.get("Content-Disposition")).toContain(
-        "attachment; filename="
+        "attachment; filename=",
       );
 
       const csv = await response.text();
@@ -197,7 +197,7 @@ describe("GET /api/admin/newsletter", () => {
       mockFindMany.mockRejectedValue(new Error("Database error"));
 
       const request = new NextRequest(
-        "http://localhost:3000/api/admin/newsletter"
+        "http://localhost:3000/api/admin/newsletter",
       );
 
       const response = await GET(request);
@@ -227,7 +227,7 @@ describe("DELETE /api/admin/newsletter", () => {
           method: "DELETE",
           body: JSON.stringify({ email: "test@example.com" }),
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
 
       const response = await DELETE(request);
@@ -250,7 +250,7 @@ describe("DELETE /api/admin/newsletter", () => {
           method: "DELETE",
           body: JSON.stringify({}),
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
 
       const response = await DELETE(request);
@@ -269,7 +269,7 @@ describe("DELETE /api/admin/newsletter", () => {
           method: "DELETE",
           body: JSON.stringify({ email: "notfound@example.com" }),
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
 
       const response = await DELETE(request);
@@ -293,7 +293,7 @@ describe("DELETE /api/admin/newsletter", () => {
           method: "DELETE",
           body: JSON.stringify({ email: "test@example.com" }),
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
 
       const response = await DELETE(request);
@@ -320,7 +320,7 @@ describe("DELETE /api/admin/newsletter", () => {
           method: "DELETE",
           body: JSON.stringify({ email: "TEST@EXAMPLE.COM" }),
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
 
       await DELETE(request);
@@ -339,7 +339,7 @@ describe("DELETE /api/admin/newsletter", () => {
           method: "DELETE",
           body: JSON.stringify({ email: "test@example.com" }),
           headers: { "Content-Type": "application/json" },
-        }
+        },
       );
 
       const response = await DELETE(request);

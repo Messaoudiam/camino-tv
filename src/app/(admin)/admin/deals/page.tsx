@@ -111,7 +111,7 @@ export default function DealsPage() {
             variant: "destructive",
           });
         },
-      }
+      },
     );
   };
 

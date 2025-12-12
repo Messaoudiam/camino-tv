@@ -6,7 +6,10 @@ import { sendNewsletterToSubscriber } from "@/lib/email/send";
 import { isEmailEnabled } from "@/lib/email";
 
 const sendNewsletterSchema = z.object({
-  subject: z.string().min(1, "Le sujet est requis").max(200, "Le sujet est trop long"),
+  subject: z
+    .string()
+    .min(1, "Le sujet est requis")
+    .max(200, "Le sujet est trop long"),
   content: z.string().min(1, "Le contenu est requis"),
 });
 
@@ -21,7 +24,7 @@ export async function POST(request: NextRequest) {
     if (authResult.error) {
       return NextResponse.json(
         { error: authResult.error },
-        { status: authResult.status }
+        { status: authResult.status },
       );
     }
 
@@ -29,7 +32,7 @@ export async function POST(request: NextRequest) {
     if (!isEmailEnabled()) {
       return NextResponse.json(
         { error: "Le service email n'est pas configuré" },
-        { status: 503 }
+        { status: 503 },
       );
     }
 
@@ -40,7 +43,7 @@ export async function POST(request: NextRequest) {
     if (!validation.success) {
       return NextResponse.json(
         { error: validation.error.issues[0].message },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -55,20 +58,20 @@ export async function POST(request: NextRequest) {
     if (subscribers.length === 0) {
       return NextResponse.json(
         { error: "Aucun abonné actif" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Send emails to all subscribers
     const results = await Promise.allSettled(
       subscribers.map((sub) =>
-        sendNewsletterToSubscriber(sub.email, subject, content)
-      )
+        sendNewsletterToSubscriber(sub.email, subject, content),
+      ),
     );
 
     // Count successes and failures
     const sent = results.filter(
-      (r) => r.status === "fulfilled" && r.value.success
+      (r) => r.status === "fulfilled" && r.value.success,
     ).length;
     const failed = results.length - sent;
 
@@ -77,12 +80,12 @@ export async function POST(request: NextRequest) {
       if (result.status === "rejected") {
         console.error(
           `Failed to send to ${subscribers[index].email}:`,
-          result.reason
+          result.reason,
         );
       } else if (!result.value.success) {
         console.error(
           `Failed to send to ${subscribers[index].email}:`,
-          result.value.error
+          result.value.error,
         );
       }
     });
@@ -99,7 +102,7 @@ export async function POST(request: NextRequest) {
     console.error("Error sending newsletter:", error);
     return NextResponse.json(
       { error: "Erreur lors de l'envoi de la newsletter" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

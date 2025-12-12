@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     if (authResult.error) {
       return NextResponse.json(
         { error: authResult.error },
-        { status: authResult.status }
+        { status: authResult.status },
       );
     }
 
@@ -28,7 +28,9 @@ export async function GET(request: NextRequest) {
     const format = searchParams.get("format"); // "json" | "csv"
 
     // Build where clause
-    const where = status ? { status: status as "PENDING" | "ACTIVE" | "UNSUBSCRIBED" } : {};
+    const where = status
+      ? { status: status as "PENDING" | "ACTIVE" | "UNSUBSCRIBED" }
+      : {};
 
     // Get subscribers
     const subscribers = await prisma.newsletterSubscriber.findMany({
@@ -44,12 +46,15 @@ export async function GET(request: NextRequest) {
     });
 
     // Get stats
-    const [totalCount, pendingCount, activeCount, unsubscribedCount] = await Promise.all([
-      prisma.newsletterSubscriber.count(),
-      prisma.newsletterSubscriber.count({ where: { status: "PENDING" } }),
-      prisma.newsletterSubscriber.count({ where: { status: "ACTIVE" } }),
-      prisma.newsletterSubscriber.count({ where: { status: "UNSUBSCRIBED" } }),
-    ]);
+    const [totalCount, pendingCount, activeCount, unsubscribedCount] =
+      await Promise.all([
+        prisma.newsletterSubscriber.count(),
+        prisma.newsletterSubscriber.count({ where: { status: "PENDING" } }),
+        prisma.newsletterSubscriber.count({ where: { status: "ACTIVE" } }),
+        prisma.newsletterSubscriber.count({
+          where: { status: "UNSUBSCRIBED" },
+        }),
+      ]);
 
     const stats = {
       total: totalCount,
@@ -62,10 +67,7 @@ export async function GET(request: NextRequest) {
     if (format === "csv") {
       const csvHeader = "email,status,subscribedAt\n";
       const csvRows = subscribers
-        .map(
-          (s) =>
-            `${s.email},${s.status},${s.subscribedAt.toISOString()}`
-        )
+        .map((s) => `${s.email},${s.status},${s.subscribedAt.toISOString()}`)
         .join("\n");
       const csv = csvHeader + csvRows;
 
@@ -83,7 +85,7 @@ export async function GET(request: NextRequest) {
     console.error("Error fetching newsletter subscribers:", error);
     return NextResponse.json(
       { error: "Erreur lors de la récupération des abonnés" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -99,7 +101,7 @@ export async function DELETE(request: NextRequest) {
     if (authResult.error) {
       return NextResponse.json(
         { error: authResult.error },
-        { status: authResult.status }
+        { status: authResult.status },
       );
     }
 
@@ -108,7 +110,7 @@ export async function DELETE(request: NextRequest) {
     if (!email) {
       return NextResponse.json(
         { error: "L'email est requis" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -117,10 +119,7 @@ export async function DELETE(request: NextRequest) {
     });
 
     if (!subscriber) {
-      return NextResponse.json(
-        { error: "Abonné non trouvé" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Abonné non trouvé" }, { status: 404 });
     }
 
     await prisma.newsletterSubscriber.delete({
@@ -134,7 +133,7 @@ export async function DELETE(request: NextRequest) {
     console.error("Error deleting newsletter subscriber:", error);
     return NextResponse.json(
       { error: "Erreur lors de la suppression de l'abonné" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

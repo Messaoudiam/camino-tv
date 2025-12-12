@@ -74,25 +74,28 @@ export default function NewsletterAdminPage() {
 
   // TanStack Query
   const { data, isLoading } = useNewsletterSubscribers(
-    statusFilter === "ALL" ? undefined : statusFilter
+    statusFilter === "ALL" ? undefined : statusFilter,
   );
   const deleteMutation = useDeleteNewsletterSubscriber();
   const sendMutation = useSendNewsletter();
   const { toast } = useToast();
 
   const subscribers = data?.subscribers || [];
-  const stats = data?.stats || { total: 0, pending: 0, active: 0, unsubscribed: 0 };
+  const stats = data?.stats || {
+    total: 0,
+    pending: 0,
+    active: 0,
+    unsubscribed: 0,
+  };
 
   // Filter by search query
   const filteredSubscribers = subscribers.filter((sub) =>
-    sub.email.toLowerCase().includes(searchQuery.toLowerCase())
+    sub.email.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   // Delete subscriber
   const handleDelete = async (email: string) => {
-    if (
-      !confirm(`Êtes-vous sûr de vouloir supprimer l'abonné ${email} ?`)
-    ) {
+    if (!confirm(`Êtes-vous sûr de vouloir supprimer l'abonné ${email} ?`)) {
       return;
     }
 
@@ -149,7 +152,7 @@ export default function NewsletterAdminPage() {
             variant: "destructive",
           });
         },
-      }
+      },
     );
   };
 
@@ -179,7 +182,8 @@ export default function NewsletterAdminPage() {
                 <DialogTitle>Envoyer une newsletter</DialogTitle>
                 <DialogDescription>
                   Cette newsletter sera envoyée à {stats.active} abonné
-                  {stats.active > 1 ? "s" : ""} actif{stats.active > 1 ? "s" : ""}.
+                  {stats.active > 1 ? "s" : ""} actif
+                  {stats.active > 1 ? "s" : ""}.
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
@@ -213,7 +217,9 @@ export default function NewsletterAdminPage() {
                 </Button>
                 <Button
                   onClick={handleSendNewsletter}
-                  disabled={sendMutation.isPending || !subject.trim() || !content.trim()}
+                  disabled={
+                    sendMutation.isPending || !subject.trim() || !content.trim()
+                  }
                 >
                   {sendMutation.isPending ? (
                     <>
@@ -319,7 +325,9 @@ export default function NewsletterAdminPage() {
             <Select
               value={statusFilter}
               onValueChange={(value) =>
-                setStatusFilter(value as "ALL" | "PENDING" | "ACTIVE" | "UNSUBSCRIBED")
+                setStatusFilter(
+                  value as "ALL" | "PENDING" | "ACTIVE" | "UNSUBSCRIBED",
+                )
               }
             >
               <SelectTrigger className="w-full sm:w-[180px]">
@@ -356,47 +364,49 @@ export default function NewsletterAdminPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredSubscribers.map((subscriber: NewsletterSubscriber) => (
-                    <TableRow key={subscriber.id}>
-                      <TableCell className="font-medium">
-                        {subscriber.email}
-                      </TableCell>
-                      <TableCell>
-                        {subscriber.status === "ACTIVE" ? (
-                          <Badge className="bg-green-500">Actif</Badge>
-                        ) : subscriber.status === "PENDING" ? (
-                          <Badge className="bg-yellow-500">En attente</Badge>
-                        ) : (
-                          <Badge variant="secondary">Désinscrit</Badge>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        {format(
-                          new Date(subscriber.subscribedAt),
-                          "dd MMM yyyy",
-                          { locale: fr }
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        {format(
-                          new Date(subscriber.updatedAt),
-                          "dd MMM yyyy",
-                          { locale: fr }
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleDelete(subscriber.email)}
-                          disabled={deleteMutation.isPending}
-                          className="text-destructive hover:text-destructive"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {filteredSubscribers.map(
+                    (subscriber: NewsletterSubscriber) => (
+                      <TableRow key={subscriber.id}>
+                        <TableCell className="font-medium">
+                          {subscriber.email}
+                        </TableCell>
+                        <TableCell>
+                          {subscriber.status === "ACTIVE" ? (
+                            <Badge className="bg-green-500">Actif</Badge>
+                          ) : subscriber.status === "PENDING" ? (
+                            <Badge className="bg-yellow-500">En attente</Badge>
+                          ) : (
+                            <Badge variant="secondary">Désinscrit</Badge>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {format(
+                            new Date(subscriber.subscribedAt),
+                            "dd MMM yyyy",
+                            { locale: fr },
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {format(
+                            new Date(subscriber.updatedAt),
+                            "dd MMM yyyy",
+                            { locale: fr },
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleDelete(subscriber.email)}
+                            disabled={deleteMutation.isPending}
+                            className="text-destructive hover:text-destructive"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ),
+                  )}
                 </TableBody>
               </Table>
             </div>

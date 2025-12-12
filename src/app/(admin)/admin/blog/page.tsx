@@ -136,9 +136,10 @@ export default function BlogPage() {
 
   const handleFormSubmit = async (data: any) => {
     const mutation = formMode === "create" ? createMutation : updateMutation;
-    const mutationData = formMode === "edit" && selectedPost
-      ? { id: selectedPost.id, ...data }
-      : data;
+    const mutationData =
+      formMode === "edit" && selectedPost
+        ? { id: selectedPost.id, ...data }
+        : data;
 
     return new Promise<void>((resolve, reject) => {
       mutation.mutate(mutationData, {
@@ -168,7 +169,11 @@ export default function BlogPage() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={handleRefresh} disabled={isLoading}>
+          <Button
+            variant="outline"
+            onClick={handleRefresh}
+            disabled={isLoading}
+          >
             <RefreshCw
               className={`mr-2 h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
             />
