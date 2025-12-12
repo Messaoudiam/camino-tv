@@ -294,6 +294,179 @@ export function WelcomeEmail({ unsubscribeUrl }: { unsubscribeUrl: string }) {
 }
 
 /**
+ * Contact form notification email (sent to admin)
+ */
+export function ContactEmail({
+  firstName,
+  lastName,
+  email,
+  category,
+  subject,
+  message,
+}: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  category: string;
+  subject: string;
+  message: string;
+}) {
+  const categoryLabels: Record<string, string> = {
+    general: "Question générale",
+    partnership: "Partenariat",
+    collaboration: "Collaboration",
+    technical: "Support technique",
+    press: "Relations presse",
+    other: "Autre",
+  };
+
+  return (
+    <EmailLayout previewText={`Nouveau message de ${firstName} ${lastName}: ${subject}`}>
+      <h2
+        style={{
+          margin: "0 0 16px 0",
+          fontSize: "20px",
+          fontWeight: "bold",
+          color: "#111827",
+        }}
+      >
+        Nouveau message de contact
+      </h2>
+      <table
+        role="presentation"
+        style={{
+          width: "100%",
+          marginBottom: "24px",
+          borderCollapse: "collapse",
+        }}
+      >
+        <tbody>
+          <tr>
+            <td
+              style={{
+                padding: "8px 0",
+                borderBottom: "1px solid #e5e7eb",
+                fontWeight: "600",
+                color: "#374151",
+                width: "120px",
+              }}
+            >
+              Nom
+            </td>
+            <td
+              style={{
+                padding: "8px 0",
+                borderBottom: "1px solid #e5e7eb",
+                color: "#111827",
+              }}
+            >
+              {firstName} {lastName}
+            </td>
+          </tr>
+          <tr>
+            <td
+              style={{
+                padding: "8px 0",
+                borderBottom: "1px solid #e5e7eb",
+                fontWeight: "600",
+                color: "#374151",
+              }}
+            >
+              Email
+            </td>
+            <td
+              style={{
+                padding: "8px 0",
+                borderBottom: "1px solid #e5e7eb",
+                color: "#111827",
+              }}
+            >
+              <a href={`mailto:${email}`} style={{ color: BRAND_COLOR }}>
+                {email}
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td
+              style={{
+                padding: "8px 0",
+                borderBottom: "1px solid #e5e7eb",
+                fontWeight: "600",
+                color: "#374151",
+              }}
+            >
+              Catégorie
+            </td>
+            <td
+              style={{
+                padding: "8px 0",
+                borderBottom: "1px solid #e5e7eb",
+                color: "#111827",
+              }}
+            >
+              {categoryLabels[category] || category}
+            </td>
+          </tr>
+          <tr>
+            <td
+              style={{
+                padding: "8px 0",
+                borderBottom: "1px solid #e5e7eb",
+                fontWeight: "600",
+                color: "#374151",
+              }}
+            >
+              Sujet
+            </td>
+            <td
+              style={{
+                padding: "8px 0",
+                borderBottom: "1px solid #e5e7eb",
+                color: "#111827",
+              }}
+            >
+              {subject}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div
+        style={{
+          backgroundColor: "#f9fafb",
+          padding: "16px",
+          borderRadius: "8px",
+          marginBottom: "24px",
+        }}
+      >
+        <p
+          style={{
+            margin: "0 0 8px 0",
+            fontWeight: "600",
+            color: "#374151",
+          }}
+        >
+          Message :
+        </p>
+        <p
+          style={{
+            margin: 0,
+            fontSize: "16px",
+            color: "#111827",
+            lineHeight: "1.6",
+            whiteSpace: "pre-wrap",
+          }}
+        >
+          {message}
+        </p>
+      </div>
+      <EmailButton href={`mailto:${email}?subject=Re: ${encodeURIComponent(subject)}`}>
+        Répondre à {firstName}
+      </EmailButton>
+    </EmailLayout>
+  );
+}
+
+/**
  * Newsletter campaign email
  */
 export function NewsletterEmail({
