@@ -9,19 +9,21 @@ datasource db {
 }
 
 model User {
-  id            String     @id @default(cuid())
-  name          String?
-  email         String     @unique
-  emailVerified Boolean    @default(false)
-  image         String?
-  role          UserRole   @default(USER)
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-  accounts      Account[]
-  blogPosts     BlogPost[]
-  comments      Comment[]
-  favorites     Favorite[]
-  sessions      Session[]
+  id              String     @id @default(cuid())
+  name            String?
+  email           String     @unique
+  emailVerified   Boolean    @default(false)
+  image           String?
+  role            UserRole   @default(USER)
+  newsletterOptIn Boolean    @default(true)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  accounts        Account[]
+  blogPosts       BlogPost[]
+  comments        Comment[]
+  dealVotes       DealVote[]
+  favorites       Favorite[]
+  sessions        Session[]
 
   @@index([email])
   @@map("users")
@@ -90,15 +92,35 @@ model Deal {
   promoDescription   String?
   isActive           Boolean      @default(true)
   deletedAt          DateTime?
+  temperature        Int          @default(0) // Température du deal (somme des votes)
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
   favorites          Favorite[]
+  votes              DealVote[]
 
   @@index([category, isActive])
   @@index([createdAt])
   @@index([isActive])
   @@index([brand])
+  @@index([temperature]) // Pour trier par popularité
   @@map("deals")
+}
+
+// Système de vote Hot/Cold pour les deals
+model DealVote {
+  id        String   @id @default(cuid())
+  userId    String
+  dealId    String
+  value     Int      // +1 (hot) ou -1 (cold)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deal      Deal     @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, dealId]) // Un vote par utilisateur par deal
+  @@index([dealId])
+  @@index([userId])
+  @@map("deal_votes")
 }
 
 model Favorite {
@@ -158,6 +180,27 @@ model Comment {
   @@index([userId])
   @@index([createdAt])
   @@map("comments")
+}
+
+model NewsletterSubscriber {
+  id                String           @id @default(cuid())
+  email             String           @unique
+  status            NewsletterStatus @default(PENDING)
+  confirmationToken String?          @unique
+  confirmedAt       DateTime?
+  subscribedAt      DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([confirmationToken])
+  @@map("newsletter_subscribers")
+}
+
+enum NewsletterStatus {
+  PENDING
+  ACTIVE
+  UNSUBSCRIBED
 }
 
 enum UserRole {
