@@ -5,6 +5,8 @@
  * Tests the email sending functionality with Resend
  */
 
+/* eslint-disable @typescript-eslint/no-require-imports */
+
 import {
   sendConfirmationEmail,
   sendWelcomeEmail,
@@ -124,7 +126,7 @@ describe("Email Send Functions", () => {
       const result = await sendNewsletterToSubscriber(
         testEmail,
         testSubject,
-        testContent
+        testContent,
       );
 
       expect(result.success).toBe(true);
@@ -146,7 +148,7 @@ describe("Email Send Functions", () => {
 
       const callArgs = mockSendEmail.mock.calls[0][0];
       expect(callArgs.headers["List-Unsubscribe"]).toContain(
-        encodeURIComponent(testEmail)
+        encodeURIComponent(testEmail),
       );
     });
 
@@ -156,7 +158,7 @@ describe("Email Send Functions", () => {
       const result = await sendNewsletterToSubscriber(
         testEmail,
         testSubject,
-        testContent
+        testContent,
       );
 
       expect(result.success).toBe(false);
@@ -180,12 +182,13 @@ describe("Email Disabled Scenario", () => {
     }));
 
     // Re-import the module to get the new mock
-    const { sendConfirmationEmail: sendConfirmationEmailDisabled } =
-      require("../send");
+    const {
+      sendConfirmationEmail: sendConfirmationEmailDisabled,
+    } = require("../send");
 
     const result = await sendConfirmationEmailDisabled(
       "test@example.com",
-      "token123"
+      "token123",
     );
 
     expect(result.success).toBe(false);

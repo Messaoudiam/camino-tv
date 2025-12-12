@@ -5,6 +5,8 @@
  * Tests the complete double opt-in flow
  */
 
+/* eslint-disable @typescript-eslint/no-require-imports */
+
 describe("Newsletter Email Flow Integration", () => {
   describe("Complete Subscription Flow", () => {
     it("describes the expected flow", () => {
@@ -45,9 +47,10 @@ describe("Newsletter Email Flow Integration", () => {
       const { renderToStaticMarkup } = require("react-dom/server");
       const { ConfirmationEmail } = require("../templates");
 
-      const confirmUrl = "https://camino-tv.vercel.app/api/newsletter/confirm?token=test123";
+      const confirmUrl =
+        "https://camino-tv.vercel.app/api/newsletter/confirm?token=test123";
       const html = renderToStaticMarkup(
-        React.createElement(ConfirmationEmail, { confirmUrl })
+        React.createElement(ConfirmationEmail, { confirmUrl }),
       );
 
       // Required elements for double opt-in
@@ -62,9 +65,10 @@ describe("Newsletter Email Flow Integration", () => {
       const { renderToStaticMarkup } = require("react-dom/server");
       const { WelcomeEmail } = require("../templates");
 
-      const unsubscribeUrl = "https://camino-tv.vercel.app/unsubscribe?email=test@example.com";
+      const unsubscribeUrl =
+        "https://camino-tv.vercel.app/unsubscribe?email=test@example.com";
       const html = renderToStaticMarkup(
-        React.createElement(WelcomeEmail, { unsubscribeUrl })
+        React.createElement(WelcomeEmail, { unsubscribeUrl }),
       );
 
       // Required elements for welcome
@@ -78,13 +82,14 @@ describe("Newsletter Email Flow Integration", () => {
       const { renderToStaticMarkup } = require("react-dom/server");
       const { NewsletterEmail } = require("../templates");
 
-      const unsubscribeUrl = "https://camino-tv.vercel.app/unsubscribe?email=test@example.com";
+      const unsubscribeUrl =
+        "https://camino-tv.vercel.app/unsubscribe?email=test@example.com";
       const html = renderToStaticMarkup(
         React.createElement(NewsletterEmail, {
           subject: "Test Newsletter",
           content: "<p>Test content</p>",
           unsubscribeUrl,
-        })
+        }),
       );
 
       // Required elements

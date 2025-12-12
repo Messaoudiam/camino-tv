@@ -41,14 +41,14 @@ describe("GET /api/newsletter/confirm", () => {
   describe("Token Validation", () => {
     it("redirects to error page when token is missing", async () => {
       const request = new NextRequest(
-        "https://camino-tv.vercel.app/api/newsletter/confirm"
+        "https://camino-tv.vercel.app/api/newsletter/confirm",
       );
 
       const response = await GET(request);
 
       expect(response.status).toBe(307); // Redirect
       expect(response.headers.get("Location")).toContain(
-        "/newsletter/confirmation?status=error&reason=missing_token"
+        "/newsletter/confirmation?status=error&reason=missing_token",
       );
     });
 
@@ -56,14 +56,14 @@ describe("GET /api/newsletter/confirm", () => {
       mockFindUnique.mockResolvedValueOnce(null);
 
       const request = new NextRequest(
-        `https://camino-tv.vercel.app/api/newsletter/confirm?token=invalid-token`
+        `https://camino-tv.vercel.app/api/newsletter/confirm?token=invalid-token`,
       );
 
       const response = await GET(request);
 
       expect(response.status).toBe(307);
       expect(response.headers.get("Location")).toContain(
-        "/newsletter/confirmation?status=error&reason=invalid_token"
+        "/newsletter/confirmation?status=error&reason=invalid_token",
       );
     });
   });
@@ -87,14 +87,14 @@ describe("GET /api/newsletter/confirm", () => {
       });
 
       const request = new NextRequest(
-        `https://camino-tv.vercel.app/api/newsletter/confirm?token=${validToken}`
+        `https://camino-tv.vercel.app/api/newsletter/confirm?token=${validToken}`,
       );
 
       const response = await GET(request);
 
       expect(response.status).toBe(307);
       expect(response.headers.get("Location")).toContain(
-        "/newsletter/confirmation?status=success"
+        "/newsletter/confirmation?status=success",
       );
     });
 
@@ -111,7 +111,7 @@ describe("GET /api/newsletter/confirm", () => {
       mockUpdate.mockResolvedValueOnce({});
 
       const request = new NextRequest(
-        `https://camino-tv.vercel.app/api/newsletter/confirm?token=${validToken}`
+        `https://camino-tv.vercel.app/api/newsletter/confirm?token=${validToken}`,
       );
 
       await GET(request);
@@ -138,10 +138,11 @@ describe("GET /api/newsletter/confirm", () => {
       mockFindUnique.mockResolvedValueOnce(mockSubscriber);
       mockUpdate.mockResolvedValueOnce({});
 
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const { sendWelcomeEmail } = require("@/lib/email/send");
 
       const request = new NextRequest(
-        `https://camino-tv.vercel.app/api/newsletter/confirm?token=${validToken}`
+        `https://camino-tv.vercel.app/api/newsletter/confirm?token=${validToken}`,
       );
 
       await GET(request);
@@ -162,7 +163,7 @@ describe("GET /api/newsletter/confirm", () => {
       mockUpdate.mockResolvedValueOnce({});
 
       const request = new NextRequest(
-        `https://camino-tv.vercel.app/api/newsletter/confirm?token=${validToken}`
+        `https://camino-tv.vercel.app/api/newsletter/confirm?token=${validToken}`,
       );
 
       await GET(request);
@@ -186,14 +187,14 @@ describe("GET /api/newsletter/confirm", () => {
       mockFindUnique.mockResolvedValueOnce(mockSubscriber);
 
       const request = new NextRequest(
-        `https://camino-tv.vercel.app/api/newsletter/confirm?token=${validToken}`
+        `https://camino-tv.vercel.app/api/newsletter/confirm?token=${validToken}`,
       );
 
       const response = await GET(request);
 
       expect(response.status).toBe(307);
       expect(response.headers.get("Location")).toContain(
-        "/newsletter/confirmation?status=already_confirmed"
+        "/newsletter/confirmation?status=already_confirmed",
       );
       expect(mockUpdate).not.toHaveBeenCalled();
     });
@@ -204,14 +205,14 @@ describe("GET /api/newsletter/confirm", () => {
       mockFindUnique.mockRejectedValueOnce(new Error("Database error"));
 
       const request = new NextRequest(
-        `https://camino-tv.vercel.app/api/newsletter/confirm?token=${validToken}`
+        `https://camino-tv.vercel.app/api/newsletter/confirm?token=${validToken}`,
       );
 
       const response = await GET(request);
 
       expect(response.status).toBe(307);
       expect(response.headers.get("Location")).toContain(
-        "/newsletter/confirmation?status=error&reason=server_error"
+        "/newsletter/confirmation?status=error&reason=server_error",
       );
     });
 
@@ -227,6 +228,7 @@ describe("GET /api/newsletter/confirm", () => {
       mockFindUnique.mockResolvedValueOnce(mockSubscriber);
       mockUpdate.mockResolvedValueOnce({});
 
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const { sendWelcomeEmail } = require("@/lib/email/send");
       sendWelcomeEmail.mockResolvedValueOnce({
         success: false,
@@ -234,7 +236,7 @@ describe("GET /api/newsletter/confirm", () => {
       });
 
       const request = new NextRequest(
-        `https://camino-tv.vercel.app/api/newsletter/confirm?token=${validToken}`
+        `https://camino-tv.vercel.app/api/newsletter/confirm?token=${validToken}`,
       );
 
       const response = await GET(request);
@@ -242,7 +244,7 @@ describe("GET /api/newsletter/confirm", () => {
       // Should still redirect to success (confirmation worked)
       expect(response.status).toBe(307);
       expect(response.headers.get("Location")).toContain(
-        "/newsletter/confirmation?status=success"
+        "/newsletter/confirmation?status=success",
       );
     });
   });
@@ -252,7 +254,7 @@ describe("GET /api/newsletter/confirm", () => {
       mockFindUnique.mockResolvedValueOnce(null);
 
       const request = new NextRequest(
-        `https://camino-tv.vercel.app/api/newsletter/confirm?token=${validToken}`
+        `https://camino-tv.vercel.app/api/newsletter/confirm?token=${validToken}`,
       );
 
       await GET(request);
@@ -275,7 +277,7 @@ describe("GET /api/newsletter/confirm", () => {
       mockUpdate.mockResolvedValueOnce({});
 
       const request = new NextRequest(
-        `https://camino-tv.vercel.app/api/newsletter/confirm?token=${validToken}`
+        `https://camino-tv.vercel.app/api/newsletter/confirm?token=${validToken}`,
       );
 
       await GET(request);

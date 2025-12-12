@@ -15,12 +15,11 @@ function EmailLayout({
 }) {
   return (
     <html>
+      {/* eslint-disable-next-line @next/next/no-head-element */}
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {previewText && (
-          <meta name="description" content={previewText} />
-        )}
+        {previewText && <meta name="description" content={previewText} />}
       </head>
       <body
         style={{
@@ -165,11 +164,7 @@ function EmailButton({
 /**
  * Confirmation email for double opt-in
  */
-export function ConfirmationEmail({
-  confirmUrl,
-}: {
-  confirmUrl: string;
-}) {
+export function ConfirmationEmail({ confirmUrl }: { confirmUrl: string }) {
   return (
     <EmailLayout previewText="Confirmez votre inscription a la newsletter Camino TV">
       <h2

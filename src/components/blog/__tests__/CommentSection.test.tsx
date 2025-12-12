@@ -170,7 +170,9 @@ describe("CommentSection", () => {
       });
 
       // Delete buttons should not be visible for unauthenticated users
-      expect(screen.queryByRole("button", { name: /supprimer/i })).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: /supprimer/i }),
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -218,10 +220,14 @@ describe("CommentSection", () => {
       render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
-        expect(screen.getByPlaceholderText("Partagez votre avis sur cet article...")).toBeInTheDocument();
+        expect(
+          screen.getByPlaceholderText("Partagez votre avis sur cet article..."),
+        ).toBeInTheDocument();
       });
 
-      const textarea = screen.getByPlaceholderText("Partagez votre avis sur cet article...");
+      const textarea = screen.getByPlaceholderText(
+        "Partagez votre avis sur cet article...",
+      );
       await user.type(textarea, "Mon commentaire");
 
       const submitButton = screen.getByText("Publier");
@@ -236,7 +242,9 @@ describe("CommentSection", () => {
         expect(screen.getByText("0/2000 caractères")).toBeInTheDocument();
       });
 
-      const textarea = screen.getByPlaceholderText("Partagez votre avis sur cet article...");
+      const textarea = screen.getByPlaceholderText(
+        "Partagez votre avis sur cet article...",
+      );
       await user.type(textarea, "Test");
 
       expect(screen.getByText("4/2000 caractères")).toBeInTheDocument();
@@ -264,19 +272,26 @@ describe("CommentSection", () => {
       render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
-        expect(screen.getByPlaceholderText("Partagez votre avis sur cet article...")).toBeInTheDocument();
+        expect(
+          screen.getByPlaceholderText("Partagez votre avis sur cet article..."),
+        ).toBeInTheDocument();
       });
 
-      const textarea = screen.getByPlaceholderText("Partagez votre avis sur cet article...");
+      const textarea = screen.getByPlaceholderText(
+        "Partagez votre avis sur cet article...",
+      );
       await user.type(textarea, "Nouveau commentaire");
 
       const submitButton = screen.getByText("Publier");
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(mockFetch).toHaveBeenCalledWith("/api/comments", expect.objectContaining({
-          method: "POST",
-        }));
+        expect(mockFetch).toHaveBeenCalledWith(
+          "/api/comments",
+          expect.objectContaining({
+            method: "POST",
+          }),
+        );
       });
     });
 
@@ -302,10 +317,14 @@ describe("CommentSection", () => {
       render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
-        expect(screen.getByPlaceholderText("Partagez votre avis sur cet article...")).toBeInTheDocument();
+        expect(
+          screen.getByPlaceholderText("Partagez votre avis sur cet article..."),
+        ).toBeInTheDocument();
       });
 
-      const textarea = screen.getByPlaceholderText("Partagez votre avis sur cet article...") as HTMLTextAreaElement;
+      const textarea = screen.getByPlaceholderText(
+        "Partagez votre avis sur cet article...",
+      ) as HTMLTextAreaElement;
       await user.type(textarea, "Nouveau commentaire");
       await user.click(screen.getByText("Publier"));
 
@@ -330,10 +349,14 @@ describe("CommentSection", () => {
       render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
-        expect(screen.getByPlaceholderText("Partagez votre avis sur cet article...")).toBeInTheDocument();
+        expect(
+          screen.getByPlaceholderText("Partagez votre avis sur cet article..."),
+        ).toBeInTheDocument();
       });
 
-      const textarea = screen.getByPlaceholderText("Partagez votre avis sur cet article...");
+      const textarea = screen.getByPlaceholderText(
+        "Partagez votre avis sur cet article...",
+      );
       await user.type(textarea, "Test commentaire");
       await user.click(screen.getByText("Publier"));
 
@@ -376,7 +399,7 @@ describe("CommentSection", () => {
     });
 
     it("can delete any comment (admin privilege)", async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
 
       mockFetch
         .mockResolvedValueOnce({
@@ -416,7 +439,9 @@ describe("CommentSection", () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText("Aucun commentaire pour le moment. Soyez le premier à commenter !"),
+          screen.getByText(
+            "Aucun commentaire pour le moment. Soyez le premier à commenter !",
+          ),
         ).toBeInTheDocument();
       });
     });
@@ -450,15 +475,21 @@ describe("CommentSection", () => {
       });
 
       // Find delete button (it's hidden by default, but exists in DOM)
-      const deleteButtons = document.querySelectorAll('button[class*="hover:text-destructive"]');
+      const deleteButtons = document.querySelectorAll(
+        'button[class*="hover:text-destructive"]',
+      );
 
       if (deleteButtons.length > 0) {
         await user.click(deleteButtons[0]);
 
         await waitFor(() => {
-          expect(screen.getByText("Supprimer le commentaire")).toBeInTheDocument();
           expect(
-            screen.getByText("Voulez-vous vraiment supprimer ce commentaire ? Cette action est irréversible."),
+            screen.getByText("Supprimer le commentaire"),
+          ).toBeInTheDocument();
+          expect(
+            screen.getByText(
+              "Voulez-vous vraiment supprimer ce commentaire ? Cette action est irréversible.",
+            ),
           ).toBeInTheDocument();
         });
       }
@@ -478,7 +509,9 @@ describe("CommentSection", () => {
         expect(screen.getByText("Super article !")).toBeInTheDocument();
       });
 
-      const deleteButtons = document.querySelectorAll('button[class*="hover:text-destructive"]');
+      const deleteButtons = document.querySelectorAll(
+        'button[class*="hover:text-destructive"]',
+      );
 
       if (deleteButtons.length > 0) {
         await user.click(deleteButtons[0]);
@@ -490,7 +523,9 @@ describe("CommentSection", () => {
         await user.click(screen.getByText("Annuler"));
 
         await waitFor(() => {
-          expect(screen.queryByText("Supprimer le commentaire")).not.toBeInTheDocument();
+          expect(
+            screen.queryByText("Supprimer le commentaire"),
+          ).not.toBeInTheDocument();
         });
       }
     });
@@ -514,13 +549,17 @@ describe("CommentSection", () => {
         expect(screen.getByText("Super article !")).toBeInTheDocument();
       });
 
-      const deleteButtons = document.querySelectorAll('button[class*="hover:text-destructive"]');
+      const deleteButtons = document.querySelectorAll(
+        'button[class*="hover:text-destructive"]',
+      );
 
       if (deleteButtons.length > 0) {
         await user.click(deleteButtons[0]);
 
         await waitFor(() => {
-          expect(screen.getByRole("button", { name: "Supprimer" })).toBeInTheDocument();
+          expect(
+            screen.getByRole("button", { name: "Supprimer" }),
+          ).toBeInTheDocument();
         });
 
         await user.click(screen.getByRole("button", { name: "Supprimer" }));
@@ -562,10 +601,14 @@ describe("CommentSection", () => {
       render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
-        expect(screen.getByPlaceholderText("Partagez votre avis sur cet article...")).toBeInTheDocument();
+        expect(
+          screen.getByPlaceholderText("Partagez votre avis sur cet article..."),
+        ).toBeInTheDocument();
       });
 
-      const textarea = screen.getByPlaceholderText("Partagez votre avis sur cet article...");
+      const textarea = screen.getByPlaceholderText(
+        "Partagez votre avis sur cet article...",
+      );
       await user.type(textarea, "Test");
       await user.click(screen.getByText("Publier"));
 
@@ -589,7 +632,9 @@ describe("CommentSection", () => {
       render(withQueryClient(<CommentSection blogPostId={mockBlogPostId} />));
 
       await waitFor(() => {
-        const textarea = screen.getByPlaceholderText("Partagez votre avis sur cet article...");
+        const textarea = screen.getByPlaceholderText(
+          "Partagez votre avis sur cet article...",
+        );
         expect(textarea).toHaveAttribute("maxLength", "2000");
       });
     });
