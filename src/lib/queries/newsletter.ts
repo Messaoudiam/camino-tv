@@ -27,7 +27,7 @@ interface EmailData {
 
 // === API FUNCTIONS ===
 async function subscribeToNewsletter(
-  data: EmailData
+  data: EmailData,
 ): Promise<SubscribeResponse> {
   const response = await fetch("/api/newsletter", {
     method: "POST",
@@ -40,7 +40,7 @@ async function subscribeToNewsletter(
   if (!response.ok) {
     throw new Error(
       (result as NewsletterError).error ||
-        "Erreur lors de l'inscription à la newsletter"
+        "Erreur lors de l'inscription à la newsletter",
     );
   }
 
@@ -48,7 +48,7 @@ async function subscribeToNewsletter(
 }
 
 async function unsubscribeFromNewsletter(
-  data: EmailData
+  data: EmailData,
 ): Promise<UnsubscribeResponse> {
   const response = await fetch("/api/newsletter/unsubscribe", {
     method: "POST",
@@ -61,7 +61,7 @@ async function unsubscribeFromNewsletter(
   if (!response.ok) {
     throw new Error(
       (result as NewsletterError).error ||
-        "Erreur lors de la désinscription de la newsletter"
+        "Erreur lors de la désinscription de la newsletter",
     );
   }
 
@@ -111,7 +111,7 @@ interface AdminNewsletterResponse {
 
 // === ADMIN API FUNCTIONS ===
 async function fetchNewsletterSubscribers(
-  status?: "PENDING" | "ACTIVE" | "UNSUBSCRIBED"
+  status?: "PENDING" | "ACTIVE" | "UNSUBSCRIBED",
 ): Promise<AdminNewsletterResponse> {
   const params = new URLSearchParams();
   if (status) params.set("status", status);
@@ -144,7 +144,9 @@ async function deleteNewsletterSubscriber(email: string): Promise<void> {
 /**
  * Hook pour récupérer les abonnés newsletter (admin)
  */
-export function useNewsletterSubscribers(status?: "PENDING" | "ACTIVE" | "UNSUBSCRIBED") {
+export function useNewsletterSubscribers(
+  status?: "PENDING" | "ACTIVE" | "UNSUBSCRIBED",
+) {
   return useQuery({
     queryKey: ["newsletter", "subscribers", status],
     queryFn: () => fetchNewsletterSubscribers(status),
@@ -160,7 +162,9 @@ export function useDeleteNewsletterSubscriber() {
   return useMutation({
     mutationFn: deleteNewsletterSubscriber,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["newsletter", "subscribers"] });
+      queryClient.invalidateQueries({
+        queryKey: ["newsletter", "subscribers"],
+      });
     },
   });
 }
@@ -180,7 +184,9 @@ interface SendNewsletterResponse {
   };
 }
 
-async function sendNewsletter(data: SendNewsletterData): Promise<SendNewsletterResponse> {
+async function sendNewsletter(
+  data: SendNewsletterData,
+): Promise<SendNewsletterResponse> {
   const response = await fetch("/api/admin/newsletter/send", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

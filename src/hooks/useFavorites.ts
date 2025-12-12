@@ -21,10 +21,7 @@ export function useFavorites() {
   const { isAuthenticated } = useAuth();
 
   // Query pour récupérer les favoris
-  const {
-    data: favoritesData,
-    isLoading,
-  } = useFavoritesQuery(isAuthenticated);
+  const { data: favoritesData, isLoading } = useFavoritesQuery(isAuthenticated);
 
   // Mutations avec optimistic updates
   const addMutation = useAddFavorite();

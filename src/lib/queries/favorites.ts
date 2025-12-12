@@ -111,7 +111,7 @@ export function useRemoveFavorite() {
       });
 
       const previousFavorites = queryClient.getQueryData<FavoritesResponse>(
-        queryKeys.favorites.list()
+        queryKeys.favorites.list(),
       );
 
       if (previousFavorites) {
@@ -119,9 +119,9 @@ export function useRemoveFavorite() {
           queryKeys.favorites.list(),
           {
             favorites: previousFavorites.favorites.filter(
-              (deal) => deal.id !== dealId
+              (deal) => deal.id !== dealId,
             ),
-          }
+          },
         );
       }
 
@@ -131,7 +131,7 @@ export function useRemoveFavorite() {
       if (context?.previousFavorites) {
         queryClient.setQueryData(
           queryKeys.favorites.list(),
-          context.previousFavorites
+          context.previousFavorites,
         );
       }
     },

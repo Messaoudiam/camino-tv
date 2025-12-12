@@ -23,10 +23,7 @@ async function fetchDealVote(dealId: string): Promise<VoteResponse> {
   return response.json();
 }
 
-async function voteDeal(
-  dealId: string,
-  value: 1 | -1
-): Promise<VoteResponse> {
+async function voteDeal(dealId: string, value: 1 | -1): Promise<VoteResponse> {
   const response = await fetch(`/api/deals/${dealId}/vote`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -88,7 +85,7 @@ export function useVoteDeal() {
 
       // Snapshot previous value
       const previousVote = queryClient.getQueryData<VoteResponse>(
-        queryKeys.votes.deal(dealId)
+        queryKeys.votes.deal(dealId),
       );
 
       // Optimistic update
@@ -97,13 +94,10 @@ export function useVoteDeal() {
         // Si vote existe et on change, delta = value * 2 (on annule l'ancien et on ajoute le nouveau)
         const delta = previousVote.userVote === null ? value : value * 2;
 
-        queryClient.setQueryData<VoteResponse>(
-          queryKeys.votes.deal(dealId),
-          {
-            temperature: previousVote.temperature + delta,
-            userVote: value,
-          }
-        );
+        queryClient.setQueryData<VoteResponse>(queryKeys.votes.deal(dealId), {
+          temperature: previousVote.temperature + delta,
+          userVote: value,
+        });
       }
 
       return { previousVote };
@@ -113,7 +107,7 @@ export function useVoteDeal() {
       if (context?.previousVote) {
         queryClient.setQueryData(
           queryKeys.votes.deal(dealId),
-          context.previousVote
+          context.previousVote,
         );
       }
     },
@@ -144,17 +138,14 @@ export function useRemoveVote() {
       });
 
       const previousVote = queryClient.getQueryData<VoteResponse>(
-        queryKeys.votes.deal(dealId)
+        queryKeys.votes.deal(dealId),
       );
 
       if (previousVote && previousVote.userVote !== null) {
-        queryClient.setQueryData<VoteResponse>(
-          queryKeys.votes.deal(dealId),
-          {
-            temperature: previousVote.temperature - previousVote.userVote,
-            userVote: null,
-          }
-        );
+        queryClient.setQueryData<VoteResponse>(queryKeys.votes.deal(dealId), {
+          temperature: previousVote.temperature - previousVote.userVote,
+          userVote: null,
+        });
       }
 
       return { previousVote };
@@ -163,7 +154,7 @@ export function useRemoveVote() {
       if (context?.previousVote) {
         queryClient.setQueryData(
           queryKeys.votes.deal(dealId),
-          context.previousVote
+          context.previousVote,
         );
       }
     },

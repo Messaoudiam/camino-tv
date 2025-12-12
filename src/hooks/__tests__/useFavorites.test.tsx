@@ -221,7 +221,7 @@ describe("useFavorites", () => {
     });
 
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      "User must be authenticated to add favorites"
+      "User must be authenticated to add favorites",
     );
     expect(result.current.favorites).not.toContain("item1");
 

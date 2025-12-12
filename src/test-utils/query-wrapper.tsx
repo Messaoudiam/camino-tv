@@ -36,7 +36,5 @@ export function createQueryWrapper() {
  */
 export function withQueryClient(ui: React.ReactElement) {
   const queryClient = createTestQueryClient();
-  return (
-    <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
-  );
+  return <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>;
 }

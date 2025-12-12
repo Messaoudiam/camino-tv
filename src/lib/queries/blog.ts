@@ -60,7 +60,7 @@ function transformPost(dbPost: BlogPostDB): BlogPost {
 
 // === API FUNCTIONS ===
 async function fetchBlogPosts(
-  filters?: BlogFilters
+  filters?: BlogFilters,
 ): Promise<{ posts: BlogPost[]; pagination: BlogPostsResponse["pagination"] }> {
   const params = new URLSearchParams();
 
@@ -176,7 +176,9 @@ async function fetchBlogPostsAdmin(): Promise<BlogPostAdmin[]> {
   return data.posts || [];
 }
 
-async function createBlogPost(data: CreateBlogPostData): Promise<BlogPostAdmin> {
+async function createBlogPost(
+  data: CreateBlogPostData,
+): Promise<BlogPostAdmin> {
   const response = await fetch("/api/blog", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -184,12 +186,19 @@ async function createBlogPost(data: CreateBlogPostData): Promise<BlogPostAdmin> 
   });
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.error || error.details?.[0]?.message || "Erreur lors de la création");
+    throw new Error(
+      error.error ||
+        error.details?.[0]?.message ||
+        "Erreur lors de la création",
+    );
   }
   return response.json();
 }
 
-async function updateBlogPost({ id, ...data }: UpdateBlogPostData): Promise<BlogPostAdmin> {
+async function updateBlogPost({
+  id,
+  ...data
+}: UpdateBlogPostData): Promise<BlogPostAdmin> {
   const response = await fetch(`/api/blog/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -197,7 +206,11 @@ async function updateBlogPost({ id, ...data }: UpdateBlogPostData): Promise<Blog
   });
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.error || error.details?.[0]?.message || "Erreur lors de la modification");
+    throw new Error(
+      error.error ||
+        error.details?.[0]?.message ||
+        "Erreur lors de la modification",
+    );
   }
   return response.json();
 }

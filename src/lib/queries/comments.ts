@@ -135,7 +135,7 @@ export function useDeleteComment(blogPostId: string) {
       if (previousComments) {
         queryClient.setQueryData(
           queryKey,
-          previousComments.filter((c) => c.id !== commentId)
+          previousComments.filter((c) => c.id !== commentId),
         );
       }
 
