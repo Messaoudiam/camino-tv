@@ -2,17 +2,16 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "./keys";
+import type { Deal } from "@/types";
 
 // === TYPES ===
-interface Favorite {
-  id: string;
-  dealId: string;
-  userId: string;
-  createdAt: string;
+// L'API retourne des Deal avec favoritedAt
+export interface FavoriteDeal extends Deal {
+  favoritedAt: string;
 }
 
-interface FavoritesResponse {
-  favorites: Favorite[];
+export interface FavoritesResponse {
+  favorites: FavoriteDeal[];
 }
 
 // === API FUNCTIONS ===
@@ -32,7 +31,7 @@ async function fetchFavorites(): Promise<FavoritesResponse> {
   return response.json();
 }
 
-async function addFavorite(dealId: string): Promise<Favorite> {
+async function addFavorite(dealId: string): Promise<void> {
   const response = await fetch("/api/favorites", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -44,8 +43,6 @@ async function addFavorite(dealId: string): Promise<Favorite> {
     const error = await response.json();
     throw new Error(error.error || "Erreur lors de l'ajout aux favoris");
   }
-
-  return response.json();
 }
 
 async function removeFavorite(dealId: string): Promise<void> {
@@ -73,6 +70,10 @@ export function useFavoritesQuery(isAuthenticated: boolean) {
     enabled: isAuthenticated,
     // Les favoris changent souvent, on peut réduire le staleTime
     staleTime: 1 * 60 * 1000, // 1 minute
+    // Éviter les refetch constants
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   });
 }
 
@@ -80,56 +81,15 @@ export function useFavoritesQuery(isAuthenticated: boolean) {
 
 /**
  * Hook pour ajouter un deal aux favoris
- * Avec optimistic update pour une UX fluide
+ * Refetch après mutation pour cohérence des données
  */
 export function useAddFavorite() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: addFavorite,
-    // Optimistic update
-    onMutate: async (dealId) => {
-      // Cancel les queries en cours
-      await queryClient.cancelQueries({
-        queryKey: queryKeys.favorites.list(),
-      });
-
-      // Snapshot de l'état actuel
-      const previousFavorites = queryClient.getQueryData<FavoritesResponse>(
-        queryKeys.favorites.list()
-      );
-
-      // Optimistic update
-      if (previousFavorites) {
-        queryClient.setQueryData<FavoritesResponse>(
-          queryKeys.favorites.list(),
-          {
-            favorites: [
-              ...previousFavorites.favorites,
-              {
-                id: `temp-${dealId}`,
-                dealId,
-                userId: "",
-                createdAt: new Date().toISOString(),
-              },
-            ],
-          }
-        );
-      }
-
-      return { previousFavorites };
-    },
-    onError: (_err, _dealId, context) => {
-      // Rollback en cas d'erreur
-      if (context?.previousFavorites) {
-        queryClient.setQueryData(
-          queryKeys.favorites.list(),
-          context.previousFavorites
-        );
-      }
-    },
-    onSettled: () => {
-      // Refetch pour s'assurer de la cohérence
+    onSuccess: () => {
+      // Refetch pour obtenir les données à jour avec le deal complet
       queryClient.invalidateQueries({ queryKey: queryKeys.favorites.list() });
     },
   });
@@ -144,7 +104,7 @@ export function useRemoveFavorite() {
 
   return useMutation({
     mutationFn: removeFavorite,
-    // Optimistic update
+    // Optimistic update - on peut le faire car on connaît l'ID à retirer
     onMutate: async (dealId) => {
       await queryClient.cancelQueries({
         queryKey: queryKeys.favorites.list(),
@@ -159,7 +119,7 @@ export function useRemoveFavorite() {
           queryKeys.favorites.list(),
           {
             favorites: previousFavorites.favorites.filter(
-              (f) => f.dealId !== dealId
+              (deal) => deal.id !== dealId
             ),
           }
         );

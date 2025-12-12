@@ -30,8 +30,11 @@ export function useFavorites() {
   const addMutation = useAddFavorite();
   const removeMutation = useRemoveFavorite();
 
-  // Extraire les IDs des favoris
-  const favorites = favoritesData?.favorites.map((f) => f.dealId) ?? [];
+  // Les favoris sont déjà des objets Deal complets (retournés par l'API)
+  const favoriteDeals = favoritesData?.favorites ?? [];
+
+  // Extraire les IDs pour les vérifications rapides
+  const favorites = favoriteDeals.map((deal) => deal.id);
 
   const addToFavorites = async (dealId: string) => {
     if (!isAuthenticated) {
@@ -61,6 +64,7 @@ export function useFavorites() {
 
   return {
     favorites,
+    favoriteDeals, // Les objets Deal complets
     isLoading,
     addToFavorites,
     removeFromFavorites,

@@ -40,3 +40,16 @@ export { useComments, useCreateComment, useDeleteComment } from "./comments";
 
 // Users (Admin)
 export { useUsers, useUpdateUser, useDeleteUser } from "./users";
+
+// Newsletter
+export {
+  useSubscribeNewsletter,
+  useUnsubscribeNewsletter,
+  useNewsletterSubscribers,
+  useDeleteNewsletterSubscriber,
+  useSendNewsletter,
+} from "./newsletter";
+export type { NewsletterSubscriber, NewsletterStats } from "./newsletter";
+
+// Votes (Hot/Cold deals)
+export { useDealVote, useVoteDeal, useRemoveVote } from "./votes";

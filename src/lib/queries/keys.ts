@@ -77,4 +77,10 @@ export const queryKeys = {
     details: () => [...queryKeys.users.all, "detail"] as const,
     detail: (id: string) => [...queryKeys.users.details(), id] as const,
   },
+
+  // === VOTES ===
+  votes: {
+    all: ["votes"] as const,
+    deal: (dealId: string) => [...queryKeys.votes.all, "deal", dealId] as const,
+  },
 } as const;
