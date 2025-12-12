@@ -9,7 +9,12 @@ import { BlogPost } from "@/types";
 // Mock next/image
 jest.mock("next/image", () => ({
   __esModule: true,
-  default: (props: React.ImgHTMLAttributes<HTMLImageElement> & { fill?: boolean; priority?: boolean }) => {
+  default: (
+    props: React.ImgHTMLAttributes<HTMLImageElement> & {
+      fill?: boolean;
+      priority?: boolean;
+    },
+  ) => {
     const { fill, priority: _priority, ...restProps } = props;
     return (
       // eslint-disable-next-line @next/next/no-img-element

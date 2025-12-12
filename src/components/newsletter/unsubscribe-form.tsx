@@ -47,10 +47,11 @@ export function UnsubscribeForm({ initialEmail }: UnsubscribeFormProps) {
         },
         onError: (error) => {
           setError(
-            error.message || "Une erreur est survenue lors de la désinscription"
+            error.message ||
+              "Une erreur est survenue lors de la désinscription",
           );
         },
-      }
+      },
     );
   };
 

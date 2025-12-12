@@ -46,7 +46,7 @@ export function NewsletterForm() {
           toast.error(message);
           setError(message);
         },
-      }
+      },
     );
   };
 

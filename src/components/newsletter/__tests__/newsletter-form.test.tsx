@@ -31,7 +31,7 @@ function renderWithQueryClient(ui: React.ReactElement) {
   });
 
   return render(
-    <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>,
   );
 }
 
@@ -45,10 +45,10 @@ describe("NewsletterForm", () => {
       renderWithQueryClient(<NewsletterForm />);
 
       expect(
-        screen.getByPlaceholderText("Votre adresse email")
+        screen.getByPlaceholderText("Votre adresse email"),
       ).toBeInTheDocument();
       expect(
-        screen.getByRole("button", { name: "S'inscrire" })
+        screen.getByRole("button", { name: "S'inscrire" }),
       ).toBeInTheDocument();
     });
 
@@ -83,7 +83,9 @@ describe("NewsletterForm", () => {
 
       // Wait for the validation error to appear
       await waitFor(() => {
-        expect(screen.getByText("L'adresse email est requise")).toBeInTheDocument();
+        expect(
+          screen.getByText("L'adresse email est requise"),
+        ).toBeInTheDocument();
       });
       expect(mockFetch).not.toHaveBeenCalled();
     });
@@ -104,7 +106,7 @@ describe("NewsletterForm", () => {
       // Zod's email validation should reject this format
       await waitFor(() => {
         expect(
-          screen.getByText("L'adresse email n'est pas valide")
+          screen.getByText("L'adresse email n'est pas valide"),
         ).toBeInTheDocument();
       });
       expect(mockFetch).not.toHaveBeenCalled();
@@ -119,7 +121,9 @@ describe("NewsletterForm", () => {
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(screen.getByText("L'adresse email est requise")).toBeInTheDocument();
+        expect(
+          screen.getByText("L'adresse email est requise"),
+        ).toBeInTheDocument();
       });
 
       // Start typing
@@ -129,7 +133,7 @@ describe("NewsletterForm", () => {
       // Error should be cleared
       await waitFor(() => {
         expect(
-          screen.queryByText("L'adresse email est requise")
+          screen.queryByText("L'adresse email est requise"),
         ).not.toBeInTheDocument();
       });
     });
@@ -183,7 +187,7 @@ describe("NewsletterForm", () => {
       // Button should show loading indicator
       await waitFor(() => {
         expect(
-          screen.queryByRole("button", { name: "S'inscrire" })
+          screen.queryByRole("button", { name: "S'inscrire" }),
         ).not.toBeInTheDocument();
       });
 
@@ -234,7 +238,7 @@ describe("NewsletterForm", () => {
 
       await waitFor(() => {
         expect(mockToastSuccess).toHaveBeenCalledWith(
-          "Merci pour votre inscription à la newsletter !"
+          "Merci pour votre inscription à la newsletter !",
         );
       });
     });
@@ -267,7 +271,9 @@ describe("NewsletterForm", () => {
 
       // Form should show success state with confirmation message
       expect(
-        await screen.findByText("Vérifiez votre boîte mail pour confirmer votre inscription !")
+        await screen.findByText(
+          "Vérifiez votre boîte mail pour confirmer votre inscription !",
+        ),
       ).toBeInTheDocument();
     });
 
@@ -295,12 +301,14 @@ describe("NewsletterForm", () => {
 
       // Should show success state with confirmation message
       expect(
-        await screen.findByText("Vérifiez votre boîte mail pour confirmer votre inscription !")
+        await screen.findByText(
+          "Vérifiez votre boîte mail pour confirmer votre inscription !",
+        ),
       ).toBeInTheDocument();
 
       // Input and button should not be visible
       expect(
-        screen.queryByPlaceholderText("Votre adresse email")
+        screen.queryByPlaceholderText("Votre adresse email"),
       ).not.toBeInTheDocument();
     });
   });
@@ -325,7 +333,7 @@ describe("NewsletterForm", () => {
 
       await waitFor(() => {
         expect(mockToastError).toHaveBeenCalledWith(
-          "Cette adresse email est déjà inscrite à la newsletter"
+          "Cette adresse email est déjà inscrite à la newsletter",
         );
       });
     });
@@ -349,8 +357,8 @@ describe("NewsletterForm", () => {
 
       expect(
         await screen.findByText(
-          "Cette adresse email est déjà inscrite à la newsletter"
-        )
+          "Cette adresse email est déjà inscrite à la newsletter",
+        ),
       ).toBeInTheDocument();
     });
 
@@ -422,7 +430,7 @@ describe("NewsletterForm", () => {
 
       await waitFor(() => {
         expect(mockToastSuccess).toHaveBeenCalledWith(
-          "Votre inscription a été réactivée avec succès !"
+          "Votre inscription a été réactivée avec succès !",
         );
       });
     });

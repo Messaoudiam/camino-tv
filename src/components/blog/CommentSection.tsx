@@ -91,7 +91,7 @@ export function CommentSection({ blogPostId }: CommentSectionProps) {
         onError: (err) => {
           setError(err.message || "Erreur lors de l'ajout du commentaire");
         },
-      }
+      },
     );
   };
 
@@ -142,9 +142,7 @@ export function CommentSection({ blogPostId }: CommentSectionProps) {
       {/* Header */}
       <div className="flex items-center gap-2 mb-6">
         <MessageSquare className="h-5 w-5 text-brand-600" />
-        <h2 className="text-xl font-bold">
-          Commentaires ({comments.length})
-        </h2>
+        <h2 className="text-xl font-bold">Commentaires ({comments.length})</h2>
       </div>
 
       {/* Comment Form */}
@@ -157,9 +155,15 @@ export function CommentSection({ blogPostId }: CommentSectionProps) {
                   {user?.name?.charAt(0)?.toUpperCase() || "U"}
                 </span>
               </div>
-              <span>Commentez en tant que <strong>{user?.name || user?.email}</strong></span>
+              <span>
+                Commentez en tant que{" "}
+                <strong>{user?.name || user?.email}</strong>
+              </span>
               {isAdmin && (
-                <Badge variant="outline" className="text-xs border-brand-200 text-brand-600">
+                <Badge
+                  variant="outline"
+                  className="text-xs border-brand-200 text-brand-600"
+                >
                   <Shield className="h-3 w-3 mr-1" />
                   Admin
                 </Badge>
@@ -172,9 +176,7 @@ export function CommentSection({ blogPostId }: CommentSectionProps) {
               className="min-h-[100px] resize-none"
               maxLength={2000}
             />
-            {error && (
-              <p className="text-sm text-destructive">{error}</p>
-            )}
+            {error && <p className="text-sm text-destructive">{error}</p>}
             <div className="flex items-center justify-between">
               <span className="text-xs text-muted-foreground">
                 {newComment.length}/2000 caractères
@@ -251,7 +253,10 @@ export function CommentSection({ blogPostId }: CommentSectionProps) {
                         {comment.user.name || "Utilisateur"}
                       </span>
                       {comment.user.role === "ADMIN" && (
-                        <Badge variant="outline" className="text-xs border-brand-200 text-brand-600">
+                        <Badge
+                          variant="outline"
+                          className="text-xs border-brand-200 text-brand-600"
+                        >
                           <Shield className="h-3 w-3 mr-1" />
                           Admin
                         </Badge>
@@ -284,9 +289,12 @@ export function CommentSection({ blogPostId }: CommentSectionProps) {
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>Supprimer le commentaire</AlertDialogTitle>
+                          <AlertDialogTitle>
+                            Supprimer le commentaire
+                          </AlertDialogTitle>
                           <AlertDialogDescription>
-                            Voulez-vous vraiment supprimer ce commentaire ? Cette action est irréversible.
+                            Voulez-vous vraiment supprimer ce commentaire ?
+                            Cette action est irréversible.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>

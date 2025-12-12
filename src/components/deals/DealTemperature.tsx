@@ -103,7 +103,7 @@ export function DealTemperature({
         "flex items-center rounded-full",
         bgColor,
         sizes.container,
-        className
+        className,
       )}
     >
       {/* Vote Up (Hot) */}
@@ -114,7 +114,7 @@ export function DealTemperature({
           sizes.button,
           "rounded-full p-0 hover:bg-orange-500/20",
           userVote === 1 && "bg-orange-500/20 text-orange-500",
-          !isAuthenticated && "opacity-50 cursor-not-allowed"
+          !isAuthenticated && "opacity-50 cursor-not-allowed",
         )}
         onClick={() => handleVote(1)}
         disabled={isLoading || !isAuthenticated}
@@ -123,19 +123,13 @@ export function DealTemperature({
         <ChevronUp
           className={cn(
             sizes.icon,
-            userVote === 1 ? "text-orange-500" : "text-muted-foreground"
+            userVote === 1 ? "text-orange-500" : "text-muted-foreground",
           )}
         />
       </Button>
 
       {/* Temperature Display */}
-      <span
-        className={cn(
-          "font-bold tabular-nums",
-          tempColor,
-          sizes.temp
-        )}
-      >
+      <span className={cn("font-bold tabular-nums", tempColor, sizes.temp)}>
         {temperature}°
       </span>
 
@@ -147,16 +141,20 @@ export function DealTemperature({
           sizes.button,
           "rounded-full p-0 hover:bg-blue-500/20",
           userVote === -1 && "bg-blue-500/20 text-blue-500",
-          !isAuthenticated && "opacity-50 cursor-not-allowed"
+          !isAuthenticated && "opacity-50 cursor-not-allowed",
         )}
         onClick={() => handleVote(-1)}
         disabled={isLoading || !isAuthenticated}
-        title={isAuthenticated ? "Cold! Pas intéressant" : "Connectez-vous pour voter"}
+        title={
+          isAuthenticated
+            ? "Cold! Pas intéressant"
+            : "Connectez-vous pour voter"
+        }
       >
         <ChevronDown
           className={cn(
             sizes.icon,
-            userVote === -1 ? "text-blue-500" : "text-muted-foreground"
+            userVote === -1 ? "text-blue-500" : "text-muted-foreground",
           )}
         />
       </Button>
