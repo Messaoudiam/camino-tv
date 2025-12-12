@@ -8,6 +8,7 @@ import {
   FileText,
   Users,
   Mail,
+  MessageSquare,
   Settings,
   LogOut,
   ChevronDown,
@@ -58,6 +59,11 @@ const menuItems = [
     title: "Newsletter",
     icon: Mail,
     href: "/admin/newsletter",
+  },
+  {
+    title: "Messages",
+    icon: MessageSquare,
+    href: "/admin/messages",
   },
   {
     title: "Utilisateurs",
