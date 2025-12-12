@@ -9,20 +9,22 @@ datasource db {
 }
 
 model User {
-  id              String     @id @default(cuid())
+  id              String           @id @default(cuid())
   name            String?
-  email           String     @unique
-  emailVerified   Boolean    @default(false)
+  email           String           @unique
+  emailVerified   Boolean          @default(false)
   image           String?
-  role            UserRole   @default(USER)
-  newsletterOptIn Boolean    @default(true)
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
+  role            UserRole         @default(USER)
+  newsletterOptIn Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
   accounts        Account[]
   blogPosts       BlogPost[]
   comments        Comment[]
+  contactMessages ContactMessage[]
   dealVotes       DealVote[]
   favorites       Favorite[]
+  messageReplies  MessageReply[]   @relation("AdminReplies")
   sessions        Session[]
 
   @@index([email])
@@ -197,6 +199,42 @@ model NewsletterSubscriber {
   @@map("newsletter_subscribers")
 }
 
+model ContactMessage {
+  id        String          @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String
+  category  ContactCategory
+  subject   String
+  message   String
+  status    ContactStatus   @default(NEW)
+  userId    String?         // Lien optionnel vers l'utilisateur (si connecté)
+  user      User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+  replies   MessageReply[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
+  @@index([userId])
+  @@map("contact_messages")
+}
+
+model MessageReply {
+  id        String         @id @default(cuid())
+  content   String
+  messageId String
+  adminId   String
+  message   ContactMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  admin     User           @relation("AdminReplies", fields: [adminId], references: [id], onDelete: Cascade)
+  createdAt DateTime       @default(now())
+
+  @@index([messageId])
+  @@index([adminId])
+  @@map("message_replies")
+}
+
 enum NewsletterStatus {
   PENDING
   ACTIVE
@@ -223,4 +261,20 @@ enum BlogCategory {
   interview
   lifestyle
   tendances
+}
+
+enum ContactCategory {
+  general
+  partnership
+  collaboration
+  technical
+  press
+  other
+}
+
+enum ContactStatus {
+  NEW
+  READ
+  REPLIED
+  ARCHIVED
 }
