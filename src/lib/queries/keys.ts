@@ -83,4 +83,19 @@ export const queryKeys = {
     all: ["votes"] as const,
     deal: (dealId: string) => [...queryKeys.votes.all, "deal", dealId] as const,
   },
+
+  // === CONTACT MESSAGES (Admin) ===
+  messages: {
+    all: ["messages"] as const,
+    lists: () => [...queryKeys.messages.all, "list"] as const,
+    list: (status?: string) => [...queryKeys.messages.lists(), status] as const,
+  },
+
+  // === USER MESSAGES ===
+  userMessages: {
+    all: ["userMessages"] as const,
+    list: () => [...queryKeys.userMessages.all, "list"] as const,
+    details: () => [...queryKeys.userMessages.all, "detail"] as const,
+    detail: (id: string) => [...queryKeys.userMessages.details(), id] as const,
+  },
 } as const;

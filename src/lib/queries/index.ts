@@ -53,3 +53,16 @@ export type { NewsletterSubscriber, NewsletterStats } from "./newsletter";
 
 // Votes (Hot/Cold deals)
 export { useDealVote, useVoteDeal, useRemoveVote } from "./votes";
+
+// Contact Messages (Admin)
+export {
+  useContactMessages,
+  useUpdateMessageStatus,
+  useDeleteMessage,
+  useReplyToMessage,
+} from "./messages";
+export type { ContactMessage, ContactMessagesResponse, MessageReply } from "./messages";
+
+// User Messages
+export { useUserMessages, useUserMessage } from "./user-messages";
+export type { UserMessage, UserMessagesResponse } from "./user-messages";
