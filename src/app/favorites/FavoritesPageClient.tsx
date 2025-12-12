@@ -5,7 +5,7 @@
  * Design système cohérent avec l'UI/UX existante de Camino TV
  */
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Heart,
   Search,
@@ -46,14 +46,14 @@ import {
 } from "@/components/ui/dialog";
 import { useFavorites } from "@/hooks/useFavorites";
 import { cn } from "@/lib/utils";
-import type { Deal } from "@/types";
 
 export default function FavoritesPageClient() {
   const {
     favorites,
-    isLoading: favoritesLoading,
+    favoriteDeals,
+    isLoading,
     favoritesCount,
-    isAuthenticated,
+    removeFromFavorites,
   } = useFavorites();
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -65,44 +65,7 @@ export default function FavoritesPageClient() {
   const [sortBy, setSortBy] = useState("newest");
   const [filterBy, setFilterBy] = useState("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [favoriteDeals, setFavoriteDeals] = useState<Deal[]>([]);
   const [showClearDialog, setShowClearDialog] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Fetch favorite deals from API
-  useEffect(() => {
-    const fetchFavoriteDeals = async () => {
-      if (!isAuthenticated) {
-        setFavoriteDeals([]);
-        setIsLoading(false);
-        return;
-      }
-
-      setIsLoading(true);
-      try {
-        const response = await fetch("/api/favorites", {
-          credentials: "include",
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setFavoriteDeals(data.favorites || []);
-        } else {
-          console.error("Error fetching favorites:", response.statusText);
-          setFavoriteDeals([]);
-        }
-      } catch (error) {
-        console.error("Error fetching favorites:", error);
-        setFavoriteDeals([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (!favoritesLoading) {
-      fetchFavoriteDeals();
-    }
-  }, [favorites, isAuthenticated, favoritesLoading]);
 
   // Filtrage et tri des favoris
   const processedDeals = favoriteDeals
@@ -139,18 +102,11 @@ export default function FavoritesPageClient() {
   // Fonction pour vider tous les favoris
   const handleClearFavorites = async () => {
     try {
-      // Delete all favorites via API
-      const deletePromises = favorites.map((dealId) =>
-        fetch(`/api/favorites?dealId=${dealId}`, {
-          method: "DELETE",
-          credentials: "include",
-        }),
-      );
-
-      await Promise.all(deletePromises);
-
+      // Supprimer tous les favoris via le hook
+      for (const dealId of favorites) {
+        await removeFromFavorites(dealId);
+      }
       setShowClearDialog(false);
-      setFavoriteDeals([]);
     } catch (error) {
       console.error("Error clearing favorites:", error);
     }

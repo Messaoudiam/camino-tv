@@ -18,6 +18,7 @@ export interface Deal {
   affiliateUrl: string;
   promoCode?: string;
   promoDescription?: string;
+  temperature?: number; // Système de vote Hot/Cold
 }
 
 export type DealCategory =

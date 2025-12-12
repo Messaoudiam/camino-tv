@@ -3,6 +3,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./db";
 import { validatePassword, isCommonPassword } from "./password-validation";
 import { Resend } from "resend";
+import { sendWelcomeEmail } from "./email/send";
 
 /**
  * Better Auth Configuration
@@ -38,7 +39,7 @@ export const auth = betterAuth({
       }
 
       await resend.emails.send({
-        from: "Camino TV <noreply@camino-tv.com>",
+        from: "Camino TV <noreply@my-library.cloud>",
         to: user.email,
         subject: "Vérifiez votre email - Camino TV",
         html: `
@@ -136,6 +137,12 @@ export const auth = betterAuth({
         defaultValue: "USER",
         input: false, // Not editable by user
       },
+      newsletterOptIn: {
+        type: "boolean",
+        required: false,
+        defaultValue: true,
+        input: true, // User can choose during signup
+      },
     },
   },
 
@@ -146,6 +153,60 @@ export const auth = betterAuth({
     },
     database: {
       generateId: false, // Use Prisma's cuid() instead
+    },
+  },
+
+  // Database hooks for custom logic
+  databaseHooks: {
+    user: {
+      update: {
+        after: async (user) => {
+          // When email is verified, subscribe to newsletter if opted in
+          if (user.emailVerified) {
+            try {
+              // Check if user opted in for newsletter
+              const dbUser = await prisma.user.findUnique({
+                where: { id: user.id },
+                select: { newsletterOptIn: true, email: true },
+              });
+
+              if (dbUser?.newsletterOptIn) {
+                // Check if already subscribed
+                const existingSubscriber = await prisma.newsletterSubscriber.findUnique({
+                  where: { email: dbUser.email },
+                });
+
+                if (!existingSubscriber) {
+                  // Create active subscriber (email already verified via account)
+                  await prisma.newsletterSubscriber.create({
+                    data: {
+                      email: dbUser.email,
+                      status: "ACTIVE",
+                      confirmedAt: new Date(),
+                    },
+                  });
+
+                  // Send welcome email
+                  await sendWelcomeEmail(dbUser.email);
+                  console.log(`Newsletter: Auto-subscribed ${dbUser.email}`);
+                } else if (existingSubscriber.status !== "ACTIVE") {
+                  // Reactivate if previously unsubscribed
+                  await prisma.newsletterSubscriber.update({
+                    where: { email: dbUser.email },
+                    data: {
+                      status: "ACTIVE",
+                      confirmedAt: new Date(),
+                    },
+                  });
+                  console.log(`Newsletter: Reactivated ${dbUser.email}`);
+                }
+              }
+            } catch (error) {
+              console.error("Error auto-subscribing to newsletter:", error);
+            }
+          }
+        },
+      },
     },
   },
 
